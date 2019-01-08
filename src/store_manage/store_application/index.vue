@@ -210,6 +210,7 @@ export default {
 <style scoped>
 .avatar {
   width: 178px;
+  height: 200px;
   display: block;
 }
 
