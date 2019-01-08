@@ -13,6 +13,7 @@ export default new Router({
         children: [{
             path: '/manage/storeapplication',
             component: StoreApplication
-        }]
+        }
+    ]
     }]
 })
