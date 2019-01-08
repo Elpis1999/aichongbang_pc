@@ -15,6 +15,7 @@
             background-color="#545c64"
             text-color="#fff"
             active-text-color="#ffd04b"
+            :router="true"
           >
             <el-submenu index="1">
               <template slot="title">
@@ -34,8 +35,8 @@
                 <span>门店管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="2-1">门店申请</el-menu-item>
-                <el-menu-item index="2-2">商品管理</el-menu-item>
+                <el-menu-item index="/manage/storeapplication">门店申请</el-menu-item>
+                <el-menu-item>商品管理</el-menu-item>
                 <el-menu-item index="2-3">供应商货品</el-menu-item>
                 <el-menu-item index="2-4">服务管理</el-menu-item>
                 <el-menu-item index="2-5">订单管理</el-menu-item>
@@ -56,7 +57,9 @@
           </el-menu>
         </el-col>
       </el-aside>
-      <el-main class="container-main"></el-main>
+      <el-main class="container-main">
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
