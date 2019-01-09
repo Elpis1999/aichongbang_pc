@@ -64,7 +64,6 @@ export default {
   methods: {
    
     add() {
-      console.log(this.addForm,"77rr7ww")
       let{supp_name,supp_add, supp_phone, supp_web,supp_note,supp_bus_pic}=this.addForm;
       axios({
         method: "put",
