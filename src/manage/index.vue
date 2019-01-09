@@ -50,7 +50,7 @@
               </template>
               <el-menu-item-group>
                 <el-menu-item index="3-1">补全信息</el-menu-item>
-                <el-menu-item index="3-2">供应商货品管理</el-menu-item>
+                <el-menu-item index="/manage/supgoods">供应商货品管理</el-menu-item>
                 <el-menu-item index="3-3">统计</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
