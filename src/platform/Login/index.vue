@@ -92,6 +92,7 @@ export default {
             if (res.data.status != 0) {
               alert("登陆成功");
               console.log("session", res);
+               this.$router.push("../../manage")
             } else {
               alert("登陆失败");
             }

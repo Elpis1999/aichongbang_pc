@@ -35,34 +35,72 @@
     </div>
 </template>
 <script >
+let useid;
+let suppid;
 import axios from "axios";
-import UpdateSuppiler from "./UpdateSuppiler.vue"; 
+import UpdateSuppiler from "./UpdateSuppiler.vue";
 export default {
-data(){
-    return{
-        suppiler:[],
+  data() {
+    return {
+      suppiler: []
     };
-},
-  methods: {  
-    show() {
+  },
+  methods: {
+    getSession() {
       axios({
         method: "get",
-        url: "/suppiler",
+        url: "/getSession"
       }).then(({ data }) => {
-        console.log(data,'wwwwq')
-        this.suppiler = data;
-        
+        console.log(data, "data11");
+         useid = data.user._id;
+        //    axios({
+        //   method: "post",
+        //   url: "/suppiler",
+        //   data: {
+        //      supp_number:useid,
+        //      supp_name: "",
+        //      supp_add: "",
+        //      supp_phone: "",
+        //      supp_web: "",
+        //      supp_note: "",
+        //      supp_bus_pic: ""
+        //   }
+        // }).then(({ data }) => {
+        //   console.log(data, "data");
+
+        // });
       });
     },
+    show() {
+      axios({
+          method: "get",
+          url: "/suppiler"
+        }).then(({ data }) => {
+          console.log(data, "data88");
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].supp_number == useid) {
+              suppid = data[i]._id;
+              console.log(suppid,"iddd")
+              axios({
+                method: "get",
+                url: "/suppiler/" + suppid
+              }).then(({ data }) => {
+                console.log(data, "通过id查到的数据");
+                this.suppiler = data;
+              });
+            } 
+          }
+        });
+    }
   },
   created() {
+    this.getSession();
     this.show();
   },
-components: {
+  components: {
     UpdateSuppiler
   }
 };
-  
 </script>
 
 <style>
