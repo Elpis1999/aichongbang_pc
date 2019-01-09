@@ -33,19 +33,6 @@
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </el-upload>
    </el-form-item>
-    <!-- <el-form-item label="供应商上传图片" prop="supp_note">
-   <el-upload
-  action="/upload"
-  list-type="picture-card"
-  :on-preview="handlePictureCardPreview"
-  :on-remove="handleRemove">
-  <i class="el-icon-plus"></i>
-</el-upload>
-<el-dialog :visible.sync="dialogVisibleb">
-  <img width="100%" :src="dialogImageUrl" alt="">
-</el-dialog>
-  </el-form-item>
-   -->
 </el-form>
   <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
@@ -58,9 +45,9 @@
 import axios from "axios";
 export default {
   props: ["show", "suppiler"],
+  
   data() {
     return {
-      dialogImageUrl: "",
       dialogVisible: false,
       dialogVisibleb:false,
       addForm: {
@@ -75,15 +62,24 @@ export default {
     };
   },
   methods: {
+   
     add() {
+      console.log(this.addForm,"77rr7ww")
+      let{supp_name,supp_add, supp_phone, supp_web,supp_note,supp_bus_pic}=this.addForm;
       axios({
-        method: "post",
-        url: "/suppiler",
+        method: "put",
+        url: "/suppiler/"+this.suppiler[0]._id,
         data: this.addForm
       }).then(({ data }) => {
         console.log(data, "data");
         this.show();
         this.dialogVisible = false;
+        this.addForm.supp_name="",
+          this.addForm.supp_add="",
+          this.addForm.supp_phone="",
+          this.addForm.supp_web="",
+          this.addForm.supp_note="",
+          this.addForm.supp_bus_pic=""
       });
     },
 
@@ -93,7 +89,6 @@ export default {
       let url = file.response;
       this.addForm.supp_bus_pic=url
       // this.form.imageUrl = URL.createObjectURL(file.raw);
-      // this.imageUrl = url;
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
@@ -106,7 +101,10 @@ export default {
       }
       return isJPG && isLt2M;
     }
-  }
+  },
+    created() {
+    console.log(this.suppiler,"774")
+  },
 };
 </script>
 <style scoped>
