@@ -44,6 +44,8 @@ let suppid;
 let bool = 0;
 import axios from "axios";
 import UpdateSuppiler from "./UpdateSuppiler.vue";
+import { createNamespacedHelpers } from "vuex";
+const { mapState} = createNamespacedHelpers("supgoodsMoudule");
 export default {
   data() {
     return {
@@ -51,6 +53,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["setId"]),
     getSession() {
       axios({
         method: "get",
@@ -84,6 +87,7 @@ export default {
         for (let i = 0; i < data.length; i++) {
           if (data[i].supp_number == useid) {
             suppid = data[i]._id;
+            this.setId(suppid);
             console.log(suppid, "iddd");
             axios({
               method: "get",
