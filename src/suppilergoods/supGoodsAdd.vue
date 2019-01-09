@@ -51,25 +51,38 @@
         <el-form-item label="批发价格" prop="supp_gd_price">
           <el-input type="text" v-model="supp_gd_price" class="input" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="商品大图" prop="pigpic">
+        <el-form-item label="商品大图" prop>
           <el-upload
-            class="avatar-uploader"
             action="/upload"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
+            list-type="picture-card"
+            :on-preview="bigHandlePictureCardPreview"
+            :on-remove="bigHandleRemove"
+            :on-success="bigHandleupload"
           >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <i class="el-icon-plus"></i>
           </el-upload>
+          <el-dialog :visible.sync="bigdialogVisible">
+            <img width="100%" :src="bigdialogImageUrl" alt>
+          </el-dialog>
         </el-form-item>
-        <el-form-item label="商品缩略图" prop="smallpic">
-          <el-input type="text" v-model="smallpic" class="input" autocomplete="off"></el-input>
+        <el-form-item label="商品小图" prop>
+          <el-upload
+            action="/upload"
+            list-type="picture-card"
+            :on-preview="smallHandlePictureCardPreview"
+            :on-remove="smallHandleRemove"
+            :on-success="smallHandleupload"
+          >
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="smalldialogVisible">
+            <img width="100%" :src="smalldialogImageUrl" alt>
+          </el-dialog>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="AddSupGoods">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -96,12 +109,16 @@ export default {
       supp_gd_keepquality: "",
       supp_gd_specialinfo: "",
       supp_gd_price: "",
-      pigpic: "",
-      smallpic: "",
-      imageUrl: ""
+      bigpic: [],
+      smallpic: [],
+      bigdialogImageUrl: "",
+      bigdialogVisible: false,
+      smalldialogImageUrl: "",
+      smalldialogVisible: false
     };
   },
   methods: {
+    // 添加商品
     AddSupGoods() {
       axios({
         method: "post",
@@ -121,24 +138,57 @@ export default {
           supp_gd_factor: this.supp_gd_factor,
           supp_gd_keepquality: this.supp_gd_keepquality,
           supp_gd_specialinfo: this.supp_gd_specialinfo,
-          supp_gd_price: this.supp_gd_price
+          supp_gd_price: this.supp_gd_price,
+          bigpic: this.bigpic,
+          smallpic: this.smallpic
         }
-      }).then(() => {});
+      }).then(() => {
+        this.dialogFormVisible = false;
+        // console.log(data.status);
+      });
     },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+    // 上传商品大图
+    bigHandleRemove(file) {
+      let imgurl = file.response;
+      // console.log(file.response);
+      for (let i = 0; i < this.bigpic.length; i++) {
+        if (this.bigpic[i] == imgurl) {
+          this.bigpic.splice(i, 1);
+          // console.log(this.bigpic);
+          break;
+        }
+      }
     },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+    bigHandlePictureCardPreview(file) {
+      this.bigdialogImageUrl = file.url;
+      this.bigdialogVisible = true;
+    },
+    bigHandleupload(response, file) {
+      let url = file.response;
+      this.bigpic.push(url);
+      // console.log(this.bigpic, "22");
+    },
+    // 上传商品小图
+    smallHandleRemove(file) {
+      // console.log(file, fileList);
+      let imgurl = file.response;
+      // console.log(file.response);
+      for (let i = 0; i < this.smallpic.length; i++) {
+        if (this.smallpic[i] == imgurl) {
+          this.smallpic.splice(i, 1);
+          // console.log(this.smallpic);
+          break;
+        }
       }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
+    },
+    smallHandlePictureCardPreview(file) {
+      this.smalldialogImageUrl = file.url;
+      this.smalldialogVisible = true;
+    },
+    smallHandleupload(response, file) {
+      let url = file.response;
+      this.small.push(url);
+      // console.log(this.small, "22");
     }
   },
   components: {}

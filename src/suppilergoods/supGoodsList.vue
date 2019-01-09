@@ -1,10 +1,10 @@
 <template>
   <el-table :data="supgoods" stripe style="width: 100%">
-    <el-table-column prop="supp_gd_name.supp_gd_brand" label="商品品牌" width="100"></el-table-column>
-    <el-table-column prop="supp_gd_name.supp_gd_title" label="推广标题" width="140"></el-table-column>
+    <el-table-column prop="supp_gd_brand" label="商品品牌" width="100"></el-table-column>
+    <el-table-column prop="supp_gd_title" label="推广标题" width="140"></el-table-column>
     <el-table-column prop="supp_gd_type" label="货品品类" width="90"></el-table-column>
-    <el-table-column prop="supp_gd_made.supp_gd_material" label="材质" width="90"></el-table-column>
-    <el-table-column prop="supp_gd_made.made" label="制作方法" width="90"></el-table-column>
+    <el-table-column prop="supp_gd_material" label="材质" width="90"></el-table-column>
+    <el-table-column prop="made" label="制作方法" width="90"></el-table-column>
     <el-table-column prop="supp_gd_appl" label="适用规格" width="90"></el-table-column>
     <el-table-column prop="supp_gd_exc" label="专属规格" width="90"></el-table-column>
     <el-table-column prop="supp_gd_install" label="包装规格" width="80"></el-table-column>
