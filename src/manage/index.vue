@@ -3,7 +3,7 @@
     <el-header height="90px">
       <h1 class="h1">爱宠邦后台管理系统</h1>
       <div class="cancellation">
-        <span>欢迎您，</span>
+        <span>{{userName}}欢迎您，</span>
         <a class="cancellation-btn">注销</a>
       </div>
     </el-header>
@@ -17,7 +17,7 @@
             active-text-color="#ffd04b"
             :router="true"
           >
-            <el-submenu index="1">
+            <el-submenu index="1" :disabled="platform">
               <template slot="title">
                 <i class="el-icon-location"></i>
                 <span>平台管理</span>
@@ -29,7 +29,7 @@
                 <el-menu-item index="1-4">统计</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-            <el-submenu index="2">
+            <el-submenu index="2" :disabled="suppiler">
               <template slot="title">
                 <i class="el-icon-location"></i>
                 <span>门店管理</span>
@@ -43,7 +43,7 @@
                 <el-menu-item index="2-6">统计</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-            <el-submenu index="3">
+            <el-submenu index="3" :disabled="store">
               <template slot="title">
                 <i class="el-icon-location"></i>
                 <span>供应商管理</span>
@@ -65,8 +65,55 @@
 </template>
 
 <script>
+import axios from "axios";
+import { createNamespacedHelpers } from "vuex";
+const { mapMutations, mapState } = createNamespacedHelpers("commonModule");
 export default {
-
+  data() {
+    return {
+      userName: ""
+    };
+  },
+  computed: {
+    ...mapState(["user"]),
+    platform() {
+      if (this.user.permissions == 1) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    suppiler() {
+      if (this.user.permissions == 3) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    store() {
+      if (this.user.permissions == 2) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  },
+  methods: {
+    ...mapMutations(["setUser"])
+  },
+  created() {
+    axios({
+      method: "get",
+      url: "/getSession"
+    }).then(({ data }) => {
+      if (data) {
+        this.userName = data.userPhone;
+        this.setUser(data);
+      } else {
+        this.$router.replace("/login");
+      }
+    });
+  }
 };
 </script>
 
