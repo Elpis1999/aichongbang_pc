@@ -90,8 +90,14 @@
 
 <script>
 import axios from "axios";
+import { createNamespacedHelpers } from "vuex";
+const { mapActions, mapState } = createNamespacedHelpers("supgoodsModule");
+
 export default {
-  props: ["show", "supId"],
+  props: [],
+  computed: {
+    ...mapState(["id"])
+  },
   data() {
     return {
       dialogFormVisible: false,
@@ -119,6 +125,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["setSupGoods"]),
     // 添加商品
     AddSupGoods() {
       axios({
@@ -142,12 +149,13 @@ export default {
           supp_gd_price: this.supp_gd_price,
           bigpic: this.bigpic,
           smallpic: this.smallpic,
-          supId: this.supId
+          supId: this.id
         }
       }).then(() => {
         this.dialogFormVisible = false;
         // console.log(data.status);
-        this.show();
+        // this.show();
+        this.setSupGoods();
       });
     },
     // 上传商品大图

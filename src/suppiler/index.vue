@@ -1,42 +1,15 @@
 <template>
-    <div>
-<UpdateSuppiler :show="show" :suppiler="suppiler"></UpdateSuppiler>
-    <el-table
-      :data="suppiler"
-      style="width: 100%">
-      <el-table-column
-        prop="supp_name"
-        label="姓名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="supp_add"
-        label="地址"
-        width="180">
-      </el-table-column>
-   <el-table-column
-        prop="supp_phone"
-        label="手机号"
-        width="180">
-      </el-table-column>
-          <el-table-column
-        prop="supp_web"
-        label="网站"
-        width="180">
-      </el-table-column>
-            <el-table-column
-        prop="supp_bus_pic"
-        label="营业执照图片"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="supp_note"
-        label="备注"
-        width="180">
-      </el-table-column>
+  <div>
+    <UpdateSuppiler :show="show" :suppiler="suppiler"></UpdateSuppiler>
+    <el-table :data="suppiler" style="width: 100%">
+      <el-table-column prop="supp_name" label="姓名" width="180"></el-table-column>
+      <el-table-column prop="supp_add" label="地址" width="180"></el-table-column>
+      <el-table-column prop="supp_phone" label="手机号" width="180"></el-table-column>
+      <el-table-column prop="supp_web" label="网站" width="180"></el-table-column>
+      <el-table-column prop="supp_bus_pic" label="营业执照图片" width="180"></el-table-column>
+      <el-table-column prop="supp_note" label="备注" width="180"></el-table-column>
     </el-table>
-  
-    </div>
+  </div>
 </template>
 <script >
 let useid;
@@ -45,7 +18,7 @@ let bool = 0;
 import axios from "axios";
 import UpdateSuppiler from "./UpdateSuppiler.vue";
 import { createNamespacedHelpers } from "vuex";
-const { mapState} = createNamespacedHelpers("supgoodsMoudule");
+const { mapState, mapMutations } = createNamespacedHelpers("supgoodsModule");
 export default {
   data() {
     return {
