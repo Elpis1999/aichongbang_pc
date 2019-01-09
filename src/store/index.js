@@ -1,12 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import goodsModule from "./goodsModule/index"
-
+import supgoodsModule from "./supgoodsModule/index"
+import suppilrModule from "./supplierModule/index"
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     modules: {
-        goodsModule
+        goodsModule,
+        supgoodsModule,
+        suppilrModule
     }
 })
 
