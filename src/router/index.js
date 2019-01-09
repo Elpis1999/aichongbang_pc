@@ -5,7 +5,7 @@ import StoreApplication from "../store_manage/store_application/index.vue";
 import Supgoods from "../suppilergoods/index"
 import StoreGoods from "../store_manage/goods_manage/index.vue"
 import SupplierGoods from "../store_manage/supplier_goods/index.vue"
-
+import Login from "../platform/Login/index"
 Vue.use(Router);
 
 export default new Router({
@@ -20,12 +20,15 @@ export default new Router({
             path: '/manage/supgoods',
             component: Supgoods
         }
-   , {
+            , {
             path: '/manage/storegoods',
             component: StoreGoods
         }, {
             path: '/manage/suppliergoods',
             component: SupplierGoods
         }]
+    }, {
+        path: "/login",
+        component: Login
     }]
 })

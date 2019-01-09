@@ -91,6 +91,7 @@
 <script>
 import axios from "axios";
 export default {
+  props: ["show", "supId"],
   data() {
     return {
       dialogFormVisible: false,
@@ -140,11 +141,13 @@ export default {
           supp_gd_specialinfo: this.supp_gd_specialinfo,
           supp_gd_price: this.supp_gd_price,
           bigpic: this.bigpic,
-          smallpic: this.smallpic
+          smallpic: this.smallpic,
+          supId: this.supId
         }
       }).then(() => {
         this.dialogFormVisible = false;
         // console.log(data.status);
+        this.show();
       });
     },
     // 上传商品大图
@@ -187,7 +190,7 @@ export default {
     },
     smallHandleupload(response, file) {
       let url = file.response;
-      this.small.push(url);
+      this.smallpic.push(url);
       // console.log(this.small, "22");
     }
   },
