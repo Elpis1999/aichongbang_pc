@@ -3,31 +3,19 @@ import axios from "axios"
 export default {
     namespaced: true,
     state: {
-        goods: [],
-        pagination: {},
-        goodsInfo: {},
-        updateValidate: false,
+        supplier: [],
         type: "",
         value: ""
     },
     mutations: {
-        setGoods(state, arr) {
+        setSupplier(state, arr) {
             state.goods = arr;
-        },
-        setPagination(state, obj) {
-            state.pagination = obj;
-        },
-        setGoodsInfo(state, obj) {
-            state.goodsInfo = obj;
         },
         setType(state, type) {
             state.type = type;
         },
         setValue(state, value) {
             state.value = value;
-        },
-        setUpdateValidate(state, boolean) {
-            state.updateValidate = boolean;
         }
     },
     actions: {
@@ -39,8 +27,8 @@ export default {
         }) {
             obj.page = obj.page || 1;
             obj.rows = obj.rows || 5;
-            obj.type = this.state.goodsModule.type;
-            obj.value = this.state.goodsModule.value;
+            obj.type = this.state.supplierModule.type;
+            obj.value = this.state.supplierModule.value;
             let {
                 page,
                 rows,

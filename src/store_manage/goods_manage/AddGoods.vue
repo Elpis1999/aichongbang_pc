@@ -105,7 +105,32 @@ export default {
         getnumber: "",
         time: ""
       },
-      rules: {}
+      rules: {
+        supp_gd_brand: [{ required: true, message: "必填", trigger: "blur" }],
+        supp_gd_title: [{ required: true, message: "必填", trigger: "blur" }],
+        supp_gd_type: [{ required: true, message: "必填", trigger: "blur" }],
+        supp_gd_material: [
+          { required: true, message: "必填", trigger: "blur" }
+        ],
+        made: [{ required: true, message: "必填", trigger: "blur" }],
+        supp_gd_appl: [{ required: true, message: "必填", trigger: "blur" }],
+        supp_gd_exc: [{ required: true, message: "必填", trigger: "blur" }],
+        supp_gd_install: [{ required: true, message: "必填", trigger: "blur" }],
+        supp_gd_taste: [{ required: true, message: "必填", trigger: "blur" }],
+        supp_gd_special: [{ required: true, message: "必填", trigger: "blur" }],
+        supp_gd_from: [{ required: true, message: "必填", trigger: "blur" }],
+        supp_gd_factor: [{ required: true, message: "必填", trigger: "blur" }],
+        supp_gd_keepquality: [
+          { required: true, message: "必填", trigger: "blur" }
+        ],
+        supp_gd_specialinfo: [
+          { required: true, message: "必填", trigger: "blur" }
+        ],
+        getprice: [{ required: true, message: "必填", trigger: "blur" }],
+        saleprice: [{ required: true, message: "必填", trigger: "blur" }],
+        getnumber: [{ required: true, message: "必填", trigger: "blur" }],
+        time: [{ required: true, message: "必填", trigger: "blur" }]
+      }
     };
   },
   computed: {
@@ -125,60 +150,64 @@ export default {
       this.goods.smallpic = response;
     },
     confirm() {
-      let {
-        supp_gd_brand,
-        supp_gd_title,
-        supp_gd_type,
-        supp_gd_material,
-        made,
-        supp_gd_appl,
-        supp_gd_exc,
-        supp_gd_install,
-        supp_gd_taste,
-        supp_gd_special,
-        supp_gd_from,
-        supp_gd_factor,
-        supp_gd_keepquality,
-        supp_gd_specialinfo,
-        pigpic,
-        smallpic,
-        getprice,
-        saleprice,
-        getnumber,
-        time
-      } = this.goods;
-      time = JSON.stringify(time)
-        .split("T")[0]
-        .split('"')[1];
-      axios({
-        method: "post",
-        url: "/goods",
-        data: {
-          supp_gd_brand,
-          supp_gd_title,
-          supp_gd_type,
-          supp_gd_material,
-          made,
-          supp_gd_appl,
-          supp_gd_exc,
-          supp_gd_install,
-          supp_gd_taste,
-          supp_gd_special,
-          supp_gd_from,
-          supp_gd_factor,
-          supp_gd_keepquality,
-          supp_gd_specialinfo,
-          pigpic,
-          smallpic,
-          getprice,
-          saleprice,
-          getnumber,
-          time,
-          storeId: "5c3364099118101a84b871e9"
+      this.$refs.addForm.validate(valid => {
+        if (valid) {
+          let {
+            supp_gd_brand,
+            supp_gd_title,
+            supp_gd_type,
+            supp_gd_material,
+            made,
+            supp_gd_appl,
+            supp_gd_exc,
+            supp_gd_install,
+            supp_gd_taste,
+            supp_gd_special,
+            supp_gd_from,
+            supp_gd_factor,
+            supp_gd_keepquality,
+            supp_gd_specialinfo,
+            pigpic,
+            smallpic,
+            getprice,
+            saleprice,
+            getnumber,
+            time
+          } = this.goods;
+          time = JSON.stringify(time)
+            .split("T")[0]
+            .split('"')[1];
+          axios({
+            method: "post",
+            url: "/goods",
+            data: {
+              supp_gd_brand,
+              supp_gd_title,
+              supp_gd_type,
+              supp_gd_material,
+              made,
+              supp_gd_appl,
+              supp_gd_exc,
+              supp_gd_install,
+              supp_gd_taste,
+              supp_gd_special,
+              supp_gd_from,
+              supp_gd_factor,
+              supp_gd_keepquality,
+              supp_gd_specialinfo,
+              pigpic,
+              smallpic,
+              getprice,
+              saleprice,
+              getnumber,
+              time,
+              storeId: "5c3364099118101a84b871e9"
+            }
+          }).then(() => {
+            this.show();
+            this.dialogVisible = false;
+          });
         }
-      }).then(() => {
-        this.show();
-        this.dialogVisible = false;
       });
     }
   }

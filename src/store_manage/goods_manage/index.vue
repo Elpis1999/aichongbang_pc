@@ -1,7 +1,12 @@
 <template>
   <div>
-    <AddGoods/>
+    <div style="display:flex;">
+      <AddGoods/>
+      <SearchGoods/>
+    </div>
     <GoodsList/>
+    <UpdateGoods/>
+    <GoodsPage/>
   </div>
 </template>
 
@@ -9,7 +14,9 @@
 import { mapActions } from "vuex";
 import GoodsList from "./GoodsList";
 import AddGoods from "./AddGoods";
-
+import UpdateGoods from "./UpdateGoods";
+import GoodsPage from "./GoodsPage";
+import SearchGoods from "./SearchGoods";
 export default {
   methods: {
     ...mapActions("goodsModule", ["show"])
@@ -19,7 +26,10 @@ export default {
   },
   components: {
     GoodsList,
-    AddGoods
+    AddGoods,
+    UpdateGoods,
+    GoodsPage,
+    SearchGoods
   }
 };
 </script>
