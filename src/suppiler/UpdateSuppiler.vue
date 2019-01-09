@@ -21,6 +21,7 @@
   <el-form-item label="供应商备注" prop="supp_note">
     <el-input v-model="addForm.supp_note" autocomplete="off"></el-input>
   </el-form-item>
+  <el-form-item label="供应商上传图片" prop="supp_note">
  <el-upload
           class="avatar-uploader"
           action="/upload"
@@ -31,6 +32,20 @@
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </el-upload>
+   </el-form-item>
+    <!-- <el-form-item label="供应商上传图片" prop="supp_note">
+   <el-upload
+  action="/upload"
+  list-type="picture-card"
+  :on-preview="handlePictureCardPreview"
+  :on-remove="handleRemove">
+  <i class="el-icon-plus"></i>
+</el-upload>
+<el-dialog :visible.sync="dialogVisibleb">
+  <img width="100%" :src="dialogImageUrl" alt="">
+</el-dialog>
+  </el-form-item>
+   -->
 </el-form>
   <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
@@ -42,10 +57,12 @@
 <script >
 import axios from "axios";
 export default {
-  props: ["show","suppiler"],
+  props: ["show", "suppiler"],
   data() {
     return {
+      dialogImageUrl: "",
       dialogVisible: false,
+      dialogVisibleb:false,
       addForm: {
         supp_name: "",
         supp_add: "",
@@ -54,7 +71,7 @@ export default {
         supp_note: "",
         supp_bus_pic: ""
       },
-      imageUrl:""
+      imageUrl: ""
     };
   },
   methods: {
@@ -69,6 +86,7 @@ export default {
         this.dialogVisible = false;
       });
     },
+
     handleAvatarSuccess(res, file) {
        this.imageUrl = URL.createObjectURL(file.raw);
       console.log(file.response,"878");
