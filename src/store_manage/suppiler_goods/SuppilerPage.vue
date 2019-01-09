@@ -15,9 +15,14 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 const { mapState, mapActions, mapMutations } = createNamespacedHelpers(
-  "goodsModule"
+  "suppilerModule"
 );
 export default {
+  data() {
+    return {
+      rows: 5
+    };
+  },
   computed: {
     ...mapState(["pagination"])
   },
@@ -25,7 +30,9 @@ export default {
     ...mapActions(["show"]),
     ...mapMutations(["setPage", "setRows"]),
     change(value) {
+      console.log(value);
       this.setPage(value);
+      
       this.show();
     },
     sizeChange(value) {

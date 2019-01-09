@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SupGoodsAdd :show="show"></SupGoodsAdd>
+    <SupGoodsAdd :show="show" :supId="supId"></SupGoodsAdd>
     <SupGoodsList :supgoods="supgoods" :show="show"></SupGoodsList>
   </div>
 </template>
@@ -11,20 +11,40 @@ import SupGoodsList from "./supGoodsList";
 export default {
   data() {
     return {
-      supgoods: []
+      supgoods: [],
+      supId: ""
     };
   },
   created: function() {
-    this.show();
+    this.getSession();
+    // this.show();
   },
   methods: {
-    show() {
+    show(page, rows) {
+      console.log(this.supId);
       axios({
         method: "get",
-        url: "/supGods"
+        url: "/supGods",
+        params: {
+          supId: this.supId,
+          page: 1,
+          rows: 5
+        }
       }).then(({ data }) => {
-        // console.log(data);
-        this.supgoods = data;
+        console.log(data);
+        this.supgoods = data.rows;
+      });
+    },
+    // 获取供应商ID
+    getSession() {
+      axios({
+        method: "get",
+        url: "/getSession"
+      }).then(({ data }) => {
+        console.log(data.user);
+        this.supId = data.user._id;
+        // console.log(this.supId);
+        this.show();
       });
     }
   },
