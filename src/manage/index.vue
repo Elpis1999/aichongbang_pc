@@ -3,8 +3,8 @@
     <el-header height="90px">
       <h1 class="h1">爱宠邦后台管理系统</h1>
       <div class="cancellation">
-        <span>欢迎您，</span>
-        <a class="cancellation-btn">注销</a>
+        <span>{{userName}}欢迎您，</span>
+        <a class="cancellation-btn" @click="cancellation">注销</a>
       </div>
     </el-header>
     <el-container class="container">
@@ -17,43 +17,25 @@
             active-text-color="#ffd04b"
             :router="true"
           >
-            <el-submenu index="1">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>平台管理</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="1-1">用户管理</el-menu-item>
-                <el-menu-item index="1-2">宠主管理</el-menu-item>
-                <el-menu-item index="1-3">门店管理</el-menu-item>
-                <el-menu-item index="1-4">统计</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="2">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>门店管理</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="/manage/storeapplication">门店申请</el-menu-item>
-                <el-menu-item index="/manage/storegoods">商品管理</el-menu-item>
-                <el-menu-item index="/manage/suppilergoods">供应商货品</el-menu-item>
-                <el-menu-item index="2-4">服务管理</el-menu-item>
-                <el-menu-item index="2-5">订单管理</el-menu-item>
-                <el-menu-item index="2-6">统计</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="3">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>供应商管理</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>
-                <el-menu-item :disabled="disabled"  index="/manage/supgoods">供应商货品管理</el-menu-item>
-                <el-menu-item  :disabled="disabled" index="3-3">统计</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
+            <template v-if="platform">
+              <el-menu-item index="1-1">用户管理</el-menu-item>
+              <el-menu-item index="1-2">宠主管理</el-menu-item>
+              <el-menu-item index="1-3">门店管理</el-menu-item>
+              <el-menu-item index="1-4">统计</el-menu-item>
+            </template>
+            <template v-if="storeDisabled">
+              <el-menu-item index="/manage/storeapplication" :disabled="!storeStatus">门店申请</el-menu-item>
+              <el-menu-item index="/manage/storegoods" :disabled="storeStatus">商品管理</el-menu-item>
+              <el-menu-item index="/manage/suppilergoods" :disabled="storeStatus">供应商货品</el-menu-item>
+              <el-menu-item index="2-4" :disabled="storeStatus">服务管理</el-menu-item>
+              <el-menu-item index="2-5" :disabled="storeStatus">订单管理</el-menu-item>
+              <el-menu-item index="2-6" :disabled="storeStatus">统计</el-menu-item>
+            </template>
+            <template v-if="suppiler">
+              <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>
+              <el-menu-item :disabled="disabled" index="/manage/supgoods">供应商货品管理</el-menu-item>
+              <el-menu-item :disabled="disabled" index="3-3">统计</el-menu-item>
+            </template>
           </el-menu>
         </el-col>
       </el-aside>
@@ -65,22 +47,77 @@
 </template>
 
 <script>
-let useid;
+ let useid;
 let suppid;
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
 const { mapState } = createNamespacedHelpers("supgoodsModule");
+const { mapMutations, mapState } = createNamespacedHelpers("commonModule");
 export default {
   data() {
     return {
-      // disabled: false
+      userName: "",
+      storeStatus: true
     };
   },
+  // beforeRouteLeave(to, from, next) {
+  //   if (confirm("确定离开吗？") == true) {
+  //     next(); //跳转到另一个路由
+  //   } else {
+  //     next(false); //不跳转
+  //   }
+  // },
   computed: {
-    ...mapState(["disabled"])
+     ...mapState(["disabled"]),
+    ...mapState(["user", "store"]),
+    platform() {
+      if (this.user.permissions == 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    suppiler() {
+      if (this.user.permissions == 3) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    storeDisabled() {
+      if (this.user.permissions == 2) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   methods: {
-    getSession() {
+      
+    ...mapMutations(["setUser", "setStore", "setSuppiler"]),
+    cancellation() {
+      axios({
+        method: "post",
+        url: "/removeSession"
+      }).then(() => {
+        this.$router.replace("/login");
+      });
+    },
+    whetherApplyStore() {
+      axios({
+        method: "get",
+        url: "/store",
+        params: {
+          userId: this.user._id
+        }
+      }).then(({ data }) => {
+        this.setStore(data[0]);
+        if (data.length > 0) {
+          this.storeStatus = false;
+        }
+      });
+    },
+      getSession() {
       axios({
         method: "get",
         url: "/getSession"
@@ -89,7 +126,7 @@ export default {
         useid = data.user._id;
       });
     },
-    panduan() {
+      panduan() {
       axios({
         method: "get",
         url: "/suppiler"
@@ -121,16 +158,38 @@ export default {
                 this.disabled = false;
               }
             });
-          }
+          
         }
-      });
-    }
-  },
+      }
+    
+  })
+      },
+  
 
   created() {
-    this.getSession(), this.panduan();
+     this.getSession(), this.panduan();
+    axios({
+      method: "get",
+      url: "/getSession"
+    }).then(({ data }) => {
+      if (data) {
+        this.userName = data.userPhone;
+        this.setUser(data);
+        this.whetherApplyStore();
+      } else {
+        this.$router.replace("/login");
+      }
+    });
   }
-};
+  //   ,watch: {
+  //   // 监听路由跳转。
+  //   $route(newRoute, oldRoute) {
+  //     console.log('watch', newRoute, oldRoute)
+  //     this.$router.replace("/login");
+  //   },
+  // },
+}
+}
 </script>
 
 <style scoped>
