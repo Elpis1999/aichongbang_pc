@@ -3,8 +3,8 @@
     <el-header height="90px">
       <h1 class="h1">爱宠邦后台管理系统</h1>
       <div class="cancellation">
-        <span>欢迎您，</span>
-        <a class="cancellation-btn">注销</a>
+        <span>欢迎您，{{userPhone}}</span>
+        <a class="cancellation-btn" @click="goBack">注销</a>
       </div>
     </el-header>
     <el-container class="container">
@@ -24,7 +24,7 @@
               </template>
               <el-menu-item-group>
                 <el-menu-item index="1-1">用户管理</el-menu-item>
-                <el-menu-item index="1-2">宠主管理</el-menu-item>
+                <el-menu-item index="/manage/petmaster">宠主管理</el-menu-item>
                 <el-menu-item index="1-3">门店管理</el-menu-item>
                 <el-menu-item index="1-4">统计</el-menu-item>
               </el-menu-item-group>
@@ -65,9 +65,29 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    return {
+      userPhone: ""
+    };
+  },
+  created: function() {
+    axios({
+      method: "get",
+      url: "/users/session"
+    }).then(({ data }) => {
+      console.log("这是获取session:", data.session);
+      this.userPhone = data.session.userPhone;
+    });
+  },
+  methods: {
+    goBack() {
+      this.$router.push("/");
+    }
+  }
+};
 </script>
-
 <style scoped>
 .el-footer {
   background-color: #b3c0d1;

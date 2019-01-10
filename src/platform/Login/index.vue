@@ -29,7 +29,7 @@
 
             <el-form-item class="btnBox">
               <el-button type="primary" @click="submitForm('ruleForm2')">登陆</el-button>
-              <el-button @click="resetForm('ruleForm2')">重置</el-button>
+              <el-button @click="resetForm('ruleForm2')">注册</el-button>
             </el-form-item>
           </el-form>
         </el-card>
@@ -39,6 +39,7 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
   data() {
     var validatePhone = (rule, value, callback) => {
@@ -92,6 +93,7 @@ export default {
             if (res.data.status != 0) {
               alert("登陆成功");
               console.log("session", res);
+              this.$router.push("/manage")
             } else {
               alert("登陆失败");
             }
@@ -102,8 +104,9 @@ export default {
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    resetForm() {
+      // this.$refs[formName].resetFields();
+     this.$router.push("/register")
     }
   }
 };
@@ -118,7 +121,7 @@ export default {
 .btnBox {
   display: flex;
   justify-content: space-around;
-  padding-right: 80px;
+  padding-right: 50px;
 }
 .clearfix:before,
 .clearfix:after {

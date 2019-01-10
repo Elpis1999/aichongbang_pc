@@ -124,6 +124,7 @@ export default {
             }
           }).then(res => {
             alert("注册成功");
+              this.$router.push("/")
           });
         } else {
           console.log("error submit!!");
