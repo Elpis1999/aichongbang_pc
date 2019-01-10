@@ -5,8 +5,7 @@
       <div class="cancellation">
         <span>欢迎您，{{userPhone}}</span>
         <a class="cancellation-btn" @click="goBack">注销</a>
-        <span>{{userName}}欢迎您，</span>
-        <a class="cancellation-btn" @click="cancellation">注销</a>
+        <!-- <a class="cancellation-btn" @click="cancellation">注销</a> -->
       </div>
     </el-header>
     <el-container class="container">
@@ -87,9 +86,13 @@
 
 <script>
 import axios from "axios";
+import { createNamespacedHelpers } from "vuex";
+const { mapMutations, mapState } = createNamespacedHelpers("commonModule");
 export default {
   data() {
     return {
+      // userName: "",
+      storeStatus: true,
       userPhone: ""
     };
   },
@@ -101,20 +104,6 @@ export default {
       console.log("这是获取session:", data.session);
       this.userPhone = data.session.userPhone;
     });
-  },
-  methods: {
-    goBack() {
-      this.$router.push("/");
-    }
-  }
-import { createNamespacedHelpers } from "vuex";
-const { mapMutations, mapState } = createNamespacedHelpers("commonModule");
-export default {
-  data() {
-    return {
-      userName: "",
-      storeStatus: true
-    };
   },
   // beforeRouteLeave(to, from, next) {
   //   if (confirm("确定离开吗？") == true) {
@@ -148,15 +137,23 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setUser", "setStore", "setSuppiler"]),
-    cancellation() {
+    goBack() {
       axios({
-        method: "post",
-        url: "/removeSession"
-      }).then(() => {
-        this.$router.replace("/login");
-      });
+         method: "post",
+         url:"/users/removeSession"
+      }).then(()=>{
+      this.$router.push("/");
+      })
     },
+    ...mapMutations(["setUser", "setStore", "setSuppiler"]),
+    // cancellation() {
+    //   axios({
+    //     method: "post",
+    //     url: "/removeSession"
+    //   }).then(() => {
+    //     this.$router.replace("/login");
+    //   });
+    // },
     whetherApplyStore() {
       axios({
         method: "get",
@@ -171,21 +168,21 @@ export default {
         }
       });
     }
-  },
-  created() {
-    axios({
-      method: "get",
-      url: "/getSession"
-    }).then(({ data }) => {
-      if (data) {
-        this.userName = data.userPhone;
-        this.setUser(data);
-        this.whetherApplyStore();
-      } else {
-        this.$router.replace("/login");
-      }
-    });
   }
+  // created() {
+  //   axios({
+  //     method: "get",
+  //     url: "/getSession"
+  //   }).then(({ data }) => {
+  //     if (data) {
+  //       this.userName = data.userPhone;
+  //       this.setUser(data);
+  //       this.whetherApplyStore();
+  //     } else {
+  //       this.$router.replace("/login");
+  //     }
+  //   });
+  // }
   //   ,watch: {
   //   // 监听路由跳转。
   //   $route(newRoute, oldRoute) {
