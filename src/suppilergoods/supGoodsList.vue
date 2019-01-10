@@ -37,7 +37,7 @@ export default {
     this.setSupGoods();
   },
   computed: {
-    ...mapState(["supGoods", "SupGood"])
+    ...mapState(["supGoods", "SupGood", "id"])
   },
   methods: {
     ...mapActions(["setSupGood", "setSupGoods"]),
