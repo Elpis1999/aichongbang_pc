@@ -51,8 +51,8 @@
 let suppid;
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
-const { mapState } = createNamespacedHelpers("supgoodsModule");
-const { mapMutations, mapState } = createNamespacedHelpers("commonModule");
+// const { mapState } = createNamespacedHelpers("supgoodsModule");
+const { mapMutations, mapState } = createNamespacedHelpers("commonModule","supgoodsModule");
 export default {
   data() {
     return {

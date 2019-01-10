@@ -34,7 +34,7 @@ export default {
     // 修改的模态框
     setUpdateVisible(state, UpdateVisible) {
       state.UpdateVisible = UpdateVisible;
-      console.log(UpdateVisible)
+      // console.log(UpdateVisible)
     },
     setType(state, type) {
       state.type = type
@@ -51,7 +51,7 @@ export default {
       }
       state.bigimgs = arr;
       state.bigpic = data;
-      console.log(state.bigimgs)
+      // console.log(state.bigimgs)
     },
     setSmallimgs(state, data) {
       let arr = [];
@@ -114,7 +114,7 @@ export default {
       }).then(({ data }) => {
         commit("setSupGoods", data.rows);
         commit("setPagination", data);
-        console.log(data)
+        // console.log(data)
       });
     },
     setID({ commit }, id) {
