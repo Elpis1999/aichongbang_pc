@@ -89,7 +89,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setUser", "setStore"]),
+    ...mapMutations(["setUser", "setStore", "setSuppiler"]),
     cancellation() {
       axios({
         method: "post",
