@@ -18,7 +18,7 @@ let bool = 0;
 import axios from "axios";
 import UpdateSuppiler from "./UpdateSuppiler.vue";
 import { createNamespacedHelpers } from "vuex";
-const { mapState, mapMutations } = createNamespacedHelpers("supgoodsModule");
+const { mapMutations } = createNamespacedHelpers("supgoodsModule");
 export default {
   data() {
     return {

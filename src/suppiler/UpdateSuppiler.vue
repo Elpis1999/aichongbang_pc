@@ -1,6 +1,6 @@
 <template>
     <div>
-  <el-button class="add-btn" type="primary" icon="el-icon-edit" circle  @click="dialogVisible = true"></el-button>
+  <el-button class="add-btn" type="primary" icon="el-icon-edit" circle  @click="updata"></el-button>
   <el-dialog
   title="供应商详情"
   :visible.sync="dialogVisible"
@@ -45,11 +45,10 @@
 import axios from "axios";
 export default {
   props: ["show", "suppiler"],
-  
+
   data() {
     return {
       dialogVisible: false,
-      dialogVisibleb:false,
       addForm: {
         supp_name: "",
         supp_add: "",
@@ -62,31 +61,46 @@ export default {
     };
   },
   methods: {
-   
+    updata() {
+      this.dialogVisible = true;
+      axios({
+        method: "get",
+        url: "/suppiler/" + this.suppiler[0]._id
+      }).then(({ data }) => {
+        console.log(data, "111通过id查到的数据");
+        this.addForm.supp_name = data.supp_name;
+        this.addForm.supp_add = data.supp_add;
+        this.addForm.supp_phone = data.supp_phone;
+        this.addForm.supp_web = data.supp_web;
+        this.addForm.supp_note = data.supp_note;
+        this.addForm.supp_bus_pic = data.supp_bus_pic;
+        this.imageUrl="/upload/"+data.supp_bus_pic
+      });
+    },
     add() {
-      let{supp_name,supp_add, supp_phone, supp_web,supp_note,supp_bus_pic}=this.addForm;
       axios({
         method: "put",
-        url: "/suppiler/"+this.suppiler[0]._id,
+        url: "/suppiler/" + this.suppiler[0]._id,
         data: this.addForm
       }).then(({ data }) => {
         console.log(data, "data");
         this.show();
         this.dialogVisible = false;
-        this.addForm.supp_name="",
-          this.addForm.supp_add="",
-          this.addForm.supp_phone="",
-          this.addForm.supp_web="",
-          this.addForm.supp_note="",
-          this.addForm.supp_bus_pic=""
+        (this.addForm.supp_name = ""),
+          (this.addForm.supp_add = ""),
+          (this.addForm.supp_phone = ""),
+          (this.addForm.supp_web = ""),
+          (this.addForm.supp_note = ""),
+          (this.addForm.supp_bus_pic = ""),
+          (this.imageUrl = "");
       });
     },
 
     handleAvatarSuccess(res, file) {
-       this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(file.response,"878");
+      this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(file.response, "878");
       let url = file.response;
-      this.addForm.supp_bus_pic=url
+      this.addForm.supp_bus_pic = url;
       // this.form.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
@@ -101,9 +115,9 @@ export default {
       return isJPG && isLt2M;
     }
   },
-    created() {
-    console.log(this.suppiler,"774")
-  },
+  created() {
+    console.log(this.suppiler, "774");
+  }
 };
 </script>
 <style scoped>
