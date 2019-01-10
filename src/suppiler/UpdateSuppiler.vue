@@ -43,6 +43,8 @@
 </template>
 <script >
 import axios from "axios";
+import { createNamespacedHelpers } from "vuex";
+const { mapMutations } = createNamespacedHelpers("supgoodsModule");
 export default {
   props: ["show", "suppiler"],
 
@@ -61,8 +63,46 @@ export default {
     };
   },
   methods: {
+     ...mapMutations(["setDisable"]),
+    add() {
+      axios({
+        method: "put",
+        url: "/suppiler/" + this.suppiler[0]._id,
+        data: this.addForm
+      }).then(({ data }) => {
+        console.log(data, "data");
+        this.show();
+        if (
+          this.addForm.supp_add == "" ||
+          this.addForm.supp_bus_pic == "" ||
+          this.addForm.supp_name == "" ||
+          this.addForm.supp_note == "" ||
+          this.addForm.supp_phone == "" ||
+          this.addForm.supp_web == ""
+        ) {
+          alert("请完善供应商详情");
+          //  this.disabled=true;
+          this.setDisable(true);
+        } else {
+          //  location.reload()
+          // this.disabled = false;
+          this.setDisable(false);
+        }
+        this.dialogVisible = false;
+        (this.addForm.supp_name = ""),
+          (this.addForm.supp_add = ""),
+          (this.addForm.supp_phone = ""),
+          (this.addForm.supp_web = ""),
+          (this.addForm.supp_note = ""),
+          (this.addForm.supp_bus_pic = ""),
+          (this.imageUrl = "");
+      });
+      // location.reload()
+      // this.$router.push("../manage/suppiler")
+    },
     updata() {
       this.dialogVisible = true;
+      console.log(this, "qqq");
       axios({
         method: "get",
         url: "/suppiler/" + this.suppiler[0]._id
@@ -74,28 +114,9 @@ export default {
         this.addForm.supp_web = data.supp_web;
         this.addForm.supp_note = data.supp_note;
         this.addForm.supp_bus_pic = data.supp_bus_pic;
-        this.imageUrl="/upload/"+data.supp_bus_pic
+        this.imageUrl = "/upload/" + data.supp_bus_pic;
       });
     },
-    add() {
-      axios({
-        method: "put",
-        url: "/suppiler/" + this.suppiler[0]._id,
-        data: this.addForm
-      }).then(({ data }) => {
-        console.log(data, "data");
-        this.show();
-        this.dialogVisible = false;
-        (this.addForm.supp_name = ""),
-          (this.addForm.supp_add = ""),
-          (this.addForm.supp_phone = ""),
-          (this.addForm.supp_web = ""),
-          (this.addForm.supp_note = ""),
-          (this.addForm.supp_bus_pic = ""),
-          (this.imageUrl = "");
-      });
-    },
-
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
       console.log(file.response, "878");
@@ -117,6 +138,7 @@ export default {
   },
   created() {
     console.log(this.suppiler, "774");
+    this.add();
   }
 };
 </script>

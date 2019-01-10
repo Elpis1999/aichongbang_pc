@@ -50,8 +50,8 @@
               </template>
               <el-menu-item-group>
                 <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>
-                <el-menu-item index="/manage/supgoods">供应商货品管理</el-menu-item>
-                <el-menu-item index="3-3">统计</el-menu-item>
+                <el-menu-item :disabled="disabled"  index="/manage/supgoods">供应商货品管理</el-menu-item>
+                <el-menu-item  :disabled="disabled" index="3-3">统计</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
@@ -65,8 +65,69 @@
 </template>
 
 <script>
+let useid;
+let suppid;
+import axios from "axios";
+import { createNamespacedHelpers } from "vuex";
+const { mapState } = createNamespacedHelpers("supgoodsModule");
 export default {
+  data() {
+    return {
+      // disabled: false
+    };
+  },
+  computed: {
+    ...mapState(["disabled"])
+  },
+  methods: {
+    getSession() {
+      axios({
+        method: "get",
+        url: "/getSession"
+      }).then(({ data }) => {
+        console.log(data, "data11");
+        useid = data.user._id;
+      });
+    },
+    panduan() {
+      axios({
+        method: "get",
+        url: "/suppiler"
+      }).then(({ data }) => {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].supp_number == useid) {
+            suppid = data[i]._id;
+            axios({
+              method: "get",
+              url: "/suppiler/" + suppid
+            }).then(({ data }) => {
+              console.log(data, "通过id查到的数据");
+              if (
+                data.supp_add == "" ||
+                data.supp_bus_pic == "" ||
+                data.supp_name == "" ||
+                data.supp_note == "" ||
+                data.supp_phone == "" ||
+                data.supp_web == ""
+              ) {
+                alert("请完善供应商详情");
+                //  this.disabled=true;
+                this.setDisable(true);
+              } else {
+                //  location.reload()
+                // this.disabled = false;
+                this.setDisable(false);
+              }
+            });
+          }
+        }
+      });
+    }
+  },
 
+  created() {
+    this.getSession(), this.panduan();
+  }
 };
 </script>
 
