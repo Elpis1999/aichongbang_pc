@@ -29,9 +29,10 @@ export default {
     setSupGood({ commit }, id) {
       axios({
         method: "get",
-        url: "/suppilergoods/" + id
+        url: "/supGods/" + id
       }).then(({ data }) => {
         commit("setSupGood", data);
+        console.log(data)
       });
     },
     // 获取所有的show方法
@@ -44,8 +45,6 @@ export default {
           supId: state.id
         }
       }).then(({ data }) => {
-        // console.log(data);
-        // this.supgoods = data.rows;
         commit("setSupGoods", data.rows);
       });
     },
