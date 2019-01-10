@@ -12,7 +12,8 @@ export default {
     smallpic: [],
     pagination: {},
     type: "",
-    value: ""
+    value: "",
+    disabled: true
   },
   mutations: {
     setId(state, id) {
@@ -119,6 +120,11 @@ export default {
     setID({ commit }, id) {
       commit("setId", id);
       // console.log(state.id)
+    },
+    setDisable(state, disabled) {
+      state.disabled = disabled;
     }
   }
+
+
 };

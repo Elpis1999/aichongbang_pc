@@ -33,8 +33,8 @@
             </template>
             <template v-if="suppiler">
               <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>
-              <el-menu-item index="/manage/supgoods">供应商货品管理</el-menu-item>
-              <el-menu-item index="3-3">统计</el-menu-item>
+              <el-menu-item :disabled="disabled" index="/manage/supgoods">供应商货品管理</el-menu-item>
+              <el-menu-item :disabled="disabled" index="3-3">统计</el-menu-item>
             </template>
           </el-menu>
         </el-col>
@@ -47,8 +47,11 @@
 </template>
 
 <script>
+ let useid;
+let suppid;
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
+const { mapState } = createNamespacedHelpers("supgoodsModule");
 const { mapMutations, mapState } = createNamespacedHelpers("commonModule");
 export default {
   data() {
@@ -58,6 +61,7 @@ export default {
     };
   },
   computed: {
+     ...mapState(["disabled"]),
     ...mapState(["user", "store"]),
     platform() {
       if (this.user.permissions == 1) {
@@ -82,6 +86,7 @@ export default {
     }
   },
   methods: {
+      
     ...mapMutations(["setUser", "setStore", "setSuppiler"]),
     cancellation() {
       this.setStore({});
@@ -105,9 +110,58 @@ export default {
           this.storeStatus = false;
         }
       });
-    }
-  },
+    },
+      getSession() {
+      axios({
+        method: "get",
+        url: "/getSession"
+      }).then(({ data }) => {
+        console.log(data, "data11");
+        useid = data.user._id;
+      });
+    },
+      panduan() {
+      axios({
+        method: "get",
+        url: "/suppiler"
+      }).then(({ data }) => {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].supp_number == useid) {
+            suppid = data[i]._id;
+            axios({
+              method: "get",
+              url: "/suppiler/" + suppid
+            }).then(({ data }) => {
+              console.log(data, "通过id查到的数据");
+              if (
+                data.supp_add == "" ||
+                data.supp_bus_pic == "" ||
+                data.supp_name == "" ||
+                data.supp_note == "" ||
+                data.supp_phone == "" ||
+                data.supp_web == ""
+              ) {
+                alert("请完善供应商详情");
+                //  this.disabled=true;
+                this.setDisable(true);
+                  this.disabled=true;
+              } else {
+                //  location.reload()
+                // this.disabled = false;
+                this.setDisable(false);
+                this.disabled = false;
+              }
+            });
+          
+        }
+      }
+    
+  })
+      },
+  
+
   created() {
+     this.getSession(), this.panduan();
     axios({
       method: "get",
       url: "/getSession"
@@ -128,7 +182,8 @@ export default {
   //     this.$router.replace("/login");
   //   },
   // },
-};
+}
+}
 </script>
 
 <style scoped>

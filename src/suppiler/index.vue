@@ -34,21 +34,6 @@ export default {
       }).then(({ data }) => {
         console.log(data, "data11");
         useid = data.user._id;
-        //    axios({
-        //   method: "post",
-        //   url: "/suppiler",
-        //   data: {
-        //      supp_number:useid,
-        //      supp_name: "",
-        //      supp_add: "",
-        //      supp_phone: "",
-        //      supp_web: "",
-        //      supp_note: "",
-        //      supp_bus_pic: ""
-        //   }
-        // }).then(({ data }) => {
-        //   console.log(data, "data");
-        // });
       });
     },
     show() {
