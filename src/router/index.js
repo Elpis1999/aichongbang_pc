@@ -8,6 +8,8 @@ import StoreGoods from "../store_manage/goods_manage/index.vue"
 import Petmaster from "../platform/Petmaster/index.vue"
 import Login from "../platform/Login/index.vue"
 import Register from "../platform/Register/index.vue"
+import Pt_count from "../platform/pt_count/index.vue"
+import Try from "../try/index.vue";
 
 Vue.use(Router);
 
@@ -23,6 +25,10 @@ export default new Router({
             path: '/manage/storegoods',
             component: StoreGoods
         }, 
+        {
+            path: '/manage/pt_count',
+            component: Pt_count
+        },
         // {
         //     path: '/manage/suppliergoods',
         //     component: SupplierGoods
@@ -37,5 +43,10 @@ export default new Router({
     },{
         path: '/register',
         component: Register
-    }]
+    },
+    {
+        path: '/look',
+        component: Try
+    }
+]
 })

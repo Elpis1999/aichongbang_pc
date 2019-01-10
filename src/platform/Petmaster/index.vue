@@ -1,190 +1,42 @@
 <template>
-  <el-row>
-    <el-button type="primary" icon="el-icon-circle-plus" @click="dialogVisible = true">添加</el-button>
-    <el-dialog title="修改" :visible.sync="dialogVisible1" width="30%" :before-close="handleClose">
-      <el-form :label-position="labelPosition" label-width="50px" :model="formLabelAlign1">
-        <el-form-item label="电话" prop="pm_phone">
-          <el-input v-model="formLabelAlign1.pm_phone"></el-input>
-        </el-form-item>
-        <el-form-item label="名字" prop="pm_name">
-          <el-input v-model="formLabelAlign1.pm_name"></el-input>
-        </el-form-item>
-        <el-form-item label="昵称" prop="pm_nickname">
-          <el-input v-model="formLabelAlign1.pm_nickname"></el-input>
-        </el-form-item>
-        <el-form-item label="vip卡" prop="pm_vipcard">
-          <el-input v-model="formLabelAlign1.pm_vipcard"></el-input>
-        </el-form-item>
-        <el-form-item label="图片" prop="pm_pic">
-          <el-input v-model="formLabelAlign1.pm_pic"></el-input>
-        </el-form-item>
-        <el-form-item label="地址" prop="pm_address">
-          <el-input v-model="formLabelAlign1.pm_address"></el-input>
-        </el-form-item>
-        <el-form-item label="区域" prop="pm_area">
-          <el-input v-model="formLabelAlign1.pm_area"></el-input>
-        </el-form-item>
-        <el-form-item label="积分" prop="pm_integral">
-          <el-input v-model="formLabelAlign1.pm_integral"></el-input>
-        </el-form-item>
-        <el-form-item label="宠物" prop="pm_ownpet">
-          <el-input v-model="formLabelAlign1.pm_ownpet"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible1 = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible1 = false,handleUpdata()">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog title="添加" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-      <el-form :label-position="labelPosition" label-width="50px" :model="formLabelAlign">
-        <el-form-item label="电话" prop="pm_phone">
-          <el-input v-model="formLabelAlign.pm_phone"></el-input>
-        </el-form-item>
-        <el-form-item label="名字" prop="pm_name">
-          <el-input v-model="formLabelAlign.pm_name"></el-input>
-        </el-form-item>
-        <el-form-item label="昵称" prop="pm_nickname">
-          <el-input v-model="formLabelAlign.pm_nickname"></el-input>
-        </el-form-item>
-        <el-form-item label="vip卡" prop="pm_vipcard">
-          <el-input v-model="formLabelAlign.pm_vipcard"></el-input>
-        </el-form-item>
-
-        <el-form-item label="地址" prop="pm_address">
-          <el-input v-model="formLabelAlign.pm_address"></el-input>
-        </el-form-item>
-        <el-form-item label="区域" prop="pm_area">
-          <el-input v-model="formLabelAlign.pm_area"></el-input>
-        </el-form-item>
-        <el-form-item label="积分" prop="pm_integral">
-          <el-input v-model="formLabelAlign.pm_integral"></el-input>
-        </el-form-item>
-        <el-form-item label="宠物" prop="pm_ownpet">
-          <el-input v-model="formLabelAlign.pm_ownpet"></el-input>
-        </el-form-item>
-        <el-form-item label="图片" prop="pm_pic">
-          <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove"
-          >
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible2">
-            <img width="100%" :src="dialogImageUrl" alt>
-          </el-dialog>
-        </el-form-item>
-      </el-form>
-
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false,handleAdd()">确 定</el-button>
-      </span>
-    </el-dialog>
-
-    <el-table
-      :data="tableData.filter(data => !search || data.pm_name.toLowerCase().includes(search.toLowerCase())||
-      data.pm_phone.toLowerCase().includes(search.toLowerCase())||
-      data.pm_address.toLowerCase().includes(search.toLowerCase())||
-      data.pm_nickname.toLowerCase().includes(search.toLowerCase()))"
-      style="width: 100%"
-    >
-      <el-table-column align="right" class="search">
-        <template slot="header" slot-scope="scope">
-          <el-input v-model="search" size="mini" placeholder="输入关键字搜索" style="500px"/>
-        </template>
-        <el-table-column type="selection" width="55"></el-table-column>
-
-        <el-table-column label="电话" width="150">
-          <template slot-scope="scope">
-            <el-popover placement="top">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.pm_phone }}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column label="姓名" width="100">
-          <template slot-scope="scope">
-            <el-popover placement="top">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.pm_name }}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column label="昵称" width="100">
-          <template slot-scope="scope">
-            <el-popover placement="top">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.pm_nickname}}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column label="vip卡" width="100">
-          <template slot-scope="scope">
-            <el-popover placement="top">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.pm_vipcard }}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="地址" width="150">
-          <template slot-scope="scope">
-            <el-popover placement="top">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.pm_address }}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column label="区域" width="80">
-          <template slot-scope="scope">
-            <el-popover placement="top">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.pm_area }}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column label="积分" width="100">
-          <template slot-scope="scope">
-            <el-popover placement="top">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.pm_integral }}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column label="宠物" width="150">
-          <template slot-scope="scope">
-            <el-popover trigger="hover" placement="top">
-              <p>品类: {{ scope.row.name }}</p>
-              <p>种类: {{ scope.row.address }}</p>
-              <p>颜色: {{ scope.row.address }}</p>
-              <p>出生日期: {{ scope.row.address }}</p>
-              <p>性格: {{ scope.row.address }}</p>
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{scope.row.pm_ownpet}}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <!-- <el-table-column label="图片" width="150">
-          <template slot-scope="scope">
-            <el-popover placement="top">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ dialogImageUrl}}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column> -->
-
+  <div>
+    <el-row>
+      <el-dialog title="修改" :visible.sync="dialogVisible1" width="30%" :before-close="handleClose">
+        <el-form :label-position="labelPosition" label-width="50px" :model="formLabelAlign1">
+          <el-form-item label="电话" prop="pm_phone">
+            <el-input v-model="formLabelAlign1.pm_phone"></el-input>
+          </el-form-item>
+          <el-form-item label="名字" prop="pm_name">
+            <el-input v-model="formLabelAlign1.pm_name"></el-input>
+          </el-form-item>
+          <el-form-item label="昵称" prop="pm_nickname">
+            <el-input v-model="formLabelAlign1.pm_nickname"></el-input>
+          </el-form-item>
+          <el-form-item label="vip卡" prop="pm_vipcard">
+            <el-input v-model="formLabelAlign1.pm_vipcard"></el-input>
+          </el-form-item>
+          <el-form-item label="图片" prop="pm_pic">
+            <el-input v-model="formLabelAlign1.pm_pic"></el-input>
+          </el-form-item>
+          <el-form-item label="地址" prop="pm_address">
+            <el-input v-model="formLabelAlign1.pm_address"></el-input>
+          </el-form-item>
+          <el-form-item label="区域" prop="pm_area">
+            <el-input v-model="formLabelAlign1.pm_area"></el-input>
+          </el-form-item>
+          <el-form-item label="积分" prop="pm_integral">
+            <el-input v-model="formLabelAlign1.pm_integral"></el-input>
+          </el-form-item>
+          <el-form-item label="宠物" prop="pm_ownpet">
+            <el-input v-model="formLabelAlign1.pm_ownpet"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible1 = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible1 = false,handleUpdata()">确 定</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog title="添加" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
         <el-form :label-position="labelPosition" label-width="50px" :model="formLabelAlign">
           <el-form-item label="电话" prop="pm_phone">
             <el-input v-model="formLabelAlign.pm_phone"></el-input>
@@ -198,9 +50,7 @@
           <el-form-item label="vip卡" prop="pm_vipcard">
             <el-input v-model="formLabelAlign.pm_vipcard"></el-input>
           </el-form-item>
-          <el-form-item label="图片" prop="pm_pic">
-            <el-input v-model="formLabelAlign.pm_pic"></el-input>
-          </el-form-item>
+
           <el-form-item label="地址" prop="pm_address">
             <el-input v-model="formLabelAlign.pm_address"></el-input>
           </el-form-item>
@@ -213,21 +63,188 @@
           <el-form-item label="宠物" prop="pm_ownpet">
             <el-input v-model="formLabelAlign.pm_ownpet"></el-input>
           </el-form-item>
+          <el-form-item label="图片" prop="pm_pic">
+            <el-upload
+              action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible2">
+              <img width="100%" :src="dialogImageUrl" alt>
+            </el-dialog>
+          </el-form-item>
         </el-form>
 
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row),open2"
-            >停用</el-button>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false,handleAdd()">确 定</el-button>
+        </span>
+      </el-dialog>
+
+      <el-table
+        :data="tableData.filter(data => !search || data.pm_name.toLowerCase().includes(search.toLowerCase())||
+      data.pm_phone.toLowerCase().includes(search.toLowerCase())||
+      data.pm_address.toLowerCase().includes(search.toLowerCase())||
+      data.pm_nickname.toLowerCase().includes(search.toLowerCase())||
+      data.pm_area.toLowerCase().includes(search.toLowerCase())
+      )"
+        style="width: 100%"
+      >
+      
+
+        <el-table-column align="left" class="search">
+          <template slot="header" slot-scope="scope">
+          <el-button type="primary" icon="el-icon-circle-plus" @click="dialogVisible = true">添加</el-button>
+            <div class="btnSearch">
+              <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
+            </div>
           </template>
+
+          <el-table-column type="selection" width="55"></el-table-column>
+
+          <el-table-column   align="center" label="电话" width="150">
+            <template slot-scope="scope">
+              <el-popover placement="top">
+                <div slot="reference" class="name-wrapper">
+                  <el-tag size="medium">{{ scope.row.pm_phone }}</el-tag>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column  align="center" label="姓名" width="100">
+            <template slot-scope="scope">
+              <el-popover placement="top">
+                <div slot="reference" class="name-wrapper">
+                  <el-tag size="medium">{{ scope.row.pm_name }}</el-tag>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column label="昵称" align="center"  width="150">
+            <template slot-scope="scope">
+              <el-popover placement="top">
+                <div slot="reference" class="name-wrapper">
+                  <el-tag size="medium">{{ scope.row.pm_nickname}}</el-tag>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column label="vip卡" align="center" width="100">
+            <template slot-scope="scope">
+              <el-popover placement="top">
+                <div slot="reference" class="name-wrapper">
+                  <el-tag size="medium">{{ scope.row.pm_vipcard||0 }}张</el-tag>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="地址" align="center" width="200" al>
+            <template slot-scope="scope">
+              <el-popover placement="top">
+                <div slot="reference" class="name-wrapper">
+                  <el-tag size="medium">{{ scope.row.pm_address }}</el-tag>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column label="区域" align="center" width="150">
+            <template slot-scope="scope">
+              <el-popover placement="top">
+                <div slot="reference" class="name-wrapper">
+                  <el-tag size="medium">{{ scope.row.pm_area }}</el-tag>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column label="积分" align="center" width="100">
+            <template slot-scope="scope">
+              <el-popover placement="top">
+                <div slot="reference" class="name-wrapper">
+                  <el-tag size="medium">{{ scope.row.pm_integral }}</el-tag>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column label="宠物" align="center" width="150">
+            <template slot-scope="scope">
+              <el-popover trigger="hover" placement="top">
+                <p>品类: {{ scope.row.name }}</p>
+                <p>种类: {{ scope.row.address }}</p>
+                <p>颜色: {{ scope.row.address }}</p>
+                <p>出生日期: {{ scope.row.address }}</p>
+                <p>性格: {{ scope.row.address }}</p>
+                <div slot="reference" class="name-wrapper">
+                  <el-tag size="medium">{{scope.row.pm_ownpet}}</el-tag>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column label="图片" width="150">
+          <template slot-scope="scope">
+            <el-popover placement="top">
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium">{{ dialogImageUrl}}</el-tag>
+              </div>
+            </el-popover>
+          </template>
+          </el-table-column>-->
+          <el-form :label-position="labelPosition" label-width="50px" :model="formLabelAlign">
+            <el-form-item label="电话" prop="pm_phone">
+              <el-input v-model="formLabelAlign.pm_phone"></el-input>
+            </el-form-item>
+            <el-form-item label="名字" prop="pm_name">
+              <el-input v-model="formLabelAlign.pm_name"></el-input>
+            </el-form-item>
+            <el-form-item label="昵称" prop="pm_nickname">
+              <el-input v-model="formLabelAlign.pm_nickname"></el-input>
+            </el-form-item>
+            <el-form-item label="vip卡" prop="pm_vipcard">
+              <el-input v-model="formLabelAlign.pm_vipcard"></el-input>
+            </el-form-item>
+            <el-form-item label="图片" prop="pm_pic">
+              <el-input v-model="formLabelAlign.pm_pic"></el-input>
+            </el-form-item>
+            <el-form-item label="地址" prop="pm_address">
+              <el-input v-model="formLabelAlign.pm_address"></el-input>
+            </el-form-item>
+            <el-form-item label="区域" prop="pm_area">
+              <el-input v-model="formLabelAlign.pm_area"></el-input>
+            </el-form-item>
+            <el-form-item label="积分" prop="pm_integral">
+              <el-input v-model="formLabelAlign.pm_integral"></el-input>
+            </el-form-item>
+            <el-form-item label="宠物" prop="pm_ownpet">
+              <el-input v-model="formLabelAlign.pm_ownpet"></el-input>
+            </el-form-item>
+          </el-form>
+
+          <el-table-column label="操作"  align="center" > 
+            <template slot-scope="scope">
+              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row),open2"
+              >停用</el-button>
+            </template>
+          </el-table-column>
         </el-table-column>
-      </el-table-column>
-    </el-table>
-  </el-row>
+      </el-table>
+    </el-row>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[5,10,15,20]"
+      :page-size="5"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="20"
+    ></el-pagination>
+  </div>
 </template>
 
 <script>
@@ -235,7 +252,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      dialogImageUrl:"",
+      currentPage: 1,
+      dialogImageUrl: "",
       dialogVisible2: false,
       search: "",
       restaurants: [],
@@ -284,8 +302,7 @@ export default {
           }
         ]
       },
-      tableData: [
-      ]
+      tableData: []
     };
   },
   created: function() {
@@ -293,6 +310,22 @@ export default {
     console.log("开始渲染：");
   },
   methods: {
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      axios({
+        method: "get",
+        url: "petmaster",
+        data: {
+          page: 1,
+          rows: val
+        }
+      }).then(res => {
+        console.log(res);
+      });
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
     handleRemove(file, fileList) {
       console.log(
         "file:",
@@ -342,6 +375,7 @@ export default {
         method: "get",
         url: "/petmaster"
       }).then(res => {
+        console.log(res);
         this.tableData = res.data;
       });
     },
@@ -436,4 +470,9 @@ export default {
 };
 </script>
 <style scoped>
+.btnSearch{
+  width: 500px;
+  position: absolute;
+  text-align: center
+}
 </style>
