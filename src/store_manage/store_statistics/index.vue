@@ -4,11 +4,14 @@
       <el-radio-button label="销量统计"></el-radio-button>
       <el-radio-button label="销售额统计"></el-radio-button>
     </el-radio-group>
+    <Statistics v-if="type === '销量统计'? true : false"/>
+    <SalesVolume v-if="type === '销售额统计'? true : false"/>
   </div>
 </template>
 
 <script>
-import MouthGoodsStatistics from "./MouthGoodsStatistics";
+import Statistics from "./statistics/index";
+import SalesVolume from "./sales_volume/index";
 export default {
   data() {
     return {
@@ -16,7 +19,8 @@ export default {
     };
   },
   components: {
-    MouthGoodsStatistics
+    Statistics,
+    SalesVolume
   }
 };
 </script>
