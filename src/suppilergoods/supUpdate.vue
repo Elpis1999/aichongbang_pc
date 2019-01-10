@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="添加商品" class="addBox" :visible.sync="UpdateVisible">
+    <el-dialog title="修改商品信息" class="addBox" :visible.sync="UpdateVisible">
       <el-form status-icon label-width="100px" class="demo-ruleForm">
         <el-form-item label="商品品牌" prop="supp_gd_brand">
           <el-input type="text" v-model="supp_gd_brand" class="input" autocomplete="off"></el-input>
@@ -88,7 +88,7 @@
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
 const { mapState, mapActions, mapMutations } = createNamespacedHelpers(
-  "setSupGood"
+  "supgoodsModule"
 );
 export default {
   computed: {

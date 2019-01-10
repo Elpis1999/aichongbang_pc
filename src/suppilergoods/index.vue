@@ -12,34 +12,41 @@ import SupGoodsList from "./supGoodsList";
 import SupGoodsUpdate from "./supUpdate";
 
 import { createNamespacedHelpers } from "vuex";
-const { mapActions } = createNamespacedHelpers("studentsModule");
+const { mapActions, mapMutations } = createNamespacedHelpers("supgoodsModule");
 export default {
   data() {
     return {
-      supgoods: [],
-      supId: ""
+      supgoods: []
+      // supId: ""
     };
   },
   created: function() {
-    this.setSupGoods();
+    this.getSession();
   },
   methods: {
-    ...mapActions(["setSupGoods"])
-    // show(page, rows) {
-    //   console.log(this.supId);
-    //   axios({
-    //     method: "get",
-    //     url: "/supGods",
-    //     params: {
-    //       supId: this.id,
-    //       page: 1,
-    //       rows: 5
-    //     }
-    //   }).then(({ data }) => {
-    //     console.log(data);
-    //     this.supgoods = data.rows;
-    //   });
-    // }
+    ...mapMutations(["setId"]),
+    ...mapActions(["setSupGoods", "setID"]),
+    getSession() {
+      axios({
+        method: "get",
+        url: "/getSession"
+      }).then(({ data }) => {
+        let supId = data.user._id;
+        console.log(data.user);
+        axios({
+          method: "get",
+          url: "/suppiler"
+        }).then(({ data }) => {
+          for (let i = 0; i < data.length; i++) {
+            if (supId == data[i].supp_number) {
+              // let ids = this.setId();
+              this.setID(data[i]._id);
+              this.setSupGoods();
+            }
+          }
+        });
+      });
+    }
   },
   components: {
     SupGoodsAdd,

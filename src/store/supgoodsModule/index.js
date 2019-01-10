@@ -34,7 +34,7 @@ export default {
         commit("setSupGood", data);
       });
     },
-    // 获取所有
+    // 获取所有的show方法
     setSupGoods({ state, commit }, payload = { page: 1, rows: 5 }) {
       axios({
         method: "get",
@@ -44,10 +44,14 @@ export default {
           supId: state.id
         }
       }).then(({ data }) => {
-        console.log(data);
-        this.supgoods = data.rows;
+        // console.log(data);
+        // this.supgoods = data.rows;
         commit("setSupGoods", data.rows);
       });
+    },
+    setID({ commit }, id) {
+      commit("setId", id);
+      // console.log(state.id)
     }
   }
 };
