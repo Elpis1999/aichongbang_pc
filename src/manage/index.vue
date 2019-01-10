@@ -51,8 +51,10 @@
 let suppid;
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
-// const { mapState } = createNamespacedHelpers("supgoodsModule");
-const { mapMutations, mapState } = createNamespacedHelpers("commonModule","supgoodsModule");
+const { mapState } = createNamespacedHelpers("supgoodsModule");
+const obj = createNamespacedHelpers("commonModule");
+const commonMapState = obj.mapState;
+const{mapMutations}= createNamespacedHelpers("commonModule");
 export default {
   data() {
     return {
@@ -62,7 +64,7 @@ export default {
   },
   computed: {
      ...mapState(["disabled"]),
-    ...mapState(["user", "store"]),
+    ...commonMapState(["user", "store"]),
     platform() {
       if (this.user.permissions == 1) {
         return true;
@@ -86,7 +88,6 @@ export default {
     }
   },
   methods: {
-      
     ...mapMutations(["setUser", "setStore", "setSuppiler"]),
     cancellation() {
       this.setStore({});

@@ -64,7 +64,7 @@ export default {
     // 在修改中进行图片的删除
     setBigpic(state, data) {
       let arr = state.bigpic;
-      console.log(arr, data)
+      // console.log(arr, data)
       for (let i = 0; i < arr.length; i++) {
         if (arr[i] == data) {
           arr.splice(i, 1);
@@ -76,7 +76,7 @@ export default {
     },
     setSmallpic(state, data) {
       let arr = state.smallpic;
-      console.log(arr, data)
+      // console.log(arr, data)
       for (let i = 0; i < arr.length; i++) {
         if (arr[i] == data) {
           arr.splice(i, 1);
