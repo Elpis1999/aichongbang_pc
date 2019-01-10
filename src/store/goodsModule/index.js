@@ -41,7 +41,7 @@ export default {
     actions: {
         show({
             commit
-        }) {
+        },storeId) {
             let {
                 page,
                 rows,
@@ -55,7 +55,8 @@ export default {
                     page,
                     rows,
                     type,
-                    value
+                    value,
+                    storeId
                 }
             }).then(({
                 data
