@@ -5,6 +5,8 @@
       <div class="cancellation">
         <span>欢迎您，{{userPhone}}</span>
         <a class="cancellation-btn" @click="goBack">注销</a>
+        <span>{{userName}}欢迎您，</span>
+        <a class="cancellation-btn" @click="cancellation">注销</a>
       </div>
     </el-header>
     <el-container class="container">
@@ -54,6 +56,25 @@
                 <el-menu-item index="3-3">统计</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
+            <template v-if="platform">
+              <el-menu-item index="1-1">用户管理</el-menu-item>
+              <el-menu-item index="1-2">宠主管理</el-menu-item>
+              <el-menu-item index="1-3">门店管理</el-menu-item>
+              <el-menu-item index="1-4">统计</el-menu-item>
+            </template>
+            <template v-if="storeDisabled">
+              <el-menu-item index="/manage/storeapplication" :disabled="!storeStatus">门店申请</el-menu-item>
+              <el-menu-item index="/manage/storegoods" :disabled="storeStatus">商品管理</el-menu-item>
+              <el-menu-item index="/manage/suppilergoods" :disabled="storeStatus">供应商货品</el-menu-item>
+              <el-menu-item index="2-4" :disabled="storeStatus">服务管理</el-menu-item>
+              <el-menu-item index="2-5" :disabled="storeStatus">订单管理</el-menu-item>
+              <el-menu-item index="2-6" :disabled="storeStatus">统计</el-menu-item>
+            </template>
+            <template v-if="suppiler">
+              <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>
+              <el-menu-item index="/manage/supgoods">供应商货品管理</el-menu-item>
+              <el-menu-item index="3-3">统计</el-menu-item>
+            </template>
           </el-menu>
         </el-col>
       </el-aside>
@@ -86,6 +107,92 @@ export default {
       this.$router.push("/");
     }
   }
+import { createNamespacedHelpers } from "vuex";
+const { mapMutations, mapState } = createNamespacedHelpers("commonModule");
+export default {
+  data() {
+    return {
+      userName: "",
+      storeStatus: true
+    };
+  },
+  // beforeRouteLeave(to, from, next) {
+  //   if (confirm("确定离开吗？") == true) {
+  //     next(); //跳转到另一个路由
+  //   } else {
+  //     next(false); //不跳转
+  //   }
+  // },
+  computed: {
+    ...mapState(["user", "store"]),
+    platform() {
+      if (this.user.permissions == 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    suppiler() {
+      if (this.user.permissions == 3) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    storeDisabled() {
+      if (this.user.permissions == 2) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+  methods: {
+    ...mapMutations(["setUser", "setStore", "setSuppiler"]),
+    cancellation() {
+      axios({
+        method: "post",
+        url: "/removeSession"
+      }).then(() => {
+        this.$router.replace("/login");
+      });
+    },
+    whetherApplyStore() {
+      axios({
+        method: "get",
+        url: "/store",
+        params: {
+          userId: this.user._id
+        }
+      }).then(({ data }) => {
+        this.setStore(data[0]);
+        if (data.length > 0) {
+          this.storeStatus = false;
+        }
+      });
+    }
+  },
+  created() {
+    axios({
+      method: "get",
+      url: "/getSession"
+    }).then(({ data }) => {
+      if (data) {
+        this.userName = data.userPhone;
+        this.setUser(data);
+        this.whetherApplyStore();
+      } else {
+        this.$router.replace("/login");
+      }
+    });
+  }
+  //   ,watch: {
+  //   // 监听路由跳转。
+  //   $route(newRoute, oldRoute) {
+  //     console.log('watch', newRoute, oldRoute)
+  //     this.$router.replace("/login");
+  //   },
+  // },
 };
 </script>
 <style scoped>

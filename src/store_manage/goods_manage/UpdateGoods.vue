@@ -2,31 +2,31 @@
   <el-dialog title="修改商品信息：" :visible.sync="close" width="30%">
     <el-form :model="goods" status-icon :rules="rules" ref="addForm" label-width="100px">
       <el-form-item label="名称：" prop="supp_gd_brand">
-        <el-input v-model="goods.supp_gd_brand"></el-input>
+        <el-input v-model="goods.supp_gd_brand" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="推广标题：" prop="supp_gd_title">
-        <el-input v-model="goods.supp_gd_title"></el-input>
+        <el-input v-model="goods.supp_gd_title" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="材料：" prop="supp_gd_material">
-        <el-input v-model="goods.supp_gd_material"></el-input>
+        <el-input v-model="goods.supp_gd_material" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="制作方法：" prop="made">
-        <el-input v-model="goods.made"></el-input>
+        <el-input v-model="goods.made" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="适用规格：" prop="supp_gd_appl">
-        <el-input v-model="goods.supp_gd_appl"></el-input>
+        <el-input v-model="goods.supp_gd_appl" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="专属规格：" prop="supp_gd_exc">
-        <el-input v-model="goods.supp_gd_exc"></el-input>
+        <el-input v-model="goods.supp_gd_exc" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="包装规格：" prop="supp_gd_install">
-        <el-input v-model="goods.supp_gd_install"></el-input>
+        <el-input v-model="goods.supp_gd_install" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="口味：" prop="supp_gd_taste">
-        <el-input v-model="goods.supp_gd_taste"></el-input>
+        <el-input v-model="goods.supp_gd_taste" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="特殊功用：" prop="supp_gd_special">
-        <el-input v-model="goods.supp_gd_special"></el-input>
+        <el-input v-model="goods.supp_gd_special" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="产地：" prop="supp_gd_from">
         <el-input v-model="goods.supp_gd_from" :disabled="true"></el-input>
@@ -38,7 +38,7 @@
         <el-input v-model="goods.supp_gd_keepquality" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="特色说明：" prop="supp_gd_specialinfo">
-        <el-input v-model="goods.supp_gd_specialinfo"></el-input>
+        <el-input v-model="goods.supp_gd_specialinfo" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="售价：" prop="saleprice">
         <el-input v-model="goods.saleprice"></el-input>
@@ -82,6 +82,7 @@ export default {
   data() {
     return {
       goods: {},
+      channel: 1,
       rules: {
         supp_gd_brand: [{ required: true, message: "必填", trigger: "blur" }],
         supp_gd_title: [{ required: true, message: "必填", trigger: "blur" }],
@@ -110,6 +111,13 @@ export default {
       },
       set() {
         this.setUpdateValidate(false);
+      }
+    },
+    disabled() {
+      if (this.channel === 0) {
+        return true;
+      } else {
+        return false;
       }
     },
     pigpicImg() {
@@ -149,6 +157,11 @@ export default {
   watch: {
     // 如果 `goodsInfo` 发生改变，这个函数就会运行
     goodsInfo: function(newQuestion, oldQuestion) {
+      if (newQuestion.suppiler) {
+        this.channel = 0;
+      } else {
+        this.channel = 1;
+      }
       this.goods = { ...newQuestion };
     }
   }

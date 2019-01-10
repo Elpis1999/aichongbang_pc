@@ -8,7 +8,9 @@ export default {
         goodsInfo: {},
         updateValidate: false,
         type: "",
-        value: ""
+        value: "",
+        page: 1,
+        rows: 5
     },
     mutations: {
         setGoods(state, arr) {
@@ -26,6 +28,12 @@ export default {
         setValue(state, value) {
             state.value = value;
         },
+        setPage(state, page) {
+            state.page = page;
+        },
+        setRows(state, rows) {
+            state.rows = rows;
+        },
         setUpdateValidate(state, boolean) {
             state.updateValidate = boolean;
         }
@@ -33,20 +41,13 @@ export default {
     actions: {
         show({
             commit
-        }, obj = {
-            page: 1,
-            rows: 5
-        }) {
-            obj.page = obj.page || 1;
-            obj.rows = obj.rows || 5;
-            obj.type = this.state.goodsModule.type;
-            obj.value = this.state.goodsModule.value;
+        },storeId) {
             let {
                 page,
                 rows,
                 type,
                 value
-            } = obj
+            } = this.state.goodsModule;
             axios({
                 method: "get",
                 url: "/goods",
@@ -54,7 +55,8 @@ export default {
                     page,
                     rows,
                     type,
-                    value
+                    value,
+                    storeId
                 }
             }).then(({
                 data
