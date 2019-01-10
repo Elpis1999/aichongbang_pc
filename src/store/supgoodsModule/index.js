@@ -3,14 +3,14 @@ export default {
   namespaced: true,
   state: {
     id: "",
-    disabled: false
+    disabled: true
   },
   mutations: {
     setId(state, id) {
       state.id = id;
     },
-    setDisable(state, disable) {
-      state.disabled = disable;
+    setDisable(state, disabled) {
+      state.disabled = disabled;
     }
   },
   actions: {}

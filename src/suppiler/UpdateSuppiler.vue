@@ -62,6 +62,7 @@ export default {
       imageUrl: ""
     };
   },
+
   methods: {
      ...mapMutations(["setDisable"]),
     add() {
@@ -80,22 +81,19 @@ export default {
           this.addForm.supp_phone == "" ||
           this.addForm.supp_web == ""
         ) {
-          alert("请完善供应商详情");
-          //  this.disabled=true;
-          this.setDisable(true);
+           this.setDisable(true);
+           alert("请完善供应商详情");
         } else {
-          //  location.reload()
-          // this.disabled = false;
           this.setDisable(false);
         }
         this.dialogVisible = false;
-        (this.addForm.supp_name = ""),
-          (this.addForm.supp_add = ""),
-          (this.addForm.supp_phone = ""),
-          (this.addForm.supp_web = ""),
-          (this.addForm.supp_note = ""),
-          (this.addForm.supp_bus_pic = ""),
-          (this.imageUrl = "");
+          // (this.addForm.supp_name = ""),
+          // (this.addForm.supp_add = ""),
+          // (this.addForm.supp_phone = ""),
+          // (this.addForm.supp_web = ""),
+          // (this.addForm.supp_note = ""),
+          // (this.addForm.supp_bus_pic = ""),
+          // (this.imageUrl = "");
       });
       // location.reload()
       // this.$router.push("../manage/suppiler")

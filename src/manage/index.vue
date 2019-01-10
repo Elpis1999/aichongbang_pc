@@ -113,10 +113,12 @@ export default {
                 alert("请完善供应商详情");
                 //  this.disabled=true;
                 this.setDisable(true);
+                  this.disabled=true;
               } else {
                 //  location.reload()
                 // this.disabled = false;
                 this.setDisable(false);
+                this.disabled = false;
               }
             });
           }
