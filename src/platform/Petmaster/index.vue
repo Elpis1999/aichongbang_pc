@@ -65,7 +65,7 @@
           </el-form-item>
           <el-form-item label="图片" prop="pm_pic">
             <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="/upload"
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
@@ -93,19 +93,17 @@
       )"
         style="width: 100%"
       >
-      
-
         <el-table-column align="left" class="search">
           <template slot="header" slot-scope="scope">
-          <el-button type="primary" icon="el-icon-circle-plus" @click="dialogVisible = true">添加</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" @click="dialogVisible = true">添加</el-button>
             <div class="btnSearch">
-              <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
+              <el-input v-model="search" size="mini" placeholder="输入关键字搜索"/>
             </div>
           </template>
 
           <el-table-column type="selection" width="55"></el-table-column>
 
-          <el-table-column   align="center" label="电话" width="150">
+          <el-table-column align="center" label="电话" width="150">
             <template slot-scope="scope">
               <el-popover placement="top">
                 <div slot="reference" class="name-wrapper">
@@ -114,7 +112,7 @@
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column  align="center" label="姓名" width="100">
+          <el-table-column align="center" label="姓名" width="100">
             <template slot-scope="scope">
               <el-popover placement="top">
                 <div slot="reference" class="name-wrapper">
@@ -123,7 +121,7 @@
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column label="昵称" align="center"  width="150">
+          <el-table-column label="昵称" align="center" width="150">
             <template slot-scope="scope">
               <el-popover placement="top">
                 <div slot="reference" class="name-wrapper">
@@ -222,7 +220,7 @@
             </el-form-item>
           </el-form>
 
-          <el-table-column label="操作"  align="center" > 
+          <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
               <el-button
@@ -310,14 +308,17 @@ export default {
     console.log("开始渲染：");
   },
   methods: {
+    addImg(response, file, fileList){
+      console.log("file:",file)
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       axios({
         method: "get",
-        url: "petmaster",
+        url: "/petmaster",
         data: {
           page: 1,
-          rows: val
+          rows: 4
         }
       }).then(res => {
         console.log(res);
@@ -470,9 +471,9 @@ export default {
 };
 </script>
 <style scoped>
-.btnSearch{
+.btnSearch {
   width: 500px;
   position: absolute;
-  text-align: center
+  text-align: center;
 }
 </style>

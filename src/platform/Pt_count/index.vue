@@ -25,7 +25,7 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   data() {
     return {
-      type:"销售额统计",
+      type: "销售额统计",
       month: [
         "1月",
         "2月",
@@ -40,7 +40,10 @@ export default {
         "11月",
         "12月"
       ],
-      shopAddr: []
+      shopAddr: [],
+      goodsData: [],
+      serveData: [],
+      proportion:[]
     };
   },
   mounted() {
@@ -54,18 +57,32 @@ export default {
       let myChart = echarts.init(document.getElementById("myChart"));
       console.log("统计：", this.type);
       if (this.type == "销售额统计") {
-        myChart.setOption(this.countOption,{notMerge:true});
+        axios({
+          method: "get",
+          url: "/goodsAndServe/goodsAndServe"
+        }).then(res => {
+          myChart.setOption(this.countOption, { notMerge: true });
+          this.goodsData = res.data[0];
+          this.serveData = res.data[1];
+          console.log("返回数据:", res);
+          console.log("返回数据:", this.goodsData);
+        });
       } else if (this.type == "销售额占比统计") {
-        myChart.setOption(this.propOption, {notMerge:true});
-        // this.shopOption.series=[]
+        console.log("点占比：", this.goodsData);
+         this.proportion=[];
+        let a,b;
+        a =eval(this.goodsData.join('+'))
+        b =eval(this.serveData.join('+'))
+        this.proportion.push(a,b)
+        console.log("a",this.proportion);
+        myChart.setOption(this.propOption, { notMerge: true });
       } else if (this.type == "门店分布图") {
         axios({
           method: "get",
           url: "/users/shop"
         }).then(res => {
           this.shopAddr = res.data;
-          console.log("获取11：", res.data);
-          myChart.setOption(this.shopOption, {notMerge:true});
+          myChart.setOption(this.shopOption, { notMerge: true });
         });
       }
     }
@@ -73,6 +90,7 @@ export default {
   computed: {
     countOption() {
       return {
+        backgroundColor: "'rgba(128, 128, 128, 0.5)",
         title: {
           text: "销售额统计"
         },
@@ -81,14 +99,83 @@ export default {
           data: ["销量"]
         },
         xAxis: {
-          data: this.month
+          data: ["2019年1月"]
         },
         yAxis: {},
         series: [
           {
-            name: "销量",
+            name: "商品",
             type: "bar",
-            data: [5, 20, 36, 10, 10, 20, 5, 20, 36, 150]
+            data: this.goodsData,
+            barWidth:200,
+            itemStyle: {
+              normal: {
+                barBorderRadius: [5, 5, 0, 0],
+                color: function(params) {
+                  var colorList = [
+                    new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      {
+                        offset: 0,
+                        color: "#00e6ff"
+                      },
+                      {
+                        offset: 1,
+                        color: "#018dff"
+                      }
+                    ]),
+                    new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      {
+                        offset: 0,
+                        color: "#00fcae"
+                      },
+                      {
+                        offset: 1,
+                        color: "#006388"
+                      }
+                    ])
+                  ];
+                  return colorList[params.dataIndex];
+                },
+                opacity: 1
+              }
+            }
+          },
+          {
+            name: "服务",
+            type: "bar",
+            barWidth:100,
+            data: this.serveData,
+            itemStyle: {
+              normal: {
+                barBorderRadius: [5, 5, 0, 0],
+                color: function(params) {
+                  var colorList = [
+                    new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      {
+                        offset: 0,
+                        color: "#00e6ff"
+                      },
+                      {
+                        offset: 1,
+                        color: "#018dff"
+                      }
+                    ]),
+                    new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      {
+                        offset: 0,
+                        color: "#00fcae"
+                      },
+                      {
+                        offset: 1,
+                        color: "#005388"
+                      }
+                    ])
+                  ];
+                  return colorList[params.dataIndex];
+                },
+                opacity: 8
+              }
+            }
           }
         ]
       };
@@ -107,20 +194,25 @@ export default {
         legend: {
           orient: "vertical",
           left: "right",
-          data: [2, 2, 3]
         },
         series: [
           {
-            name: "访问来源",
+            name: "",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
-            data: [50, 13, 4],
+            data: this.proportion,
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)"
+                shadowColor: "rgba(30, 144, 255，0.5)"
+              },
+              normal: {
+                color: "rgb(255,192,0)",
+                shadowBlur: "90",
+                shadowColor: "rgba(0,0,0,0.8)",
+                shadowOffsetY: "30"
               }
             }
           }
