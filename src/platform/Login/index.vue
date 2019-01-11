@@ -90,11 +90,32 @@ export default {
             }
           }).then(res => {
             if (res.data.status != 0) {
-              alert("登陆成功");
+               this.$message({
+          message: '登录成功！',
+          type: 'success'
+        });
               console.log("session", res);
-               this.$router.push("../../manage")
+              this.$router.push("../../manage");
             } else {
-              alert("登陆失败");
+              axios({
+                method: "post",
+                url: "/users/isRegisted",
+                data: {
+                  userPhone,
+                  pwd
+                }
+              }).then(res => {
+                if (res.data.status != 0) {
+                  this.$message({
+          message: '请耐心等待审核',
+          type: 'warning'
+        });
+                }
+                else{
+                  this.$message.error('不存在此账号，请注册');
+                  this.$router.push("/register");
+                }
+              });
             }
           });
         } else {
