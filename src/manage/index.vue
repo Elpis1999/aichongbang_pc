@@ -47,14 +47,14 @@
 </template>
 
 <script>
- let useid;
+let useid;
 let suppid;
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
 const { mapState } = createNamespacedHelpers("supgoodsModule");
 const obj = createNamespacedHelpers("commonModule");
 const commonMapState = obj.mapState;
-const{mapMutations}= createNamespacedHelpers("commonModule");
+const { mapMutations } = createNamespacedHelpers("commonModule");
 export default {
   data() {
     return {
@@ -63,8 +63,8 @@ export default {
     };
   },
   computed: {
-     ...mapState(["disabled"]),
-    ...commonMapState(["user", "store"]),
+    ...mapState(["disabled"]),
+    ...commonMapState(["user", "store", "suppiler"]),
     platform() {
       if (this.user.permissions == 1) {
         return true;
@@ -112,16 +112,16 @@ export default {
         }
       });
     },
-      getSession() {
+    getSession() {
       axios({
         method: "get",
         url: "/getSession"
       }).then(({ data }) => {
-        console.log(data, "data11");
-        useid = data.user._id;
+        // console.log(data, "data11");
+        useid = data._id;
       });
     },
-      panduan() {
+    panduan() {
       axios({
         method: "get",
         url: "/suppiler"
@@ -133,7 +133,7 @@ export default {
               method: "get",
               url: "/suppiler/" + suppid
             }).then(({ data }) => {
-              console.log(data, "通过id查到的数据");
+              // console.log(data, "通过id查到的数据");
               if (
                 data.supp_add == "" ||
                 data.supp_bus_pic == "" ||
@@ -145,7 +145,7 @@ export default {
                 alert("请完善供应商详情");
                 //  this.disabled=true;
                 this.setDisable(true);
-                  this.disabled=true;
+                this.disabled = true;
               } else {
                 //  location.reload()
                 // this.disabled = false;
@@ -153,16 +153,21 @@ export default {
                 this.disabled = false;
               }
             });
-          
+          }
         }
-      }
-    
-  })
-      },
-  
+      });
+    }
 
+    //   ,watch: {
+    //   // 监听路由跳转。
+    //   $route(newRoute, oldRoute) {
+    //     console.log('watch', newRoute, oldRoute)
+    //     this.$router.replace("/login");
+    //   },
+    // },
+  },
   created() {
-     this.getSession(), this.panduan();
+    this.getSession(), this.panduan();
     axios({
       method: "get",
       url: "/getSession"
@@ -176,15 +181,7 @@ export default {
       }
     });
   }
-  //   ,watch: {
-  //   // 监听路由跳转。
-  //   $route(newRoute, oldRoute) {
-  //     console.log('watch', newRoute, oldRoute)
-  //     this.$router.replace("/login");
-  //   },
-  // },
-}
-}
+};
 </script>
 
 <style scoped>

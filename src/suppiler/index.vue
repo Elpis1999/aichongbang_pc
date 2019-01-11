@@ -32,8 +32,8 @@ export default {
         method: "get",
         url: "/getSession"
       }).then(({ data }) => {
-        console.log(data, "data11");
-        useid = data.user._id;
+        // console.log(data, "data11");
+        useid = data._id;
       });
     },
     show() {
@@ -41,17 +41,17 @@ export default {
         method: "get",
         url: "/suppiler"
       }).then(({ data }) => {
-        console.log(data, "data88");
+        // console.log(data, "data88");
         for (let i = 0; i < data.length; i++) {
           if (data[i].supp_number == useid) {
             suppid = data[i]._id;
             this.setId(suppid);
-            console.log(suppid, "iddd");
+            // console.log(suppid, "iddd");
             axios({
               method: "get",
               url: "/suppiler/" + suppid
             }).then(({ data }) => {
-              console.log(data, "通过id查到的数据");
+              // console.log(data, "通过id查到的数据");
               let arr = [];
               arr.push(data);
               this.suppiler = arr;
