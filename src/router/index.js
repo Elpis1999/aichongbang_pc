@@ -10,6 +10,7 @@ import Register from "../platform/Register"
 import Suppiler from "../suppiler/index.vue";
 import Service from "../store_manage/service/index.vue";
 import Order from "../store_manage/order/index.vue";
+import StoreStatistics from "../store_manage/store_statistics/index.vue"
 Vue.use(Router);
 
 export default new Router({
@@ -54,6 +55,9 @@ export default new Router({
                 {
                   path: "/manage/order",
                   component: Order
+                }, {
+                    path: '/manage/storestatistics',
+                    component: StoreStatistics
                 }
             ]
 

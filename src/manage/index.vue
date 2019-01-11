@@ -29,7 +29,7 @@
               <el-menu-item index="/manage/suppilergoods" :disabled="storeStatus">供应商货品</el-menu-item>
               <el-menu-item index="/manage/service" >服务管理</el-menu-item>
               <el-menu-item index="/manage/order">订单管理</el-menu-item>
-              <el-menu-item index="2-6" :disabled="storeStatus">统计</el-menu-item>
+              <el-menu-item index="/manage/storestatistics" :disabled="storeStatus">统计</el-menu-item>
             </template>
             <template v-if="suppiler">
               <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>
@@ -57,13 +57,6 @@ export default {
       storeStatus: true
     };
   },
-  // beforeRouteLeave(to, from, next) {
-  //   if (confirm("确定离开吗？") == true) {
-  //     next(); //跳转到另一个路由
-  //   } else {
-  //     next(false); //不跳转
-  //   }
-  // },
   computed: {
     ...mapState(["user", "store"]),
     platform() {
@@ -91,6 +84,7 @@ export default {
   methods: {
     ...mapMutations(["setUser", "setStore", "setSuppiler"]),
     cancellation() {
+      this.setStore({});
       axios({
         method: "post",
         url: "/removeSession"

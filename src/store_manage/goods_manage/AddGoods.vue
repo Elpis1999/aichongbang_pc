@@ -52,8 +52,8 @@
           <el-input v-model="goods.getnumber"></el-input>
         </el-form-item>
         <el-form-item label="上传大图：">
-          <el-upload action="/upload" :show-file-list="false" :on-success="pigpic">
-            <img v-if="goods.pigpic" :src="pigpicImg" class="avatar">
+          <el-upload action="/upload" :show-file-list="false" :on-success="bigpic">
+            <img v-if="goods.bigpic" :src="bigpicImg" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -79,6 +79,8 @@
 import { createNamespacedHelpers } from "vuex";
 import axios from "axios";
 const { mapActions } = createNamespacedHelpers("goodsModule");
+const commonModule = createNamespacedHelpers("commonModule");
+const mapStateCommon = commonModule.mapState;
 export default {
   data() {
     return {
@@ -98,7 +100,7 @@ export default {
         supp_gd_factor: "",
         supp_gd_keepquality: "",
         supp_gd_specialinfo: "",
-        pigpic: "",
+        bigpic: "",
         smallpic: "",
         getprice: "",
         saleprice: "",
@@ -134,8 +136,9 @@ export default {
     };
   },
   computed: {
-    pigpicImg() {
-      return `http://127.0.0.1:3001/upload/${this.goods.pigpic}`;
+    ...mapStateCommon(["store"]),
+    bigpicImg() {
+      return `http://127.0.0.1:3001/upload/${this.goods.bigpic}`;
     },
     smallpicImg() {
       return `http://127.0.0.1:3001/upload/${this.goods.smallpic}`;
@@ -143,8 +146,9 @@ export default {
   },
   methods: {
     ...mapActions(["show"]),
-    pigpic(response) {
-      this.goods.pigpic = response;
+    bigpic(response) {
+      console.log("40", response);
+      this.goods.bigpic = response;
     },
     smallpic(response) {
       this.goods.smallpic = response;
@@ -167,7 +171,7 @@ export default {
             supp_gd_factor,
             supp_gd_keepquality,
             supp_gd_specialinfo,
-            pigpic,
+            bigpic,
             smallpic,
             getprice,
             saleprice,
@@ -195,7 +199,7 @@ export default {
               supp_gd_factor,
               supp_gd_keepquality,
               supp_gd_specialinfo,
-              pigpic,
+              bigpic,
               smallpic,
               getprice,
               saleprice,
@@ -204,7 +208,7 @@ export default {
               storeId: "5c3364099118101a84b871e9"
             }
           }).then(() => {
-            this.show();
+            this.show(this.store._id);
             this.dialogVisible = false;
           });
         }

@@ -50,8 +50,8 @@
         <el-input v-model="goods.getnumber" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="上传大图：">
-        <el-upload action="/upload" :show-file-list="false" :on-success="pigpic">
-          <img v-if="goods.pigpic" :src="pigpicImg" class="avatar">
+        <el-upload action="/upload" :show-file-list="false" :on-success="bigpic">
+          <img v-if="goods.bigpic" :src="bigpicImg" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
@@ -78,6 +78,8 @@ import { createNamespacedHelpers } from "vuex";
 const { mapState, mapMutations, mapActions } = createNamespacedHelpers(
   "goodsModule"
 );
+const commonModule = createNamespacedHelpers("commonModule");
+const mapStateCommon = commonModule.mapState;
 export default {
   data() {
     return {
@@ -105,6 +107,7 @@ export default {
   },
   computed: {
     ...mapState(["updateValidate", "goodsInfo"]),
+    ...mapStateCommon(["store"]),
     close: {
       get() {
         return this.updateValidate;
@@ -120,8 +123,8 @@ export default {
         return false;
       }
     },
-    pigpicImg() {
-      return `http://127.0.0.1:3001/upload/${this.goods.pigpic}`;
+    bigpicImg() {
+      return `http://127.0.0.1:3001/upload/${this.goods.bigpic}`;
     },
     smallpicImg() {
       return `http://127.0.0.1:3001/upload/${this.goods.smallpic}`;
@@ -130,11 +133,11 @@ export default {
   methods: {
     ...mapActions(["show"]),
     ...mapMutations(["setUpdateValidate"]),
-    pigpic(response) {
-      this.goods = { ...this.goods, pigpic: response };
+    bigpic(response) {
+      this.goods = { ...this.goods, bigpic: response };
     },
     smallpic(response) {
-      this.goods.smallpic = response;
+      this.goods = { ...this.goods, smallpic: response };
     },
     confirm() {
       this.$refs.addForm.validate(valid => {
@@ -145,7 +148,7 @@ export default {
             data: this.goods
           }).then(() => {
             this.setUpdateValidate(false);
-            this.show();
+            this.show(this.store._id);
           });
         }
       });

@@ -15,6 +15,8 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 const { mapMutations, mapActions } = createNamespacedHelpers("goodsModule");
+const commonModule = createNamespacedHelpers("commonModule");
+const mapStateCommon = commonModule.mapState;
 export default {
   data() {
     return {
@@ -22,13 +24,16 @@ export default {
       value: ""
     };
   },
+  computed: {
+    ...mapStateCommon(["store"])
+  },
   methods: {
     ...mapMutations(["setType", "setValue"]),
     ...mapActions(["show"]),
     search() {
       this.setType(this.select);
       this.setValue(this.value);
-      this.show();
+      this.show(this.store._id);
     }
   }
 };
