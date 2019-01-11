@@ -17,20 +17,24 @@ import { createNamespacedHelpers } from "vuex";
 const { mapState, mapActions, mapMutations } = createNamespacedHelpers(
   "goodsModule"
 );
+const commonModule = createNamespacedHelpers("commonModule");
+const mapStateCommon = commonModule.mapState;
 export default {
   computed: {
-    ...mapState(["pagination"])
+    ...mapState(["pagination"]),
+    ...mapStateCommon(["store"])
   },
   methods: {
     ...mapActions(["show"]),
     ...mapMutations(["setPage", "setRows"]),
     change(value) {
       this.setPage(value);
-      this.show();
+
+      this.show(this.store._id);
     },
     sizeChange(value) {
       this.setRows(value);
-      this.show();
+      this.show(this.store._id);
     }
   }
 };
