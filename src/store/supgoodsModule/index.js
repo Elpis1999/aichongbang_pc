@@ -19,6 +19,9 @@ export default {
     setId(state, id) {
       state.id = id;
     },
+    setDisable(state, disabled) {
+      state.disabled = disabled;
+    },
     // 储存加页码的数据
     setPagination(state, pagination) {
       state.pagination = pagination
@@ -120,9 +123,6 @@ export default {
     setID({ commit }, id) {
       commit("setId", id);
       // console.log(state.id)
-    },
-    setDisable(state, disabled) {
-      state.disabled = disabled;
     }
   }
 
