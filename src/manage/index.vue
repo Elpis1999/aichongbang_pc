@@ -47,7 +47,7 @@
 </template>
 
 <script>
- let useid;
+let useid;
 let suppid;
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
@@ -71,7 +71,7 @@ export default {
   // },
   computed: {
      ...mapState(["disabled"]),
-    ...commonMapState(["user", "store"]),
+    ...commonMapState(["user", "store","suppiler"]),
     platform() {
       if (this.user.permissions == 1) {
         return true;
@@ -96,42 +96,21 @@ export default {
   },
   methods: {
     ...mapMutations(["setUser", "setStore", "setSuppiler"]),
-    cancellation() {
-      axios({
-        method: "post",
-        url: "/removeSession"
-      }).then(() => {
-        this.$router.replace("/login");
-      });
-    },
-    whetherApplyStore() {
-      axios({
-        method: "get",
-        url: "/store",
-        params: {
-          userId: this.user._id
-        }
-      }).then(({ data }) => {
-        this.setStore(data[0]);
-        if (data.length > 0) {
-          this.storeStatus = false;
-        }
-      });
-    },
-      getSession() {
+    getSession() {
       axios({
         method: "get",
         url: "/getSession"
       }).then(({ data }) => {
-        console.log(data, "data11");
-        useid = data.user._id;
+        console.log(data, "data118");
+        useid = data._id;
       });
     },
-      panduan() {
+     panduan() {
       axios({
         method: "get",
         url: "/suppiler"
       }).then(({ data }) => {
+        console.log(data,"747")
         for (let i = 0; i < data.length; i++) {
           if (data[i].supp_number == useid) {
             suppid = data[i]._id;
@@ -139,7 +118,7 @@ export default {
               method: "get",
               url: "/suppiler/" + suppid
             }).then(({ data }) => {
-              console.log(data, "通过id查到的数据");
+              console.log(data, "通过id查到的数据22");
               if (
                 data.supp_add == "" ||
                 data.supp_bus_pic == "" ||
@@ -162,13 +141,46 @@ export default {
           
         }
       }
-    
-  })
+      })
       },
+
+    cancellation() {
+      axios({
+        method: "post",
+        url: "/removeSession"
+      }).then(() => {
+        this.$router.replace("/login");
+      });
+    },
+    whetherApplyStore() {
+      axios({
+        method: "get",
+        url: "/store",
+        params: {
+          userId: this.user._id
+        }
+      }).then(({ data }) => {
+        this.setStore(data[0]);
+        if (data.length > 0) {
+          this.storeStatus = false;
+        }
+      });
+    }
+      
   
 
-  created() {
-     this.getSession(), this.panduan();
+ 
+  //   ,watch: {
+  //   // 监听路由跳转。
+  //   $route(newRoute, oldRoute) {
+  //     console.log('watch', newRoute, oldRoute)
+  //     this.$router.replace("/login");
+  //   },
+  // },
+},
+ created() {
+     this.getSession(),
+      this.panduan(),
     axios({
       method: "get",
       url: "/getSession"
@@ -182,14 +194,6 @@ export default {
       }
     });
   }
-  //   ,watch: {
-  //   // 监听路由跳转。
-  //   $route(newRoute, oldRoute) {
-  //     console.log('watch', newRoute, oldRoute)
-  //     this.$router.replace("/login");
-  //   },
-  // },
-}
 }
 </script>
 

@@ -32,8 +32,8 @@ export default {
         method: "get",
         url: "/getSession"
       }).then(({ data }) => {
-        console.log(data, "data11");
-        useid = data.user._id;
+        console.log(data, "data119");
+        useid = data._id;
       });
     },
     show() {
@@ -71,7 +71,8 @@ export default {
               supp_phone: "",
               supp_web: "",
               supp_note: "",
-              supp_bus_pic: ""
+              supp_bus_pic: "",
+              supp_status:"未审核"
             }
           }).then(({ data }) => {
             console.log(data, "data");
