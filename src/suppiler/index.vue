@@ -27,6 +27,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setId"]),
+    ...mapMutations(["setDisable"]),
     getSession() {
       axios({
         method: "get",
@@ -79,11 +80,31 @@ export default {
           });
         }
       });
+      axios({
+              method: "get",
+              url: "/suppiler/" + suppid
+            }).then(({ data }) => {
+              console.log(data, "通过id查到的数据55");
+              if (
+                data.supp_add == "" ||
+                data.supp_bus_pic == "" ||
+                data.supp_name == "" ||
+                data.supp_note == "" ||
+                data.supp_phone == "" ||
+                data.supp_web == ""
+              )  {
+           this.setDisable(true);
+           alert("请完善供应商详情");
+        } else {
+          this.setDisable(false);
+        }
+            });
     }
   },
   created() {
     this.getSession();
     this.show();
+
   },
   components: {
     UpdateSuppiler
