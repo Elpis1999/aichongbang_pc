@@ -63,8 +63,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(["disabled"]),
-    ...commonMapState(["user", "store", "suppiler"]),
+     ...mapState(["disabled"]),
+    ...commonMapState(["user", "store","suppiler"]),
     platform() {
       if (this.user.permissions == 1) {
         return true;
@@ -126,6 +126,7 @@ export default {
         method: "get",
         url: "/suppiler"
       }).then(({ data }) => {
+        console.log(data,"747")
         for (let i = 0; i < data.length; i++) {
           if (data[i].supp_number == useid) {
             suppid = data[i]._id;
