@@ -34,13 +34,8 @@ export default {
         method: "get",
         url: "/getSession"
       }).then(({ data }) => {
-<<<<<<< HEAD
-        // console.log(data, "data11");
-        useid = data._id;
-=======
         console.log(data, "data119");
         this.useid = data._id;
->>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
       });
     },
     show() {
@@ -50,17 +45,10 @@ export default {
       }).then(({ data }) => {
         // console.log(data, "data88");
         for (let i = 0; i < data.length; i++) {
-<<<<<<< HEAD
-          if (data[i].supp_number == useid) {
-            suppid = data[i]._id;
-            this.setId(suppid);
-            // console.log(suppid, "iddd");
-=======
           if (data[i].supp_number == this.useid) {
             this.suppid = data[i]._id;
             this.setId(this.suppid);
             console.log(this.suppid, "iddd");
->>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
             axios({
               method: "get",
               url: "/suppiler/" + this.suppid
@@ -86,12 +74,8 @@ export default {
               supp_phone: "",
               supp_web: "",
               supp_note: "",
-<<<<<<< HEAD
-              supp_bus_pic: ""
-=======
               supp_bus_pic: "",
               supp_status: "未审核"
->>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
             }
           }).then(({ data }) => {
             console.log(data, "data1114")

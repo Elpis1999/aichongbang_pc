@@ -61,11 +61,7 @@ export default {
   },
 
   methods: {
-<<<<<<< HEAD
-    ...mapMutations(["setDisable"]),
-=======
      ...mapMutations(["setDisabled"]),
->>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
     add() {
       console.log(this.suppiler,"suppilerid")
       axios({
@@ -83,13 +79,8 @@ export default {
           this.addForm.supp_phone == "" ||
           this.addForm.supp_web == ""
         ) {
-<<<<<<< HEAD
-          this.setDisable(true);
-          alert("请完善供应商详情");
-=======
            this.setDisabled(true);
            alert("请完善供应商详情");
->>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
         } else {
           this.setDisabled(false);
         }
