@@ -34,7 +34,7 @@
             <template v-if="suppiler">
               <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>
               <el-menu-item :disabled="disabled" index="/manage/supgoods">供应商货品管理</el-menu-item>
-              <el-menu-item :disabled="disabled" index="3-3">统计</el-menu-item>
+              <el-menu-item :disabled="disabled" index="/manage/SupGoodsTJ">统计</el-menu-item>
             </template>
           </el-menu>
         </el-col>
@@ -126,7 +126,7 @@ export default {
         method: "get",
         url: "/suppiler"
       }).then(({ data }) => {
-        console.log(data,"747")
+        // console.log(data,"747")
         for (let i = 0; i < data.length; i++) {
           if (data[i].supp_number == useid) {
             suppid = data[i]._id;

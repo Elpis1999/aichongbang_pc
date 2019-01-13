@@ -1,22 +1,15 @@
 <template>
-   <suppjinghuo></suppjinghuo>
+  <div></div>
 </template>
 <script>
-import axios from "axios"
-import suppjinghuo from "./suppjinghuo.vue"
+// import axios from "axios"
 export default {
   data() {
-    return {
-      
-    };
+    return {};
   },
 
-  methods: {
-
-  },
-  components: {
-      suppjinghuo,
-  }
+  methods: {},
+  components: {}
 };
 </script>
 <style>

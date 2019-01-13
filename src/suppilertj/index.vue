@@ -1,21 +1,21 @@
 <template>
-   <suppjinghuo></suppjinghuo>
+  <div>
+    <suppjinghuo></suppjinghuo>
+    <SupGoodsSV></SupGoodsSV>
+  </div>
 </template>
 <script>
-import axios from "axios"
-import suppjinghuo from "./suppjinghuo.vue"
+// import axios from "axios";
+import suppjinghuo from "./suppjinghuo.vue";
+import SupGoodsSV from "./supplierSalesVolume";
 export default {
   data() {
-    return {
-      
-    };
+    return {};
   },
-
-  methods: {
-
-  },
+  methods: {},
   components: {
-      suppjinghuo,
+    suppjinghuo,
+    SupGoodsSV
   }
 };
 </script>
