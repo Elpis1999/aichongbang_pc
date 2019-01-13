@@ -35,7 +35,7 @@ export default {
         method: "get",
         url: "/getSession"
       }).then(({ data }) => {
-        let supId = data.user._id;
+        let supId = data._id;
         console.log(data.user);
         axios({
           method: "get",

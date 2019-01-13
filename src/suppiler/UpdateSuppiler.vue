@@ -64,8 +64,9 @@ export default {
   },
 
   methods: {
-     ...mapMutations(["setDisable"]),
+     ...mapMutations(["setDisabled"]),
     add() {
+      console.log(this.suppiler,"suppilerid")
       axios({
         method: "put",
         url: "/suppiler/" + this.suppiler[0]._id,
@@ -81,10 +82,10 @@ export default {
           this.addForm.supp_phone == "" ||
           this.addForm.supp_web == ""
         ) {
-           this.setDisable(true);
+           this.setDisabled(true);
            alert("请完善供应商详情");
         } else {
-          this.setDisable(false);
+          this.setDisabled(false);
         }
         this.dialogVisible = false;
           // (this.addForm.supp_name = ""),
