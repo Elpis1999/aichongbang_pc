@@ -8,6 +8,8 @@ import SuppilerGoods from "../store_manage/suppiler_goods/index.vue"
 import Login from "../platform/Login"
 import Register from "../platform/Register"
 import Suppiler from "../suppiler/index.vue";
+import Service from "../store_manage/service/index.vue";
+import Order from "../store_manage/order/index.vue";
 import StoreStatistics from "../store_manage/store_statistics/index.vue"
 Vue.use(Router);
 
@@ -45,6 +47,14 @@ export default new Router({
                 {
                     path: '/manage/suppiler',
                     component: Suppiler
+                },
+                {
+                  path: "/manage/service",
+                  component: Service
+                },
+                {
+                  path: "/manage/order",
+                  component: Order
                 }, {
                     path: '/manage/storestatistics',
                     component: StoreStatistics

@@ -1,73 +1,136 @@
 <template>
-  <div class="view-comtainer">
-    <el-select v-model="select" slot="prepend" style="width:150px;">
-      <el-option label="商品月销量" value="m_goods"></el-option>
-      <el-option label="商品季销量" value="q_goods"></el-option>
-      <el-option label="商品年销量" value="y_goods"></el-option>
-      <el-option label="服务月预约量" value="m_service"></el-option>
-      <el-option label="服务季预约量" value="q_service"></el-option>
-      <el-option label="服务年预约量" value="y_service"></el-option>
-    </el-select>
-    <div class="total" id="myChart" ref="myChart"></div>
+  <div style="width:100%">
+    <el-switch v-model="value3" active-text="服务近6个月的月销售额" inactive-text="商品近6个月的月销售额" style="margin-top:30px;margin-bottom:30px" @change="num" ></el-switch>
+    <div class="total"  style="width:1000px;height:460px" id="myChart" ref="myChart" v-show="open"></div>
+    <div class="totals" style="width:1000px;height:460px" id="myCharts" ref="myCharts" v-show="opens"></div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import echarts from "echarts/lib/echarts";
+import axios from "axios";
 // 引入柱状图
 import "echarts/lib/chart/bar";
 import "echarts/lib/chart/pie";
 import "echarts/lib/chart/scatter";
 import "echarts/lib/component/title";
-import { mapState } from "vuex";
 export default {
   data() {
     return {
-      axisData: [],
-      seriesData: [],
-      select: "m_goods"
-    };
-  },
-  mounted() {
-    let myChart = echarts.init(this.$refs.myChart);
-    myChart.setOption(
-      {
+      value3: true,
+      open: false,
+      opens: true,
+      option: {
         title: {
-          text: "门店销售服务额统计图"
+          text: "商品销售统计图"
         },
         xAxis: {
-          data: ["商品", "服务"]
+          data: []
         },
         yAxis: {},
         series: [
           {
             name: "mm",
-            data: [1, 2],
+            data: [],
             type: "bar"
           }
         ]
       },
-      true
-    );
+      options :{
+               title:{
+                 text:"服务销售统计图"
+               },
+            xAxis: {
+            
+                data: []
+            },
+            yAxis: {
+                
+            },
+            series: [{
+                name:"mm",
+                data: [],
+                type: 'bar'
+            }]
+   }
+    };
+  },
+  mounted() {
+      this.$nextTick(function(){
+        this.shows();
+      })
+         
   },
   methods: {
-    show(){
-      
+    show() {
+      this.open = true;
+      this.opens = false;
+      let myChart = echarts.init(this.$refs.myChart);
+      axios({
+        method: "get",
+        url: "/getSession"
+      }).then(({ data }) => {
+        let id = data._id;
+        axios({
+          method: "get",
+          url: "/store",
+          params: {
+            userId: id
+          }
+        }).then(({ data }) => {
+          this.storeid = data[0]._id;
+
+          axios({
+            url: `/count/${data[0]._id}`,
+            method: "get"
+          }).then(({ data }) => {
+            this.option.xAxis.data=data.monthNum
+            this.option.series[0].data=data.monthgoods
+            myChart.setOption(this.option,true);
+          });
+        });
+      });
+    },
+    shows() {
+      this.opens = true
+      this.open = false
+      let myChart = echarts.init(this.$refs.myCharts);
+      axios({
+        method: "get",
+        url: "/getSession"
+      }).then(({ data }) => {
+        let id = data._id;
+        axios({
+          method: "get",
+          url: "/store",
+          params: {
+            userId: id
+          }
+        }).then(({ data }) => {
+          this.storeid = data[0]._id;
+
+          axios({
+            url: `/count/${data[0]._id}`,
+            method: "get"
+          }).then(({ data }) => {
+            this.options.xAxis.data=data.monthNum
+            this.options.series[0].data=data.monthserve
+            myChart.setOption(this.options,true);
+          });
+        });
+      });
+    },
+    num() {
+      console.log(this.value3);
+      if (this.value3 == false) {
+        this.show()
+      }else if (this.value3 == true) {
+        this.shows()
+      }
     }
-  },
-  computed: {
-    ...mapState("commonModule", ["store"])
   }
 };
 </script>
 
 <style scoped>
-.view-comtainer {
-  margin-top: 25px;
-}
-.total {
-  width: 100%;
-  height: 500px;
-}
 </style>
