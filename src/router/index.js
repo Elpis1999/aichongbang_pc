@@ -8,8 +8,12 @@ import SuppilerGoods from "../store_manage/suppiler_goods/index.vue"
 import Login from "../platform/Login"
 import Register from "../platform/Register"
 import Suppiler from "../suppiler/index.vue";
+<<<<<<< HEAD
 import StoreStatistics from "../store_manage/store_statistics/index.vue"
 import SupGoodsTJ from "../suppilertj"
+=======
+import SuppilerTj from "../suppilertj/index.vue"
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
 Vue.use(Router);
 
 export default new Router({
@@ -47,11 +51,41 @@ export default new Router({
             component: SuppilerGoods
         },
         {
+<<<<<<< HEAD
             path: '/manage/suppiler',
             component: Suppiler
         }, {
             path: '/manage/storestatistics',
             component: StoreStatistics
+=======
+            path: '/manage',
+            component: Manage,
+            children: [{
+                    path: '/manage/storeapplication',
+                    component: StoreApplication
+
+                }, {
+                    path: '/manage/supgoods',
+                    component: Supgoods
+                },
+                {
+                    path: '/manage/storegoods',
+                    component: StoreGoods
+                }, {
+                    path: '/manage/suppilergoods',
+                    component: SuppilerGoods
+                },
+                {
+                    path: '/manage/suppiler',
+                    component: Suppiler
+                },
+                {
+                    path: '/manage/suppilertj',
+                    component: SuppilerTj
+                }
+            ]
+
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
         }
         ]
 

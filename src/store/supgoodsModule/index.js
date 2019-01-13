@@ -19,7 +19,7 @@ export default {
     setId(state, id) {
       state.id = id;
     },
-    setDisable(state, disabled) {
+    setDisabled(state, disabled) {
       state.disabled = disabled;
     },
     // 储存加页码的数据

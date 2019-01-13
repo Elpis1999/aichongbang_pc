@@ -36,7 +36,11 @@ export default {
         url: "/getSession"
       }).then(({ data }) => {
         let supId = data._id;
+<<<<<<< HEAD
         // console.log(data.user);
+=======
+        console.log(data.user);
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
         axios({
           method: "get",
           url: "/suppiler"

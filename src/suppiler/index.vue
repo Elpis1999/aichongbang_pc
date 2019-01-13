@@ -12,8 +12,8 @@
   </div>
 </template>
 <script >
-let useid;
-let suppid;
+// let useid;
+// let suppid;
 let bool = 0;
 import axios from "axios";
 import UpdateSuppiler from "./UpdateSuppiler.vue";
@@ -22,19 +22,25 @@ const { mapMutations } = createNamespacedHelpers("supgoodsModule");
 export default {
   data() {
     return {
-      suppiler: []
+      suppiler: [],
+      suppid: "",
+      useid: ""
     };
   },
   methods: {
-    ...mapMutations(["setId"]),
-    ...mapMutations(["setDisable"]),
+    ...mapMutations(["setId", "setDisabled"]),
     getSession() {
       axios({
         method: "get",
         url: "/getSession"
       }).then(({ data }) => {
+<<<<<<< HEAD
         // console.log(data, "data11");
         useid = data._id;
+=======
+        console.log(data, "data119");
+        this.useid = data._id;
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
       });
     },
     show() {
@@ -44,13 +50,20 @@ export default {
       }).then(({ data }) => {
         // console.log(data, "data88");
         for (let i = 0; i < data.length; i++) {
+<<<<<<< HEAD
           if (data[i].supp_number == useid) {
             suppid = data[i]._id;
             this.setId(suppid);
             // console.log(suppid, "iddd");
+=======
+          if (data[i].supp_number == this.useid) {
+            this.suppid = data[i]._id;
+            this.setId(this.suppid);
+            console.log(this.suppid, "iddd");
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
             axios({
               method: "get",
-              url: "/suppiler/" + suppid
+              url: "/suppiler/" + this.suppid
             }).then(({ data }) => {
               // console.log(data, "通过id查到的数据");
               let arr = [];
@@ -62,48 +75,56 @@ export default {
           }
         }
         if (bool == data.length) {
+          console.log(this.useid, "增加时候的useid");
           axios({
             method: "post",
             url: "/suppiler",
             data: {
-              supp_number: useid,
+              supp_number: this.useid,
               supp_name: "",
               supp_add: "",
               supp_phone: "",
               supp_web: "",
               supp_note: "",
+<<<<<<< HEAD
               supp_bus_pic: ""
+=======
+              supp_bus_pic: "",
+              supp_status: "未审核"
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
             }
           }).then(({ data }) => {
-            console.log(data, "data");
+            console.log(data, "data1114")
+            let arr = [];
+              arr.push(data);
+              this.suppiler = arr;
           });
         }
       });
-      axios({
-              method: "get",
-              url: "/suppiler/" + suppid
-            }).then(({ data }) => {
-              console.log(data, "通过id查到的数据55");
-              if (
-                data.supp_add == "" ||
-                data.supp_bus_pic == "" ||
-                data.supp_name == "" ||
-                data.supp_note == "" ||
-                data.supp_phone == "" ||
-                data.supp_web == ""
-              )  {
-           this.setDisable(true);
-           alert("请完善供应商详情");
-        } else {
-          this.setDisable(false);
-        }
-            });
+      // axios({
+      //   method: "get",
+      //   url: "/suppiler/" + this.suppid
+      // }).then(({ data }) => {
+      //   console.log(data, "通过id查到的数据55");
+      //   if (
+      //     data.supp_add == "" ||
+      //     data.supp_bus_pic == "" ||
+      //     data.supp_name == "" ||
+      //     data.supp_note == "" ||
+      //     data.supp_phone == "" ||
+      //     data.supp_web == ""
+      //   ) {
+      //     this.setDisabled(true);
+      //     alert("请完善供应商详情");
+      //   } else {
+      //     this.setDisabled(false);
+      //   }
+      // });
     }
   },
   created() {
     this.getSession();
     this.show();
-
   },
   components: {
     UpdateSuppiler

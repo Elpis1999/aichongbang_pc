@@ -34,7 +34,11 @@
             <template v-if="suppiler">
               <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>
               <el-menu-item :disabled="disabled" index="/manage/supgoods">供应商货品管理</el-menu-item>
+<<<<<<< HEAD
               <el-menu-item :disabled="disabled" index="/manage/SupGoodsTJ">统计</el-menu-item>
+=======
+              <el-menu-item :disabled="disabled" index="/manage/suppilertj">统计</el-menu-item>
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
             </template>
           </el-menu>
         </el-col>
@@ -47,11 +51,13 @@
 </template>
 
 <script>
-let useid;
-let suppid;
+// let useid;
+// let suppid;
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
-const { mapState } = createNamespacedHelpers("supgoodsModule");
+const { mapState, mapMutations: supplierMapMutation } = createNamespacedHelpers(
+  "supgoodsModule"
+);
 const obj = createNamespacedHelpers("commonModule");
 const commonMapState = obj.mapState;
 const { mapMutations } = createNamespacedHelpers("commonModule");
@@ -59,12 +65,14 @@ export default {
   data() {
     return {
       userName: "",
-      storeStatus: true
+      storeStatus: true,
+      useid: "",
+      suppid: ""
     };
   },
   computed: {
-     ...mapState(["disabled"]),
-    ...commonMapState(["user", "store","suppiler"]),
+    ...mapState(["disabled"]),
+    ...commonMapState(["user", "store", "suppiler"]),
     platform() {
       if (this.user.permissions == 1) {
         return true;
@@ -89,6 +97,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setUser", "setStore", "setSuppiler"]),
+<<<<<<< HEAD
     cancellation() {
       this.setStore({});
       axios({
@@ -112,13 +121,21 @@ export default {
         }
       });
     },
+=======
+    ...supplierMapMutation(["setDisabled"]),
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
     getSession() {
       axios({
         method: "get",
         url: "/getSession"
       }).then(({ data }) => {
+<<<<<<< HEAD
         // console.log(data, "data11");
         useid = data._id;
+=======
+        console.log(data, "data118");
+        this.useid = data._id;
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
       });
     },
     panduan() {
@@ -126,13 +143,17 @@ export default {
         method: "get",
         url: "/suppiler"
       }).then(({ data }) => {
+<<<<<<< HEAD
         // console.log(data,"747")
+=======
+        console.log(data, "747");
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
         for (let i = 0; i < data.length; i++) {
-          if (data[i].supp_number == useid) {
-            suppid = data[i]._id;
+          if (data[i].supp_number == this.useid) {
+            this.suppid = data[i]._id;
             axios({
               method: "get",
-              url: "/suppiler/" + suppid
+              url: "/suppiler/" + this.suppid
             }).then(({ data }) => {
               // console.log(data, "通过id查到的数据");
               if (
@@ -144,17 +165,39 @@ export default {
                 data.supp_web == ""
               ) {
                 alert("请完善供应商详情");
-                //  this.disabled=true;
-                this.setDisable(true);
-                  // this.disabled=true;
+                this.setDisabled(true);
               } else {
-                //  location.reload()
-                // this.disabled = false;
-                this.setDisable(false);
-                // this.disabled = false;
+                // console.log("不进")
+                this.setDisabled(false);
               }
             });
           }
+<<<<<<< HEAD
+=======
+        }
+      });
+    },
+
+    cancellation() {
+      axios({
+        method: "post",
+        url: "/removeSession"
+      }).then(() => {
+        this.$router.replace("/login");
+      });
+    },
+    whetherApplyStore() {
+      axios({
+        method: "get",
+        url: "/store",
+        params: {
+          userId: this.user._id
+        }
+      }).then(({ data }) => {
+        this.setStore(data[0]);
+        if (data.length > 0) {
+          this.storeStatus = false;
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
         }
       });
     }
@@ -168,6 +211,7 @@ export default {
     // },
   },
   created() {
+<<<<<<< HEAD
     this.getSession(), this.panduan();
     axios({
       method: "get",
@@ -181,6 +225,22 @@ export default {
         this.$router.replace("/login");
       }
     });
+=======
+    this.getSession(),
+      this.panduan(),
+      axios({
+        method: "get",
+        url: "/getSession"
+      }).then(({ data }) => {
+        if (data) {
+          this.userName = data.userPhone;
+          this.setUser(data);
+          this.whetherApplyStore();
+        } else {
+          this.$router.replace("/login");
+        }
+      });
+>>>>>>> 144bc1703cf9240d6df0a7df5ecaea4f565af6de
   }
 };
 </script>
