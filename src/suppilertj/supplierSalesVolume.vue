@@ -1,5 +1,5 @@
 <template>
-  <div id="myChart" :style="{width: '500px', height: '500px'}"></div>
+  <div id="myChart1" :style="{width: '500px', height: '500px'}"></div>
 </template>
 <script>
 import echarts from "echarts/lib/echarts";
@@ -21,9 +21,7 @@ export default {
       supId: ""
     };
   },
-  mounted() {
-    // this.drawLine();
-  },
+  mounted() {},
   created() {
     this.getSession();
   },
@@ -43,7 +41,7 @@ export default {
           for (let i = 0; i < data.length; i++) {
             if (supId == data[i].supp_number) {
               this.supId = data[i]._id;
-              console.log(data[i]._id, "zxc");
+              // console.log(data[i]._id, "zxc");
               axios({
                 method: "get",
                 url: "/supGods/SVTJ",
@@ -51,15 +49,15 @@ export default {
                   supID: data[i]._id
                 }
               }).then(({ data }) => {
-                console.log(data.newArr, "zxcc");
+                // console.log(data.newArr, "zxcc");
                 let nameArr = [];
                 let numsArr = [];
                 for (let i = 0; i < data.newArr.length; i++) {
                   nameArr.push(data.newArr[i].name);
                   numsArr.push(data.newArr[i].nums);
                 }
-                let myChart = echarts.init(document.getElementById("myChart"));
-                myChart.setOption({
+                let myChart1 = echarts.init(document.getElementById("myChart1"));
+                myChart1.setOption({
                   title: { text: "各商品销量统计" },
                   tooltip: {},
                   xAxis: {
@@ -80,26 +78,6 @@ export default {
         });
       });
     }
-    // drawLine() {
-    //   // 基于准备好的dom，初始化echarts实例
-    //   let myChart = echarts.init(document.getElementById("myChart"));
-    //   // 绘制图表
-    //   myChart.setOption({
-    //     title: { text: "各门店销量" },
-    //     tooltip: {},
-    //     xAxis: {
-    //       data: ["11", "11122"]
-    //     },
-    //     yAxis: {},
-    //     series: [
-    //       {
-    //         name: "销量",
-    //         type: "bar",
-    //         data: [5, 20]
-    //       }
-    //     ]
-    //   });
-    // }
   }
 };
 </script>
