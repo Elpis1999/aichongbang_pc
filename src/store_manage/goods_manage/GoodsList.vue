@@ -21,9 +21,12 @@ import axios from "axios";
 const { mapActions, mapState, mapMutations } = createNamespacedHelpers(
   "goodsModule"
 );
+const commonModule = createNamespacedHelpers("commonModule");
+const mapStateCommon = commonModule.mapState;
 export default {
   computed: {
-    ...mapState(["goods"])
+    ...mapState(["goods"]),
+    ...mapStateCommon(["store", "user"])
   },
   methods: {
     ...mapMutations(["setUpdateValidate", "setGoodsInfo"]),
@@ -43,7 +46,7 @@ export default {
             method: "delete",
             url: "/goods/" + row._id
           }).then(() => {
-            this.show();
+            this.show(this.store._id);
             this.$message({
               type: "success",
               message: "删除成功!"

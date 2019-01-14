@@ -39,6 +39,10 @@ import { createNamespacedHelpers } from "vuex";
 const { mapMutations, mapState, mapActions } = createNamespacedHelpers(
   "suppilerModule"
 );
+const commonModule = createNamespacedHelpers("commonModule");
+const mapStateCommon = commonModule.mapState;
+const goodsModule = createNamespacedHelpers("goodsModule");
+const mapStateGoods = goodsModule.mapState;
 export default {
   data() {
     return {
@@ -47,6 +51,7 @@ export default {
   },
   computed: {
     ...mapState(["dialogTableVisible", "goods", "supId", "goodsPagination"]),
+    ...mapStateCommon(["store"]),
     close: {
       get() {
         return this.dialogTableVisible;
@@ -66,6 +71,7 @@ export default {
   methods: {
     ...mapMutations(["setDialogTableVisible", "setGoodsPage"]),
     ...mapActions(["stockPurchase"]),
+    ...mapStateGoods([""]),
     change(value) {
       console.log(value);
       this.setGoodsPage(value);
@@ -73,12 +79,14 @@ export default {
     },
     click(index, row) {
       let date = new Date().toLocaleDateString();
+      let newDate = date.split("/");
+      date = newDate[0] + "-" + newDate[1] + "-" + newDate[2];
       let obj = row;
       obj.getnumber = this.num[index];
       obj.time = date;
       obj.getprice = obj.supp_gd_price;
       delete obj.supp_gd_price;
-      obj.storeId = "5c3364099118101a84b871e9";
+      obj.storeId = this.store._id;
       obj.supId = obj.suppiler._id;
       delete obj._id;
       delete obj.suppiler;
@@ -92,7 +100,6 @@ export default {
     }
   },
   watch: {
-    // 如果 `goodsInfo` 发生改变，这个函数就会运行
     goods: function(newQuestion, oldQuestion) {
       for (let i = 0; i < newQuestion.length; i++) {
         this.num.push(0);

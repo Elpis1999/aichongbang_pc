@@ -1,5 +1,6 @@
 <template>
   <div class="box-card">
+    <h1 v-if="examine">审核中。。。</h1>
     <el-form
       :model="ruleForm"
       status-icon
@@ -7,6 +8,7 @@
       ref="ruleForm"
       label-width="165px"
       class="demo-ruleForm"
+      v-if="!examine"
     >
       <el-form-item label="店名(营业执照上的)：" prop="shopName">
         <el-input type="text" v-model="ruleForm.shopName" autocomplete="off" class="input"></el-input>
@@ -22,12 +24,6 @@
       </el-form-item>
       <el-form-item label="营业地址：" prop="licenseAddres">
         <el-input type="text" v-model="ruleForm.licenseAddres" autocomplete="off" class="input"></el-input>
-      </el-form-item>
-      <el-form-item label="经度：" prop="longitude">
-        <el-input type="text" v-model.number="ruleForm.longitude" autocomplete="off" class="input"></el-input>
-      </el-form-item>
-      <el-form-item label="纬度：" prop="latitude">
-        <el-input type="text" v-model.number="ruleForm.latitude" autocomplete="off" class="input"></el-input>
       </el-form-item>
       <el-form-item label="所在城市：" prop="city">
         <el-input type="text" v-model="ruleForm.city" autocomplete="off" class="input"></el-input>
@@ -86,9 +82,13 @@
 
 <script>
 import axios from "axios";
+import { mapActions, mapState, mapMutations } from "vuex";
+let map = new BMap.Map("allmap"); // 创建Map实例
+let localSearch = new BMap.LocalSearch(map);
 export default {
   data() {
     return {
+      examine: false,
       ruleForm: {
         shopName: "",
         licenseNumber: "",
@@ -107,12 +107,8 @@ export default {
       rules: {
         shopName: [{ required: true, message: "必填", trigger: "blur" }],
         licenseNumber: [{ required: true, message: "必填", trigger: "blur" }],
-        licenseImgUrl: [{ required: true, message: "必填", trigger: "blur" }],
         licenseAddres: [{ required: true, message: "必填", trigger: "blur" }],
-        longitude: [{ required: true, message: "必填", trigger: "blur" }],
-        latitude: [{ required: true, message: "必填", trigger: "blur" }],
         city: [{ required: true, message: "必填", trigger: "blur" }],
-        HeadImgUrl: [{ required: true, message: "必填", trigger: "blur" }],
         legalPerson: [{ required: true, message: "必填", trigger: "blur" }],
         phone: [
           { required: true, message: "必填", trigger: "blur" },
@@ -127,6 +123,7 @@ export default {
     };
   },
   computed: {
+    ...mapState("commonModule", ["store", "user"]),
     imgUrl() {
       return `http://127.0.0.1:3001/upload/${this.ruleForm.licenseImgUrl}`;
     },
@@ -135,6 +132,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations("commonModule", ["setUser", "setStore"]),
     changeClerkname(e, index) {
       this.clerk[index].clerkname = e;
     },
@@ -157,52 +155,109 @@ export default {
       this.$refs[formName].resetFields();
     },
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        console.log(this.clerk, this.ruleForm);
-        let newArr = [];
-        for (let i = 0; i < this.clerk.length; i++) {
-          console.log(this.clerk[i]);
-          newArr.push({ ...this.clerk[i] });
-        }
-        if (valid) {
-          let {
-            shopName,
-            licenseNumber,
-            licenseImgUrl,
-            licenseAddres,
-            legalPerson,
-            phone,
-            longitude,
-            latitude,
-            HeadImgUrl,
-            characteristic,
-            city
-          } = this.ruleForm;
-          axios({
-            method: "post",
-            url: "/store",
-            data: {
-              store_name: shopName,
-              store_bus_number: licenseNumber,
-              store_bus_pic: licenseImgUrl,
-              store_bus_addr: licenseAddres,
+      this.$refs[formName].validate(async valid => {
+        let keyword = this.ruleForm.licenseAddres;
+        localSearch.search(keyword);
+        await localSearch.setSearchCompleteCallback(searchResult => {
+          if (searchResult) {
+            let poi = searchResult.getPoi(0);
+            this.ruleForm.longitude = poi.point.lng;
+            this.ruleForm.latitude = poi.point.lat;
+          }
+          let newArr = [];
+          for (let i = 0; i < this.clerk.length; i++) {
+            newArr.push({ ...this.clerk[i] });
+          }
+          if (valid) {
+            let {
+              shopName,
+              licenseNumber,
+              licenseImgUrl,
+              licenseAddres,
+              legalPerson,
+              phone,
               longitude,
               latitude,
-              store_city: city,
-              store_person: legalPerson,
-              store_phone: phone,
-              store_avatar: HeadImgUrl,
-              store_charactor: characteristic,
-              store_VIPlevel: "0",
-              store_money: "1",
-              store_clerk: JSON.stringify(newArr),
-              store_status: "未审核",
-              userId: "5c32e6dc8697518d306cc3d7"
-            }
-          }).then(() => {});
-        }
+              HeadImgUrl,
+              characteristic,
+              city
+            } = this.ruleForm;
+            axios({
+              method: "post",
+              url: "/store",
+              data: {
+                store_name: shopName,
+                store_bus_number: licenseNumber,
+                store_bus_pic: licenseImgUrl,
+                store_bus_addr: licenseAddres,
+                longitude,
+                latitude,
+                store_city: city,
+                store_person: legalPerson,
+                store_phone: phone,
+                store_avatar: HeadImgUrl,
+                store_charactor: characteristic,
+                store_VIPlevel: "0",
+                store_money: "1",
+                store_clerk: JSON.stringify(newArr),
+                store_status: "未审核",
+                userId: this.user._id
+              }
+            }).then(() => {
+              this.examine = true;
+            });
+          }
+        });
       });
     }
+  },
+  created() {
+    this.$nextTick(function() {
+      if (this.store._id) {
+        axios({
+          method: "get",
+          url: "/store",
+          params: {
+            userId: this.user._id
+          }
+        }).then(({ data }) => {
+          this.setStore(data[0]);
+          if (data.length > 0 && data[0].store_status === "已审核") {
+            this.$router.replace("/manage");
+          } else if (data.length > 0 && data[0].store_status === "未审核") {
+            this.examine = true;
+          }
+        });
+      } else {
+        this.$nextTick(function() {
+          axios({
+            method: "get",
+            url: "/getSession"
+          }).then(({ data }) => {
+            if (data) {
+              this.setUser(data);
+              axios({
+                method: "get",
+                url: "/store",
+                params: {
+                  userId: this.user._id
+                }
+              }).then(({ data }) => {
+                this.setStore(data[0]);
+                if (data.length > 0 && data[0].store_status === "已审核") {
+                  this.$router.replace("/manage");
+                } else if (
+                  data.length > 0 &&
+                  data[0].store_status === "未审核"
+                ) {
+                  this.examine = true;
+                }
+              });
+            }
+          });
+        });
+      }
+    });
   }
 };
 </script>
@@ -218,6 +273,9 @@ export default {
   margin: 0 auto 0 auto;
   width: 500px;
   height: 400px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 .input {
   width: 250px;
@@ -239,9 +297,9 @@ export default {
 }
 
 .tishi {
-    box-sizing: border-box;
-    padding-left: 320px;
-    color: rgb(192, 190, 190);
-    font-size: 14px;
+  box-sizing: border-box;
+  padding-left: 320px;
+  color: rgb(192, 190, 190);
+  font-size: 14px;
 }
 </style>
