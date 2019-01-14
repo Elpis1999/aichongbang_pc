@@ -21,6 +21,7 @@
                <el-menu-item index="/manage/UsersManage">用户管理</el-menu-item>
                 <el-menu-item index="/manage/petmaster">宠主管理</el-menu-item>
                 <el-menu-item index="/manage/StoresManage">门店管理</el-menu-item>
+                <el-menu-item index="/manage/SupplierManage">供应商审批</el-menu-item>
                 <el-menu-item index="1-4">统计</el-menu-item>
             </template>
             <template v-if="storeDisabled">
@@ -113,7 +114,7 @@ export default {
       url: "/getSession"
     }).then(({ data }) => {
       if (data) {
-        console.log("data",data)
+      
         this.userName = data.userPhone;
         this.setUser(data);
         this.whetherApplyStore();

@@ -8,7 +8,6 @@
 <el-dialog title="门店审核" :visible.sync="examineTableVisible">
  <el-table :data="gridData">
     <el-table-column label="操作" width="200">
-      
       <template slot-scope="scope">
         <el-button
           size="mini" type="success"
@@ -33,56 +32,23 @@
     <el-table-column property="store_charactor" label="详情"></el-table-column>
     <el-table-column property="store_VIPlevel" label="等级"></el-table-column>
     <el-table-column property="store_money" label="佣金比例"></el-table-column>
-    <el-table-column property="store_clerk" label="点击查看服务员"></el-table-column>
+    <el-table-column property="store_clerk.length" label="服务员"></el-table-column>
     <el-table-column property="store_status" label="状态"></el-table-column>
   </el-table>
 
 </el-dialog>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <el-table
    :data="gridData2.filter(data => !search || data.store_name.toLowerCase().includes(search.toLowerCase())||
       data.store_bus_number.toLowerCase().includes(search.toLowerCase())||
       data.store_bus_addr.toLowerCase().includes(search.toLowerCase())||
       data.store_person.toLowerCase().includes(search.toLowerCase()))"
     style="width: 100%">
+    
     <el-table-column align="right" class="search">
        <template slot="header" slot-scope="scope">
           <el-input v-model="search" size="mini" placeholder="输入关键字搜索" style="500px"/>
         </template>
-        <el-table-column type="selection" width="55"></el-table-column>
+        
     <el-table-column
       label="申请账号"
       width="180">
@@ -108,8 +74,6 @@
         </el-popover>
       </template>
     </el-table-column>
-
-
 <el-table-column
       label="执照图片"
       width="180">
@@ -138,7 +102,6 @@
         </el-popover>
       </template>
     </el-table-column>
-
 <el-table-column
       label="所在城市"
       width="180">
@@ -186,7 +149,6 @@
           </p>
           <div slot="reference" class="status-wrapper">
 <img :src="'http://localhost:3000/upload/'+scope.row.store_avatar" class="showpic"><img>
-            
           </div>
         </el-popover>
       </template>
@@ -252,7 +214,7 @@
       </template>
     </el-table-column>
 
-    <el-table-column label="操作" width="200">
+    <el-table-column label="操作" width="300">
       <template slot-scope="scope">
         <el-button
           size="mini"
@@ -261,118 +223,33 @@
           size="mini"
           type="danger"
           @click="handleDelete(scope.$index, scope.row)">关闭</el-button>
+           <el-button
+          size="mini"
+          type="success"
+          @click="back(scope.$index, scope.row)">恢复</el-button>
       </template>
         </el-table-column>
     </el-table-column>
     
   </el-table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <el-table :data="gridData2">
-   <template slot-scope="scope">
-    <el-table-column property="store_name" label="申请账号" width="150"></el-table-column>
-   </template>
-   <template slot-scope="scope">
-    <el-table-column property="store_bus_number" label="执照号码"></el-table-column>
-     
-   </template>
-   <template slot-scope="scope">
-    <el-table-column property="store_bus_pic" label="执照图片"></el-table-column>
-     
-   </template>
-   <template slot-scope="scope">
-    <el-table-column property="store_bus_addr" label="地址"></el-table-column>
-     
-   </template>
-   <template slot-scope="scope">
-    <el-table-column property="longitude" label="经度"></el-table-column>
-     
-   </template>
-   <template slot-scope="scope">
-    <el-table-column property="latitude" label="纬度"></el-table-column>
-     
-   </template>
-   <template slot-scope="scope">
-    <el-table-column property="store_city" label="城市"></el-table-column>
-     
-   </template>
-   <template slot-scope="scope">
-    <el-table-column property="store_person" label="法人"></el-table-column>
-     
-   </template>
-   <template slot-scope="scope">
-    <el-table-column property="store_phone" label="电话"></el-table-column>
-     
-   </template>
-   <template slot-scope="scope">
-    <el-table-column property="store_avatar" label="头像"></el-table-column>
-     
-   </template>
-   <template slot-scope="scope">
-    <el-table-column property="store_charactor" label="详情"></el-table-column>
-     
-   </template>
-   <template slot-scope="scope">
-    <el-table-column property="store_VIPlevel" label="等级"></el-table-column>
-     
-   </template> <template slot-scope="scope">
-    <p>佣金比例</p>
-     
-   </template> <template slot-scope="scope">
-    <el-table-column property="store_status" label="状态"></el-table-column>
-     
-   </template>
-  
-  </el-table> -->
-
-
-
-
-
-
-<el-dialog
-  title="提示"
-  :visible.sync="dialogVisible"
-  width="30%"
-  :before-close="handleClose" class="tips">
- 
-<p>
-  商店名字：<el-input
+<el-dialog title="增加门店信息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose" class="tips">
+<p>商店名字：<el-input
   placeholder="请输入商店名"
   v-model="input10" class="inputelement" 
   clearable>
-</el-input>
-</p>
-<p>
-   执照号码：<el-input
+</el-input></p>
+<p>执照号码：<el-input
   placeholder="请输入营业执照号码" class="inputelement"
   v-model="input11"
   clearable>
-</el-input>
-</p>
-<p>
-  营业地址：<el-input
+</el-input></p>
+<p>营业地址：<el-input
   placeholder="请输入营业地址" class="inputelement"
   v-model="input12"
   clearable>
 </el-input>
 </p>
-<p>
-  输入经度：<el-input
+<p>输入经度：<el-input
   placeholder="请输入经度" class="inputelement"
   v-model="input13"
   clearable>
@@ -422,7 +299,6 @@
   clearable>
 </el-input>
 </p>
-  
   <div class="block">
     <span class="demonstration">选择VIP等级：</span>
     <el-slider
@@ -430,6 +306,7 @@
       :step="1" :max="5"
       show-stops>
     </el-slider>
+    <!-- el-slider是element-ui的一个组件，step指每一步的变化值，max是最大值，v-model绑定的值可以直接获取 -->
   </div>
 上传营业执照图片：
 <el-upload
@@ -438,6 +315,12 @@
   :on-success="sendpic"
   :on-preview="handlePictureCardPreview"
   :on-remove="handleRemove" title="上传营业执照图片">
+  <!-- 上传图片
+  action填上传图片的文件夹，需要在后台的public下新建一个upload
+  on-success是选择图片确定后会触发的事件
+  on-preview是预览大图时触发事件
+  remove是移除图片时触发
+   -->
   <i class="el-icon-plus"></i>
 </el-upload>
 上传头像：
@@ -449,11 +332,13 @@
 </el-upload>
 <p>
 <el-button type="primary" icon="el-icon-edit"  @click="addW">增加服务员信息</el-button>
+<!-- 增加服务员按钮 -->
 </p>
 
 <!-- 循环div -->
 <div  class="clerk">
   <div v-for="(item, index) in clerk" :key="index">
+    <!-- 循环生成div,clerk是一个空数组 -->
     当前服务员编号：{{index+1}}
 <p>
   服务员姓名：<el-input
@@ -489,6 +374,143 @@
 <el-dialog :visible.sync="uploadavatar">
   <img width="100%" :src="dialogavatarUrl" alt="">
 </el-dialog>
+
+<el-dialog title="修改门店信息" :visible.sync="updateDialog" width="30%" :before-close="handleClose" class="tips">
+<p>商店名字：<el-input
+  placeholder="请输入商店名"
+  v-model="input20" class="inputelement" 
+  clearable>
+</el-input></p>
+<p>执照号码：<el-input
+  placeholder="请输入营业执照号码" class="inputelement"
+  v-model="input21"
+  clearable>
+</el-input></p>
+<p>营业地址：<el-input
+  placeholder="请输入营业地址" class="inputelement"
+  v-model="input22"
+  clearable>
+</el-input>
+</p>
+<p>输入经度：<el-input
+  placeholder="请输入经度" class="inputelement"
+  v-model="input23"
+  clearable>
+</el-input>
+</p>
+
+<p>
+  输入纬度：<el-input
+  placeholder="请输入纬度" class="inputelement"
+  v-model="input24"
+  clearable>
+</el-input>
+</p>
+
+<p>
+  所在城市：<el-input
+  placeholder="请输入城市" class="inputelement"
+  v-model="input25"
+  clearable>
+</el-input>
+</p>
+<p>
+  门店法人：<el-input
+  placeholder="请输入法人姓名" class="inputelement"
+  v-model="input26"
+  clearable>
+</el-input>
+</p>
+<p>
+ 手机号码：<el-input
+  placeholder="请输入号码" class="inputelement"
+  v-model="input27"
+  clearable>
+</el-input>
+</p>
+<p>
+  详情描述：<el-input
+  placeholder="请输入详情描述" class="inputelement"
+  v-model="input28"
+  clearable>
+</el-input>
+</p>
+<p>
+  佣金比例：<el-input
+  placeholder="请输入佣金比例" class="inputelement"
+  v-model="input29"
+  clearable>
+</el-input>
+</p>
+  <div class="block">
+    <span class="demonstration">选择VIP等级：</span>
+    <el-slider
+      v-model="value8"
+      :step="1" :max="5"
+      show-stops>
+    </el-slider>
+    <!-- el-slider是element-ui的一个组件，step指每一步的变化值，max是最大值，v-model绑定的值可以直接获取 -->
+  </div>
+上传营业执照图片：
+<el-upload
+  action="/upload"
+  list-type="picture-card"
+  :on-success="sendpic"
+  :on-preview="handlePictureCardPreview"
+  :on-remove="handleRemove" title="上传营业执照图片">
+  <!-- 上传图片
+  action填上传图片的文件夹，需要在后台的public下新建一个upload
+  on-success是选择图片确定后会触发的事件
+  on-preview是预览大图时触发事件
+  remove是移除图片时触发
+   -->
+  <i class="el-icon-plus"></i>
+</el-upload>
+上传头像：
+<el-upload
+  action="/upload"
+  list-type="picture-card"
+  :on-success="sendavatar" title="上传法人头像">
+  <i class="el-icon-plus"></i>
+</el-upload>
+<p>
+<el-button type="primary" icon="el-icon-edit"  @click="updateW">增加服务员信息</el-button>
+<!-- 增加服务员按钮 -->
+</p>
+<!-- 循环div -->
+<div  class="clerk">
+  <div v-for="(item, index) in clerk2" :key="index">
+    <!-- 循环生成div,clerk是一个空数组 -->
+    当前服务员编号：{{index+1}}
+<p>
+  服务员姓名：<el-input
+  placeholder="请输入服务员名"
+  v-model="clerk2[index].clerkname" class="inputelement" 
+  clearable>
+</el-input>
+</p>
+ <p>
+  服务员等级：<el-input
+  placeholder="请输入服务员等级"
+  v-model="clerk2[index].clerkgrade" class="inputelement" 
+  clearable>
+</el-input>
+</p>
+ <p>
+  服务员手机号：<el-input
+  placeholder="请输入服务员手机号"
+  v-model="clerk2[index].clerkphone" class="inputelement" 
+  clearable>
+</el-input>
+</p>
+  </div>
+</div>
+  <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="updateBtn" >确 定</el-button>
+    <el-button @click="cancleBtn">取 消</el-button>
+  </span>
+</el-dialog>
+
    </el-container>
 </template>
 
@@ -500,6 +522,7 @@ export default {
   },
   data() {
     return {
+      id:"",
       dialogImageUrl: "",
       dialogavatarUrl: "",
       uploadpic: false,
@@ -509,6 +532,7 @@ export default {
       gridData2: [],
       dialogVisible: false,
       innerVisible: false,
+      updateDialog:false,
       input10: "",
       input11: "",
       input12: "",
@@ -519,18 +543,102 @@ export default {
       input17: "",
       input18: "",
       input19: "",
+      input20: "",
+      input21: "",
+      input22: "",
+      input23: "",
+      input24: "",
+      input25: "",
+      input26: "",
+      input27: "",
+      input28: "",
+      input29: "",
       value7: 0,
+      value8: 0,
       Mname: "",
       Mphone: "",
       Mlevel: "",
       search:"",
       // 初始化服务员信息
-      clerk: []
+      clerk: [],
+      clerk2: []
     };
   },
   methods: {
+    back(scope,row){
+      let closeId = row._id
+      axios({
+        method:"put",
+        url:"/platformStores/"+closeId,
+        data:{
+            store_status:"已审核"
+        }
+      }).then(data=>{
+        if(data){
+           this.$message({
+            type: 'success',
+            message: '店铺已恢复'
+          });
+           this.showExamine();
+          this.showExamine2();
+        }
+      })
+    },
     showclerk(row){
       console.log(row)
+    },
+    updateBtn(){
+      console.log(this.input20)
+      axios({
+        method:"put",
+        url:"/platformStores/"+this.id,
+        data:{
+           store_name: this.input20,
+          store_bus_number: this.input21,
+          store_bus_addr: this.input22,
+          longitude: this.input23,
+          latitude: this.input24,
+          store_city: this.input25,
+          store_person: this.input26,
+          store_phone: this.input27,
+          store_charactor: this.input28,
+          store_money: this.input29,
+          store_bus_pic: this.dialogImageUrl,
+          store_status: "已审核",
+          store_avatar: this.dialogavatarUrl,
+          store_VIPlevel: this.value8,
+          store_clerk:this.clerk2
+        }
+      }).then(data=>{
+        console.log(data);
+         this.$message({
+            type: 'success',
+            message: '修改成功！'
+          });
+       
+       this.updateDialog=false;
+       this.showExamine();
+          this.showExamine2();
+      })
+    },
+    handleDelete(scope,row){
+      let closeId = row._id
+      axios({
+        method:"put",
+        url:"/platformStores/"+closeId,
+        data:{
+            store_status:"已关闭"
+        }
+      }).then(data=>{
+        if(data){
+           this.$message({
+            type: 'warning',
+            message: '提示：店铺已关闭'
+          });
+           this.showExamine();
+          this.showExamine2();
+        }
+      })
     },
     // 点击事件
     addW() {
@@ -539,12 +647,51 @@ export default {
         clerkgrade: "",
         clerkphone: ""
       });
+      // 每点击一次增加服务员都会往clerk里push一个对象，clerk的index就会+1,就会出现一个循环的DIV
       console.log(this.clerk)
     },
+    updateW(){
+ this.clerk2.push({
+        clerkname: "",
+        clerkgrade: "",
+        clerkphone: ""
+      });
+    },
+    cancleBtn(){
+this.updateDialog=false;
+  this.input20="",
+  this.input21="",
+  this.input22="",
+  this.input23="",
+  this.input24="",
+  this.input25="",
+  this.input26="",
+  this.input27="",
+  this.input28="",
+  this.input29=""
+  this.clerk2=[]
+    },
+handleEdit(scope,row){
+  console.log(row)
+  this.updateDialog=true;
+  this.input20=row.store_name,
+  this.input21=row.store_bus_number,
+  this.input22=row.store_bus_addr,
+  this.input23=row.longitude,
+  this.input24=row.latitude,
+  this.input25=row.store_city,
+  this.input26=row.store_person,
+  this.input27=row.store_phone,
+  this.input28=row.store_charactor,
+  this.input29=row.store_money
+  this.clerk2=row.store_clerk,
+  this.id=row._id
+},
     sendpic(file, fileList) {
       this.dialogImageUrl = file;
       console.log(this.dialogImageUrl);
     },
+    // 确定图片的函数，传参有一个file，file就是传的图片的url
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
@@ -558,7 +705,10 @@ export default {
         url: "/platformStores/refuse/" + row._id
       }).then(data => {
         if (data) {
-          alert("已拒绝用户的申请");
+           this.$message({
+            type: 'success',
+            message: '已拒绝用户的申请'
+          });
           this.showExamine();
           this.showExamine2();
         }
@@ -588,12 +738,18 @@ export default {
         }
       }).then(data => {
         if (data) {
-          alert("添加成功！");
+            this.$message({
+            type: 'success',
+            message: '添加成功！'
+          });
           this.dialogVisible = false;
            this.showExamine();
           this.showExamine2();
         } else {
-          alert("添加失败");
+           this.$message({
+            type: 'error',
+            message: '添加失败'
+          });
           this.dialogVisible = false;
            this.showExamine();
           this.showExamine2();
@@ -640,7 +796,10 @@ export default {
         }).then(({ data }) => {
           this.showExamine();
           this.showExamine2();
-          alert("此用户已通过！");
+           this.$message({
+            type: 'success',
+            message: '此用户已通过！'
+          });
         });
       });
     },

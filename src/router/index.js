@@ -9,10 +9,9 @@ import StoreGoods from "../store_manage/goods_manage/index.vue"
 // import SupplierGoods from "../store_manage/supplier_goods/index.vue"
 import Petmaster from "../platform/Petmaster/index.vue"
 import Login from "../platform/Login/index.vue"
-import Register from "../platform/Register/index.vue"
 import StoresManage from "../platform/StoresManage/index.vue"
 import SuppilerGoods from "../store_manage/suppiler_goods/index.vue"
-import Login from "../platform/Login"
+import SupplierManage from "../platform/SupplierManage/index.vue"
 import Register from "../platform/Register"
 import Suppiler from "../suppiler/index.vue";
 import Service from "../store_manage/service/index.vue";
@@ -41,6 +40,10 @@ export default new Router({
         , {
             path: '/manage/StoresManage',
             component: StoresManage
+        }
+        , {
+            path: '/manage/SupplierManage',
+            component: SupplierManage
         }
     ]
     }, {

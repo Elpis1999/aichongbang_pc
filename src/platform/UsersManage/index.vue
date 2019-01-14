@@ -157,7 +157,7 @@
        <template slot="header" slot-scope="scope">
           <el-input v-model="search" size="mini" placeholder="输入关键字搜索" style="500px"/>
         </template>
-        <el-table-column type="selection" width="55"></el-table-column>
+        
     <el-table-column
       label="姓名"
       width="180">
