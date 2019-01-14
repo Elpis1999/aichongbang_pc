@@ -152,9 +152,24 @@ export default {
           supId: this.id
         }
       }).then(() => {
+        this.supp_gd_brand = "";
+        this.supp_gd_title = "";
+        this.supp_gd_type = "";
+        this.supp_gd_material = "";
+        this.made = "";
+        this.supp_gd_appl = "";
+        this.supp_gd_exc = "";
+        this.supp_gd_install = "";
+        this.supp_gd_taste = "";
+        this.supp_gd_special = "";
+        this.supp_gd_from = "";
+        this.supp_gd_factor = "";
+        this.supp_gd_keepquality = "";
+        this.supp_gd_specialinfo = "";
+        this.supp_gd_price = "";
+        this.bigpic = [];
+        this.smallpic = [];
         this.dialogFormVisible = false;
-        // console.log(data.status);
-        // this.show();
         this.setSupGoods();
       });
     },

@@ -17,11 +17,23 @@ import Suppiler from "../suppiler/index.vue";
 import Service from "../store_manage/service/index.vue";
 import Order from "../store_manage/order/index.vue";
 import StoreStatistics from "../store_manage/store_statistics/index.vue"
+import SuppilerTj from "../suppilertj/index.vue"
 Vue.use(Router);
 
 export default new Router({
     mode: 'history',
     routes: [{
+        path: "/",
+        component: Login
+    }, {
+        path: "/register",
+        component: Register
+    },
+    {
+        path: "/login",
+        component: Login
+    },
+    {
         path: '/manage',
         component: Manage,
         children: [{
@@ -44,7 +56,28 @@ export default new Router({
         , {
             path: '/manage/SupplierManage',
             component: SupplierManage
+        },
+        {
+            path: '/manage/supgoods',
+            component: Supgoods
+        },
+        {
+            path: '/manage/storegoods',
+            component: StoreGoods
+        }, {
+            path: '/manage/suppilergoods',
+            component: SuppilerGoods
+        },
+        {
+            path: '/manage/suppiler',
+            component: Suppiler
+        },
+        {
+            path: '/manage/suppilertj',
+            component: SuppilerTj
         }
+        ]
+    }
     ]
     }, {
         path: '/',

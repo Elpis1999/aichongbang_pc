@@ -37,11 +37,11 @@ export default {
     this.setSupGoods();
   },
   computed: {
-    ...mapState(["supGoods", "SupGood"])
+    ...mapState(["supGoods", "SupGood", "id"])
   },
   methods: {
     ...mapActions(["setSupGood", "setSupGoods"]),
-    ...mapMutations(["setUpdateVisible", "setSupGood", "setSupGoods"]),
+    ...mapMutations(["setUpdateVisible"]),
     showById(id) {
       this.setSupGood(id);
       this.setUpdateVisible(true);

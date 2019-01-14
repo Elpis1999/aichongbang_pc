@@ -34,8 +34,8 @@
             </template>
             <template v-if="suppiler">
               <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>
-              <el-menu-item index="/manage/supgoods">供应商货品管理</el-menu-item>
-              <el-menu-item index="3-3">统计</el-menu-item>
+              <el-menu-item :disabled="disabled" index="/manage/supgoods">供应商货品管理</el-menu-item>
+              <el-menu-item :disabled="disabled" index="/manage/suppilertj">统计</el-menu-item>
             </template>
           </el-menu>
         </el-col>
@@ -48,18 +48,28 @@
 </template>
 
 <script>
+// let useid;
+// let suppid;
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
-const { mapMutations, mapState } = createNamespacedHelpers("commonModule");
+const { mapState, mapMutations: supplierMapMutation } = createNamespacedHelpers(
+  "supgoodsModule"
+);
+const obj = createNamespacedHelpers("commonModule");
+const commonMapState = obj.mapState;
+const { mapMutations } = createNamespacedHelpers("commonModule");
 export default {
   data() {
     return {
       userName: "",
-      storeStatus: true
+      storeStatus: true,
+      useid: "",
+      suppid: ""
     };
   },
   computed: {
-    ...mapState(["user", "store"]),
+    ...mapState(["disabled"]),
+    ...commonMapState(["user", "store", "suppiler"]),
     platform() {
       if (this.user.permissions == 1) {
         return true;
@@ -77,8 +87,51 @@ export default {
   },
   methods: {
     ...mapMutations(["setUser", "setStore", "setSuppiler"]),
+    ...supplierMapMutation(["setDisabled"]),
+    getSession() {
+      axios({
+        method: "get",
+        url: "/getSession"
+      }).then(({ data }) => {
+        console.log(data, "data118");
+        this.useid = data._id;
+      });
+    },
+    panduan() {
+      axios({
+        method: "get",
+        url: "/suppiler"
+      }).then(({ data }) => {
+        // console.log(data,"747")
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].supp_number == this.useid) {
+            this.suppid = data[i]._id;
+            axios({
+              method: "get",
+              url: "/suppiler/" + this.suppid
+            }).then(({ data }) => {
+              // console.log(data, "通过id查到的数据");
+              if (
+                data.supp_add == "" ||
+                data.supp_bus_pic == "" ||
+                data.supp_name == "" ||
+                data.supp_note == "" ||
+                data.supp_phone == "" ||
+                data.supp_web == ""
+              ) {
+                alert("请完善供应商详情");
+                this.setDisabled(true);
+              } else {
+                // console.log("不进")
+                this.setDisabled(false);
+              }
+            });
+          }
+        }
+      });
+    },
+
     cancellation() {
-      this.setStore({});
       axios({
         method: "post",
         url: "/removeSession"
@@ -100,21 +153,30 @@ export default {
         }
       });
     }
+
+    //   ,watch: {
+    //   // 监听路由跳转。
+    //   $route(newRoute, oldRoute) {
+    //     console.log('watch', newRoute, oldRoute)
+    //     this.$router.replace("/login");
+    //   },
+    // },
   },
   created() {
-    axios({
-      method: "get",
-      url: "/getSession"
-    }).then(({ data }) => {
-      if (data) {
-      
-        this.userName = data.userPhone;
-        this.setUser(data);
-        this.whetherApplyStore();
-      } else {
-        this.$router.replace("/login");
-      }
-    });
+    this.getSession(),
+      this.panduan(),
+      axios({
+        method: "get",
+        url: "/getSession"
+      }).then(({ data }) => {
+        if (data) {
+          this.userName = data.userPhone;
+          this.setUser(data);
+          this.whetherApplyStore();
+        } else {
+          this.$router.replace("/login");
+        }
+      });
   }
 };
 </script>

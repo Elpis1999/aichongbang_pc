@@ -1,15 +1,19 @@
 <template>
   <div>
     <SupGoodsAdd></SupGoodsAdd>
+    <SupSearch></SupSearch>
+    <SupUpdate></SupUpdate>
     <SupGoodsList></SupGoodsList>
-    <SupGoodsUpdate></SupGoodsUpdate>
+    <SupPage></SupPage>
   </div>
 </template>
 <script>
 import axios from "axios";
 import SupGoodsAdd from "./supGoodsAdd";
 import SupGoodsList from "./supGoodsList";
-import SupGoodsUpdate from "./supUpdate";
+import SupUpdate from "./supUpdate";
+import SupPage from "./supGoodsPage";
+import SupSearch from "./supGoodsSearch";
 
 import { createNamespacedHelpers } from "vuex";
 const { mapActions, mapMutations } = createNamespacedHelpers("supgoodsModule");
@@ -31,8 +35,8 @@ export default {
         method: "get",
         url: "/getSession"
       }).then(({ data }) => {
-        let supId = data.user._id;
-        console.log(data.user);
+        let supId = data._id;
+        // console.log(data.user);
         axios({
           method: "get",
           url: "/suppiler"
@@ -50,7 +54,10 @@ export default {
   },
   components: {
     SupGoodsAdd,
-    SupGoodsList
+    SupGoodsList,
+    SupUpdate,
+    SupPage,
+    SupSearch
   }
 };
 </script>
