@@ -10,13 +10,21 @@
 </template>
 
 <script>
-import Statistics from "./statistics/index";
+import Statistics from "./Statistics";
 import SalesVolume from "./sales_volume/index";
+import axios from "axios";
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   data() {
     return {
       type: "销量统计"
     };
+  },
+  computed: {
+    ...mapState("commonModule", ["store", "user"])
+  },
+  methods: {
+    ...mapMutations("commonModule", ["setUser", "setStore"])
   },
   components: {
     Statistics,

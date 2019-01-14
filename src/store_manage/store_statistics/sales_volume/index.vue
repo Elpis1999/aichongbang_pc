@@ -1,8 +1,20 @@
 <template>
   <div style="width:100%">
-    <el-switch v-model="value3" active-text="服务近6个月的月销售额" inactive-text="商品近6个月的月销售额" style="margin-top:30px;margin-bottom:30px" @change="num" ></el-switch>
-    <div class="total"  style="width:1000px;height:460px" id="myChart" ref="myChart" v-show="open"></div>
-    <div class="totals" style="width:1000px;height:460px" id="myCharts" ref="myCharts" v-show="opens"></div>
+    <el-switch
+      v-model="value3"
+      active-text="服务近6个月的月销售额"
+      inactive-text="商品近6个月的月销售额"
+      style="margin-top:30px;margin-bottom:30px"
+      @change="num"
+    ></el-switch>
+    <div class="total" style="width:1000px;height:460px" id="myChart" ref="myChart" v-show="open"></div>
+    <div
+      class="totals"
+      style="width:1000px;height:460px"
+      id="myCharts"
+      ref="myCharts"
+      v-show="opens"
+    ></div>
   </div>
 </template>
 
@@ -36,30 +48,28 @@ export default {
           }
         ]
       },
-      options :{
-               title:{
-                 text:"服务销售统计图"
-               },
-            xAxis: {
-            
-                data: []
-            },
-            yAxis: {
-                
-            },
-            series: [{
-                name:"mm",
-                data: [],
-                type: 'bar'
-            }]
-   }
+      options: {
+        title: {
+          text: "服务销售统计图"
+        },
+        xAxis: {
+          data: []
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "mm",
+            data: [],
+            type: "bar"
+          }
+        ]
+      }
     };
   },
   mounted() {
-      this.$nextTick(function(){
-        this.shows();
-      })
-         
+    this.$nextTick(function() {
+      this.shows();
+    });
   },
   methods: {
     show() {
@@ -84,16 +94,17 @@ export default {
             url: `/count/${data[0]._id}`,
             method: "get"
           }).then(({ data }) => {
-            this.option.xAxis.data=data.monthNum
-            this.option.series[0].data=data.monthgoods
-            myChart.setOption(this.option,true);
+            console.log("data1", data);
+            this.option.xAxis.data = data.monthNum;
+            this.option.series[0].data = data.monthgoods;
+            myChart.setOption(this.option, true);
           });
         });
       });
     },
     shows() {
-      this.opens = true
-      this.open = false
+      this.opens = true;
+      this.open = false;
       let myChart = echarts.init(this.$refs.myCharts);
       axios({
         method: "get",
@@ -113,9 +124,10 @@ export default {
             url: `/count/${data[0]._id}`,
             method: "get"
           }).then(({ data }) => {
-            this.options.xAxis.data=data.monthNum
-            this.options.series[0].data=data.monthserve
-            myChart.setOption(this.options,true);
+            console.log("data2", data);
+            this.options.xAxis.data = data.monthNum;
+            this.options.series[0].data = data.monthserve;
+            myChart.setOption(this.options, true);
           });
         });
       });
@@ -123,9 +135,9 @@ export default {
     num() {
       console.log(this.value3);
       if (this.value3 == false) {
-        this.show()
-      }else if (this.value3 == true) {
-        this.shows()
+        this.show();
+      } else if (this.value3 == true) {
+        this.shows();
       }
     }
   }
@@ -133,5 +145,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

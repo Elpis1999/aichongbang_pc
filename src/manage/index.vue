@@ -24,7 +24,7 @@
                 <el-menu-item index="/manage/SupplierManage">供应商审批</el-menu-item>
                 <el-menu-item index="1-4">统计</el-menu-item>
             </template>
-            <template v-if="storeDisabled">
+            <template v-if="user.permissions == 2 ">
               <el-menu-item index="/manage/storeapplication" :disabled="!storeStatus">门店申请</el-menu-item>
               <el-menu-item index="/manage/storegoods" :disabled="storeStatus">商品管理</el-menu-item>
               <el-menu-item index="/manage/suppilergoods" :disabled="storeStatus">供应商货品</el-menu-item>
@@ -73,13 +73,6 @@ export default {
       } else {
         return false;
       }
-    },
-    storeDisabled() {
-      if (this.user.permissions == 2) {
-        return true;
-      } else {
-        return false;
-      }
     }
   },
   methods: {
@@ -101,8 +94,8 @@ export default {
           userId: this.user._id
         }
       }).then(({ data }) => {
-        this.setStore(data[0]);
-        if (data.length > 0) {
+        if (data.length > 0 && data[0].store_status === "已审核") {
+          this.setStore(data[0]);
           this.storeStatus = false;
         }
       });
@@ -123,13 +116,6 @@ export default {
       }
     });
   }
-  //   ,watch: {
-  //   // 监听路由跳转。
-  //   $route(newRoute, oldRoute) {
-  //     console.log('watch', newRoute, oldRoute)
-  //     this.$router.replace("/login");
-  //   },
-  // },
 };
 </script>
 
