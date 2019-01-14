@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button class="add-btn" type="primary" icon="el-icon-edit" circle @click="updata"></el-button>
+    <el-button :disabled="disabled" class="add-btn" type="primary" icon="el-icon-edit" circle @click="updata"></el-button>
     <el-dialog title="供应商详情" :visible.sync="dialogVisible" width="30%">
       <el-form status-icon ref="addForm" label-width="100px">
         <el-form-item label="供应商名称" prop="supp_name">
@@ -18,7 +18,7 @@
         <el-form-item label="供应商备注" prop="supp_note">
           <el-input v-model="addForm.supp_note" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="供应商上传图片" prop="supp_note">
+        <el-form-item label="供应商上传图片" prop="supp_note" >
           <el-upload
             class="avatar-uploader"
             action="/upload"
@@ -47,6 +47,7 @@ export default {
 
   data() {
     return {
+      disabled:false,
       dialogVisible: false,
       addForm: {
         supp_name: "",
@@ -54,7 +55,9 @@ export default {
         supp_phone: "",
         supp_web: "",
         supp_note: "",
-        supp_bus_pic: ""
+        supp_bus_pic: "",
+         suppid: "",
+      useid: ""
       },
       imageUrl: ""
     };
@@ -62,6 +65,45 @@ export default {
 
   methods: {
      ...mapMutations(["setDisabled"]),
+       getSession() {
+      axios({
+        method: "get",
+        url: "/getSession"
+      }).then(({ data }) => {
+        console.log(data, "data119");
+        this.useid = data._id;
+      });
+    },
+    panduan(){
+            axios({
+        method: "get",
+        url: "/suppiler"
+      }).then(({ data }) => {
+        // console.log(data,"747")
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].supp_number == this.useid) {
+            this.suppid = data[i]._id;
+            axios({
+              method: "get",
+              url: "/suppiler/" + this.suppid
+            }).then(({ data }) => {
+              if (
+                data.supp_add == "" ||
+                data.supp_bus_pic == "" ||
+                data.supp_name == "" ||
+                data.supp_note == "" ||
+                data.supp_phone == "" ||
+                data.supp_web == ""
+              ) {
+                 console.log(0)
+              } else {
+                 this.disabled=true;
+              }
+            });
+          }
+        }
+      });
+      },
     add() {
       console.log(this.suppiler,"suppilerid")
       axios({
@@ -71,6 +113,7 @@ export default {
       }).then(({ data }) => {
         console.log(data, "data");
         this.show();
+         alert("正在审核中，请稍后");
         if (
           this.addForm.supp_add == "" ||
           this.addForm.supp_bus_pic == "" ||
@@ -79,23 +122,11 @@ export default {
           this.addForm.supp_phone == "" ||
           this.addForm.supp_web == ""
         ) {
-           this.setDisabled(true);
            alert("请完善供应商详情");
-        } else {
-          this.setDisabled(false);
-        }
-        this.dialogVisible = false;
-        // (this.addForm.supp_name = ""),
-        // (this.addForm.supp_add = ""),
-        // (this.addForm.supp_phone = ""),
-        // (this.addForm.supp_web = ""),
-        // (this.addForm.supp_note = ""),
-        // (this.addForm.supp_bus_pic = ""),
-        // (this.imageUrl = "");
+        }   
+        this.dialogVisible = false;     
       });
-      // location.reload()
-      // this.$router.push("../manage/suppiler")
-    },
+          },
     updata() {
       this.dialogVisible = true;
       console.log(this, "qqq");
@@ -112,6 +143,7 @@ export default {
         this.addForm.supp_bus_pic = data.supp_bus_pic;
         this.imageUrl = "/upload/" + data.supp_bus_pic;
       });
+      this.disabled=true;
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
@@ -134,7 +166,10 @@ export default {
   },
   created() {
     console.log(this.suppiler, "774");
+    this.getSession();
+    this.panduan();
     this.add();
+    
   }
 };
 </script>

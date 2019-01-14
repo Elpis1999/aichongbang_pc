@@ -80,6 +80,10 @@ export default new Router({
         {
             path: '/manage/order',
             component: Order
+        },
+        {
+          path: "/manage/storestatistics",
+          component: StoreStatistics
         }
         ],
     
