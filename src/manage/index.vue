@@ -109,7 +109,6 @@ export default {
               method: "get",
               url: "/suppiler/" + this.suppid
             }).then(({ data }) => {
-              // console.log(data, "通过id查到的数据");
               if (
                 data.supp_add == "" ||
                 data.supp_bus_pic == "" ||
@@ -121,8 +120,13 @@ export default {
                 alert("请完善供应商详情");
                 this.setDisabled(true);
               } else {
-                // console.log("不进")
-                this.setDisabled(false);
+                if (data.supp_status == "已审核") {
+                  this.setDisabled(false);
+                } else {
+                  // console.log("不进")
+                   alert("正在审核中，请稍后");
+                  this.setDisabled(true);
+                }
               }
             });
           }

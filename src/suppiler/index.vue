@@ -43,7 +43,6 @@ export default {
         method: "get",
         url: "/suppiler"
       }).then(({ data }) => {
-        // console.log(data, "data88");
         for (let i = 0; i < data.length; i++) {
           if (data[i].supp_number == this.useid) {
             this.suppid = data[i]._id;
@@ -85,25 +84,6 @@ export default {
           });
         }
       });
-      // axios({
-      //   method: "get",
-      //   url: "/suppiler/" + this.suppid
-      // }).then(({ data }) => {
-      //   console.log(data, "通过id查到的数据55");
-      //   if (
-      //     data.supp_add == "" ||
-      //     data.supp_bus_pic == "" ||
-      //     data.supp_name == "" ||
-      //     data.supp_note == "" ||
-      //     data.supp_phone == "" ||
-      //     data.supp_web == ""
-      //   ) {
-      //     this.setDisabled(true);
-      //     alert("请完善供应商详情");
-      //   } else {
-      //     this.setDisabled(false);
-      //   }
-      // });
     }
   },
   created() {
