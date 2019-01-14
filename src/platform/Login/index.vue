@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" >
     <el-row class="box">
       <el-col :span="24">
         <el-card shadow="always">
@@ -24,11 +24,11 @@
                 v-model="ruleForm2.pass"
                 autocomplete="on"
                 placeholder="请输入密码"
+                @keyup.enter.native="submitForm('ruleForm2')"
               ></el-input>
             </el-form-item>
-
             <el-form-item class="btnBox">
-              <el-button type="primary" @click="submitForm('ruleForm2')">登陆</el-button>
+              <el-button type="primary" @click="submitForm('ruleForm2')" >登陆</el-button>
               <el-button @click="resetForm('ruleForm2')">注册</el-button>
             </el-form-item>
           </el-form>
@@ -62,7 +62,6 @@ export default {
         callback();
       }
     };
-
     return {
       labelPosition: "right",
       ruleForm2: {

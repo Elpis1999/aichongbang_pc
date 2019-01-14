@@ -182,6 +182,7 @@ export default {
     },
     propOption() {
       return {
+        backgroundColor: "'rgba(128, 128, 128, 0.5)",
         title: {
           text: "2018销售额占比",
           subtext: "数据非常真实",

@@ -60,9 +60,9 @@
           <el-form-item label="积分" prop="pm_integral">
             <el-input v-model="formLabelAlign.pm_integral"></el-input>
           </el-form-item>
-          <el-form-item label="宠物" prop="pm_ownpet">
+          <!-- <el-form-item label="宠物" prop="pm_ownpet">
             <el-input v-model="formLabelAlign.pm_ownpet"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="图片" prop="pm_pic">
             <el-upload
               action="/upload"
@@ -171,21 +171,20 @@
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column label="宠物" align="center" width="150">
+          <!-- <el-table-column label="宠物" align="center" width="150">
             <template slot-scope="scope">
               <el-popover trigger="hover" placement="top">
                 <p>详情: {{ scope.row.pm_ownpet}}</p>
-                <!-- <p>种类: {{ scope.row.pm_ownpet}}</p>
+                <p>种类: {{ scope.row.pm_ownpet}}</p>
                 <p>颜色: {{scope.row.pm_ownpet }}</p>
                 <p>出生日期: {{ scope.row.pm_ownpet }}</p>
-                <p>性格: {{ scope.row.pm_ownpet }}</p> -->
+                <p>性格: {{ scope.row.pm_ownpet }}</p>
                 <div slot="reference" class="name-wrapper">
-                  <!-- <el-tag size="medium">{{scope.row.pm_ownpet}}</el-tag> -->
-                  <!-- <div>{{scope.row.pm_ownpet}}</div> -->
+                  <el-tag size="medium">{{scope.row.pm_ownpet}}</el-tag>
                 </div>
               </el-popover>
             </template>
-          </el-table-column>
+          </el-table-column> -->
 
           <el-form :label-position="labelPosition" label-width="50px" :model="formLabelAlign">
             <el-form-item label="电话" prop="pm_phone">

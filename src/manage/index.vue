@@ -57,13 +57,7 @@ export default {
       storeStatus: true
     };
   },
-  // beforeRouteLeave(to, from, next) {
-  //   if (confirm("确定离开吗？") == true) {
-  //     next(); //跳转到另一个路由
-  //   } else {
-  //     next(false); //不跳转
-  //   }
-  // },
+ 
   computed: {
     ...mapState(["user", "store"]),
     platform() {
@@ -128,17 +122,12 @@ export default {
       }
     });
   }
-  //   ,watch: {
-  //   // 监听路由跳转。
-  //   $route(newRoute, oldRoute) {
-  //     console.log('watch', newRoute, oldRoute)
-  //     this.$router.replace("/login");
-  //   },
-  // },
+ 
 };
 </script>
 
 <style scoped>
+
 .el-footer {
   background-color: #b3c0d1;
   color: #333;
