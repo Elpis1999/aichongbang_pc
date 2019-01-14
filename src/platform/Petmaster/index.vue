@@ -65,10 +65,11 @@
           </el-form-item>
           <el-form-item label="图片" prop="pm_pic">
             <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="/upload"
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
+              :on-success="uploadPic"
             >
               <i class="el-icon-plus"></i>
             </el-upload>
@@ -93,19 +94,15 @@
       )"
         style="width: 100%"
       >
-      
-
         <el-table-column align="left" class="search">
           <template slot="header" slot-scope="scope">
-          <el-button type="primary" icon="el-icon-circle-plus" @click="dialogVisible = true">添加</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus" @click="dialogVisible = true">添加</el-button>
             <div class="btnSearch">
-              <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
+              <el-input v-model="search" size="mini" placeholder="输入关键字搜索"/>
             </div>
           </template>
 
-          <el-table-column type="selection" width="55"></el-table-column>
-
-          <el-table-column   align="center" label="电话" width="150">
+          <el-table-column align="center" label="电话" width="150">
             <template slot-scope="scope">
               <el-popover placement="top">
                 <div slot="reference" class="name-wrapper">
@@ -114,7 +111,7 @@
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column  align="center" label="姓名" width="100">
+          <el-table-column align="center" label="姓名" width="100">
             <template slot-scope="scope">
               <el-popover placement="top">
                 <div slot="reference" class="name-wrapper">
@@ -123,13 +120,18 @@
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column label="昵称" align="center"  width="150">
+          <el-table-column label="昵称" align="center" width="150">
             <template slot-scope="scope">
               <el-popover placement="top">
                 <div slot="reference" class="name-wrapper">
                   <el-tag size="medium">{{ scope.row.pm_nickname}}</el-tag>
                 </div>
               </el-popover>
+            </template>
+          </el-table-column>
+            <el-table-column prop="pm_pic" label="图片"  width="100" align ="center">
+            <template slot-scope="scope">
+              <img :src="`http://localhost:3000/upload/`+ scope.row.pm_pic" alt style="width: 50px;height: 50px">
             </template>
           </el-table-column>
           <el-table-column label="vip卡" align="center" width="100">
@@ -151,7 +153,7 @@
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column label="区域" align="center" width="150">
+          <el-table-column label="区域" align="center" width="100">
             <template slot-scope="scope">
               <el-popover placement="top">
                 <div slot="reference" class="name-wrapper">
@@ -169,29 +171,21 @@
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column label="宠物" align="center" width="150">
+          <!-- <el-table-column label="宠物" align="center" width="150">
             <template slot-scope="scope">
               <el-popover trigger="hover" placement="top">
-                <p>品类: {{ scope.row.name }}</p>
-                <p>种类: {{ scope.row.address }}</p>
-                <p>颜色: {{ scope.row.address }}</p>
-                <p>出生日期: {{ scope.row.address }}</p>
-                <p>性格: {{ scope.row.address }}</p>
+                <p>详情: {{ scope.row.pm_ownpet}}</p>
+                <p>种类: {{ scope.row.pm_ownpet}}</p>
+                <p>颜色: {{scope.row.pm_ownpet }}</p>
+                <p>出生日期: {{ scope.row.pm_ownpet }}</p>
+                <p>性格: {{ scope.row.pm_ownpet }}</p>
                 <div slot="reference" class="name-wrapper">
                   <el-tag size="medium">{{scope.row.pm_ownpet}}</el-tag>
                 </div>
               </el-popover>
             </template>
-          </el-table-column>
-          <!-- <el-table-column label="图片" width="150">
-          <template slot-scope="scope">
-            <el-popover placement="top">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ dialogImageUrl}}</el-tag>
-              </div>
-            </el-popover>
-          </template>
-          </el-table-column>-->
+          </el-table-column> -->
+
           <el-form :label-position="labelPosition" label-width="50px" :model="formLabelAlign">
             <el-form-item label="电话" prop="pm_phone">
               <el-input v-model="formLabelAlign.pm_phone"></el-input>
@@ -222,9 +216,9 @@
             </el-form-item>
           </el-form>
 
-          <el-table-column label="操作"  align="center" > 
+          <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+              <el-button size="mini" disabled @click="handleEdit(scope.$index, scope.row)">修改</el-button>
               <el-button
                 size="mini"
                 type="danger"
@@ -291,7 +285,7 @@ export default {
         pm_address: "",
         pm_area: "",
         pm_integral: "",
-        pm_ownpet: [
+        pm_ownpet: 
           {
             pet_name: "",
             pet_category: "",
@@ -300,24 +294,27 @@ export default {
             pet_birth: "",
             pet_character: ""
           }
-        ]
       },
       tableData: []
+
     };
   },
   created: function() {
-    this.show();
-    console.log("开始渲染：");
+    this.show();""
   },
   methods: {
+    uploadPic(response, file, fileList) {
+      this.dialogImageUrl = file;
+     
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       axios({
         method: "get",
-        url: "petmaster",
+        url: "/petmaster",
         data: {
           page: 1,
-          rows: val
+          rows: 4
         }
       }).then(res => {
         console.log(res);
@@ -325,22 +322,6 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-    },
-    handleRemove(file, fileList) {
-      console.log(
-        "file:",
-        file.url,
-        "fileList:",
-        fileList,
-        "失败：",
-        this.formLabelAlign
-      );
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      console.log("上传成功：", this.dialogImageUrl);
-      this.formLabelAlign.pm_pic = this.dialogImageUrl;
-      this.dialogVisible = true;
     },
     open2() {
       this.$confirm("此操作将永久删除该宠主, 是否继续?", "提示", {
@@ -375,8 +356,9 @@ export default {
         method: "get",
         url: "/petmaster"
       }).then(res => {
-        console.log(res);
         this.tableData = res.data;
+
+        console.log("小猫：",this.tableData[0].pm_ownpet.pet_name)
       });
     },
     handleEdit(index, row) {
@@ -393,7 +375,7 @@ export default {
       let pm_name = this.formLabelAlign.pm_name;
       let pm_nickname = this.formLabelAlign.pm_nickname;
       let pm_vipcard = this.formLabelAlign.pm_vipcard;
-      let pm_pic = this.formLabelAlign.pm_pic;
+      let pm_pic = this.dialogImageUrl.response;
       let pm_address = this.formLabelAlign.pm_address;
       let pm_area = this.formLabelAlign.pm_area;
       let pm_integral = this.formLabelAlign.pm_integral;
@@ -432,14 +414,6 @@ export default {
         })
         .catch(_ => {});
     },
-
-    loadAll() {
-      //   console.log("搜索:", this);
-      return [
-        { value: this.tableData[0].pm_name },
-        { value: this.tableData[1].pm_name }
-      ];
-    },
     querySearchAsync(queryString, cb) {
       var restaurants = this.restaurants;
       var results = queryString
@@ -458,21 +432,17 @@ export default {
         );
       };
     },
-    handleSelect(item) {
-      console.log("aa:", item);
-    }
+    handleSelect(item) {}
   },
   mounted() {
-    console.log("adfa");
-
     this.restaurants = this.loadAll();
   }
 };
 </script>
 <style scoped>
-.btnSearch{
+.btnSearch {
   width: 500px;
   position: absolute;
-  text-align: center
+  text-align: center;
 }
 </style>

@@ -110,9 +110,9 @@ export default {
           let pwd = this.ruleForm2.pass;
           let permissions = this.ruleForm2.resource;
           if (permissions == "供应商管理员") {
-            permissions = 1;
-          } else {
             permissions = 2;
+          } else {
+            permissions = 3;
           }
           axios({
             method: "post",
@@ -124,7 +124,7 @@ export default {
             }
           }).then(res => {
             alert("注册成功");
-              this.$router.push("/")
+              this.$router.push("/login")
           });
         } else {
           console.log("error submit!!");

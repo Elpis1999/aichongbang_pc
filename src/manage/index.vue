@@ -18,18 +18,18 @@
             :router="true"
           >
             <template v-if="platform">
-              <el-menu-item index="1-1">用户管理</el-menu-item>
-              <el-menu-item index="1-2">宠主管理</el-menu-item>
-              <el-menu-item index="1-3">门店管理</el-menu-item>
-              <el-menu-item index="1-4">统计</el-menu-item>
+               <el-menu-item index="/manage/UsersManage">用户管理</el-menu-item>
+                <el-menu-item index="/manage/petmaster">宠主管理</el-menu-item>
+                <el-menu-item index="/manage/StoresManage">门店管理</el-menu-item>
+                <el-menu-item index="/manage/pt_count">统计</el-menu-item>
             </template>
-            <template v-if="user.permissions == 2 ">
+            <template v-if="storeDisabled">
               <el-menu-item index="/manage/storeapplication" :disabled="!storeStatus">门店申请</el-menu-item>
               <el-menu-item index="/manage/storegoods" :disabled="storeStatus">商品管理</el-menu-item>
               <el-menu-item index="/manage/suppilergoods" :disabled="storeStatus">供应商货品</el-menu-item>
-              <el-menu-item index="/manage/service" >服务管理</el-menu-item>
-              <el-menu-item index="/manage/order">订单管理</el-menu-item>
-              <el-menu-item index="/manage/storestatistics" :disabled="storeStatus">统计</el-menu-item>
+              <el-menu-item index="2-4" :disabled="storeStatus">服务管理</el-menu-item>
+              <el-menu-item index="2-5" :disabled="storeStatus">订单管理</el-menu-item>
+              <el-menu-item index="2-6" :disabled="storeStatus">统计</el-menu-item>
             </template>
             <template v-if="suppiler">
               <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>
@@ -57,6 +57,13 @@ export default {
       storeStatus: true
     };
   },
+  // beforeRouteLeave(to, from, next) {
+  //   if (confirm("确定离开吗？") == true) {
+  //     next(); //跳转到另一个路由
+  //   } else {
+  //     next(false); //不跳转
+  //   }
+  // },
   computed: {
     ...mapState(["user", "store"]),
     platform() {
@@ -68,6 +75,13 @@ export default {
     },
     suppiler() {
       if (this.user.permissions == 3) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    storeDisabled() {
+      if (this.user.permissions == 2) {
         return true;
       } else {
         return false;
@@ -95,6 +109,9 @@ export default {
       }).then(({ data }) => {
         if (data.length > 0 && data[0].store_status === "已审核") {
           this.setStore(data[0]);
+        this.setStore(data[0]);
+        }
+        if (data.length > 0) {
           this.storeStatus = false;
         }
       });
@@ -106,6 +123,7 @@ export default {
       url: "/getSession"
     }).then(({ data }) => {
       if (data) {
+        console.log("data",data)
         this.userName = data.userPhone;
         this.setUser(data);
         this.whetherApplyStore();
@@ -114,6 +132,13 @@ export default {
       }
     });
   }
+  //   ,watch: {
+  //   // 监听路由跳转。
+  //   $route(newRoute, oldRoute) {
+  //     console.log('watch', newRoute, oldRoute)
+  //     this.$router.replace("/login");
+  //   },
+  // },
 };
 </script>
 

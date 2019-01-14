@@ -39,7 +39,7 @@
 </template>
 <script>
 import axios from "axios";
-
+import { Message } from "element-ui";
 export default {
   data() {
     var validatePhone = (rule, value, callback) => {
@@ -91,11 +91,19 @@ export default {
             }
           }).then(res => {
             if (res.data.status != 0) {
-              alert("登陆成功");
+              this.$message({
+                showClose: true,
+                message: "登陆成功",
+                type: "success"
+              });
               console.log("session", res);
-              this.$router.push("/manage")
+              this.$router.push("/manage");
             } else {
-              alert("登陆失败");
+              this.$message({
+                showClose: true,
+                message: "登陆失败",
+                type: "error"
+              });
             }
           });
         } else {
@@ -106,7 +114,7 @@ export default {
     },
     resetForm() {
       // this.$refs[formName].resetFields();
-     this.$router.push("/register")
+      this.$router.push("/register");
     }
   }
 };
