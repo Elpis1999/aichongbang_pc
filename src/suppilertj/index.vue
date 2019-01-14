@@ -1,6 +1,6 @@
 <template>
   <div>
-    <suppjinghuo></suppjinghuo>
+    <!-- <suppjinghuo></suppjinghuo> -->
     <SupGoodsSV></SupGoodsSV>
   </div>
 </template>
@@ -8,11 +8,10 @@
 // import axios from "axios";
 import suppjinghuo from "./suppjinghuo.vue";
 import SupGoodsSV from "./supplierSalesVolume";
-import axios from "axios"
-import suppjinghuo from "./suppjinghuo.vue"
+import axios from "axios";
 import echarts from "echarts/lib/echarts";
 // 引入柱状图
-import "echarts/lib/chart/bar"
+import "echarts/lib/chart/bar";
 import "echarts/lib/chart/pie";
 import "echarts/lib/chart/scatter";
 // 引入提示框和标题组件

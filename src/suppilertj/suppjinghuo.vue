@@ -1,7 +1,7 @@
 <template>
-      <div>
-         <div id="myChart" :style="{width: '800px', height: '500px'}"></div>
-    </div>
+  <div>
+    <div id="myChart" :style="{width: '600px', height: '500px'}"></div>
+  </div>
 </template>
 <script>
 let echarts = require("echarts/lib/echarts");
@@ -36,7 +36,7 @@ export default {
     };
   },
   mounted() {
-    this.showChart();
+    // this.showChart();
   },
   methods: {
     getSession() {
@@ -44,7 +44,7 @@ export default {
         method: "get",
         url: "/getSession"
       }).then(({ data }) => {
-        console.log(data, "data000");
+        // console.log(data, "data000");
         this.useid = data._id;
       });
     },
@@ -54,10 +54,10 @@ export default {
         url: "/suppiler"
       }).then(({ data }) => {
         for (let i = 0; i < data.length; i++) {
-          console.log("qqq7", data[i].supp_number, this.useid);
+          // console.log("qqq7", data[i].supp_number, this.useid);
           if (data[i].supp_number == this.useid) {
             this.suppid = data[i]._id;
-            console.log(this.suppid, "iddd8");
+            // console.log(this.suppid, "iddd8");
             axios({
               method: "get",
               url: "/suppjinghuo",
@@ -65,8 +65,8 @@ export default {
                 suppid: this.suppid
               }
             }).then(({ data }) => {
-              console.log(data, "通过id查到的数据tt");
-             
+              // console.log(data, "通过id查到的数据tt");
+
               // console.log(this.shuju, "统计数据");
               let arr1 = [];
               let arr2 = [];
@@ -74,8 +74,8 @@ export default {
                 arr1.push(data[i].name);
                 arr2.push(data[i].number);
               }
-              console.log(arr1, "arr1");
-              console.log(arr2, "arr2");
+              // console.log(arr1, "arr1");
+              // console.log(arr2, "arr2");
               // console.log("chart");
               let myChart = echarts.init(document.getElementById("myChart"));
               myChart.setOption({
@@ -106,7 +106,7 @@ export default {
   created() {
     this.getSession();
     this.show();
-    this.showChart();
+    // this.showChart();
   },
   components: {}
 };

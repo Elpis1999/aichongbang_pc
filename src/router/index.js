@@ -34,9 +34,6 @@ export default new Router({
         }, {
             path: '/manage/supgoods',
             component: Supgoods
-        }, {
-            path: '/manage/SupGoodsTJ',
-            component: SupGoodsTJ
         },
         {
             path: '/manage/storegoods',
@@ -46,36 +43,14 @@ export default new Router({
             component: SuppilerGoods
         },
         {
-            path: '/manage',
-            component: Manage,
-            children: [{
-                    path: '/manage/storeapplication',
-                    component: StoreApplication
-
-                }, {
-                    path: '/manage/supgoods',
-                    component: Supgoods
-                },
-                {
-                    path: '/manage/storegoods',
-                    component: StoreGoods
-                }, {
-                    path: '/manage/suppilergoods',
-                    component: SuppilerGoods
-                },
-                {
-                    path: '/manage/suppiler',
-                    component: Suppiler
-                },
-                {
-                    path: '/manage/suppilertj',
-                    component: SuppilerTj
-                }
-            ]
-
+            path: '/manage/suppiler',
+            component: Suppiler
+        },
+        {
+            path: '/manage/suppilertj',
+            component: SuppilerTj
         }
         ]
-
     }
     ]
 })
