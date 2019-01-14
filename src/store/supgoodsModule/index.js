@@ -3,7 +3,6 @@ export default {
   namespaced: true,
   state: {
     id: "",
-    disabled: true,
     SupGood: {},
     supGoods: [],
     UpdateVisible: false,
@@ -13,7 +12,8 @@ export default {
     smallpic: [],
     pagination: {},
     type: "",
-    value: ""
+    value: "",
+    disabled: true
   },
   mutations: {
     setId(state, id) {
@@ -22,7 +22,6 @@ export default {
     setDisabled(state, disabled) {
       state.disabled = disabled;
     },
-
     // 储存加页码的数据
     setPagination(state, pagination) {
       state.pagination = pagination
@@ -38,7 +37,7 @@ export default {
     // 修改的模态框
     setUpdateVisible(state, UpdateVisible) {
       state.UpdateVisible = UpdateVisible;
-      console.log(UpdateVisible)
+      // console.log(UpdateVisible)
     },
     setType(state, type) {
       state.type = type
@@ -55,7 +54,7 @@ export default {
       }
       state.bigimgs = arr;
       state.bigpic = data;
-      console.log(state.bigimgs)
+      // console.log(state.bigimgs)
     },
     setSmallimgs(state, data) {
       let arr = [];
@@ -68,7 +67,7 @@ export default {
     // 在修改中进行图片的删除
     setBigpic(state, data) {
       let arr = state.bigpic;
-      console.log(arr, data)
+      // console.log(arr, data)
       for (let i = 0; i < arr.length; i++) {
         if (arr[i] == data) {
           arr.splice(i, 1);
@@ -80,7 +79,7 @@ export default {
     },
     setSmallpic(state, data) {
       let arr = state.smallpic;
-      console.log(arr, data)
+      // console.log(arr, data)
       for (let i = 0; i < arr.length; i++) {
         if (arr[i] == data) {
           arr.splice(i, 1);
@@ -118,7 +117,7 @@ export default {
       }).then(({ data }) => {
         commit("setSupGoods", data.rows);
         commit("setPagination", data);
-        console.log(data)
+        // console.log(data)
       });
     },
     setID({ commit }, id) {
@@ -126,4 +125,6 @@ export default {
       // console.log(state.id)
     }
   }
+
+
 };

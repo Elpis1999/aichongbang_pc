@@ -1,45 +1,42 @@
 <template>
-    <div>
-  <el-button class="add-btn" type="primary" icon="el-icon-edit" circle  @click="updata"></el-button>
-  <el-dialog
-  title="供应商详情"
-  :visible.sync="dialogVisible"
-  width="30%">
-   <el-form status-icon  ref="addForm" label-width="100px">
-  <el-form-item label="供应商名称" prop="supp_name">
-    <el-input v-model="addForm.supp_name"  autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="供应商地址" prop="supp_add">
-    <el-input v-model="addForm.supp_add" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="供应商电话" prop="supp_phone">
-    <el-input v-model="addForm.supp_phone" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="供应商网站" prop="supp_web">
-    <el-input v-model="addForm.supp_web" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="供应商备注" prop="supp_note">
-    <el-input v-model="addForm.supp_note" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="供应商上传图片" prop="supp_note">
- <el-upload
-          class="avatar-uploader"
-          action="/upload"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-  </el-upload>
-   </el-form-item>
-</el-form>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="add">确 定</el-button>
-  </span>
-</el-dialog>
-    </div>
+  <div>
+    <el-button class="add-btn" type="primary" icon="el-icon-edit" circle @click="updata"></el-button>
+    <el-dialog title="供应商详情" :visible.sync="dialogVisible" width="30%">
+      <el-form status-icon ref="addForm" label-width="100px">
+        <el-form-item label="供应商名称" prop="supp_name">
+          <el-input v-model="addForm.supp_name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="供应商地址" prop="supp_add">
+          <el-input v-model="addForm.supp_add" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="供应商电话" prop="supp_phone">
+          <el-input v-model="addForm.supp_phone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="供应商网站" prop="supp_web">
+          <el-input v-model="addForm.supp_web" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="供应商备注" prop="supp_note">
+          <el-input v-model="addForm.supp_note" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="供应商上传图片" prop="supp_note">
+          <el-upload
+            class="avatar-uploader"
+            action="/upload"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="add">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 <script >
 import axios from "axios";
@@ -88,13 +85,13 @@ export default {
           this.setDisabled(false);
         }
         this.dialogVisible = false;
-          // (this.addForm.supp_name = ""),
-          // (this.addForm.supp_add = ""),
-          // (this.addForm.supp_phone = ""),
-          // (this.addForm.supp_web = ""),
-          // (this.addForm.supp_note = ""),
-          // (this.addForm.supp_bus_pic = ""),
-          // (this.imageUrl = "");
+        // (this.addForm.supp_name = ""),
+        // (this.addForm.supp_add = ""),
+        // (this.addForm.supp_phone = ""),
+        // (this.addForm.supp_web = ""),
+        // (this.addForm.supp_note = ""),
+        // (this.addForm.supp_bus_pic = ""),
+        // (this.imageUrl = "");
       });
       // location.reload()
       // this.$router.push("../manage/suppiler")

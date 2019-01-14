@@ -43,7 +43,7 @@ export default {
         method: "get",
         url: "/suppiler"
       }).then(({ data }) => {
-        console.log(data, "data88");
+        // console.log(data, "data88");
         for (let i = 0; i < data.length; i++) {
           if (data[i].supp_number == this.useid) {
             this.suppid = data[i]._id;
@@ -53,7 +53,7 @@ export default {
               method: "get",
               url: "/suppiler/" + this.suppid
             }).then(({ data }) => {
-              console.log(data, "通过id查到的数据");
+              // console.log(data, "通过id查到的数据");
               let arr = [];
               arr.push(data);
               this.suppiler = arr;

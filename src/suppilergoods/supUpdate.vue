@@ -189,24 +189,24 @@ export default {
       this.setBigpic(url[4]);
     },
     bigHandlePictureCardPreview(file) {
-      console.log(file);
+      // console.log(file);
     },
     bigHandleupload(response, file) {
       let url = file.response;
       this.bigpic.push(url);
-      console.log(response, file, "22");
+      // console.log(response, file, "22");
     },
     // 商品小图
     smallHandleRemove(file) {
       let imgurl = file.url;
       let url = imgurl.split("/");
-      console.log(file);
-      console.log(imgurl);
-      console.log(url[4]);
+      // console.log(file);
+      // console.log(imgurl);
+      // console.log(url[4]);
       this.setSmallpic(url[4]);
     },
     smallHandlePictureCardPreview(file) {
-      console.log(file);
+      // console.log(file);
     },
     smallHandleupload(response, file) {
       let url = file.response;

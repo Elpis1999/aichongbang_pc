@@ -29,7 +29,7 @@
               <el-menu-item index="/manage/suppilergoods" :disabled="storeStatus">供应商货品</el-menu-item>
               <el-menu-item index="2-4" :disabled="storeStatus">服务管理</el-menu-item>
               <el-menu-item index="2-5" :disabled="storeStatus">订单管理</el-menu-item>
-              <el-menu-item index="2-6" :disabled="storeStatus">统计</el-menu-item>
+              <el-menu-item index="/manage/storestatistics" :disabled="storeStatus">统计</el-menu-item>
             </template>
             <template v-if="suppiler">
               <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>
@@ -66,13 +66,6 @@ export default {
       suppid: ""
     };
   },
-  // beforeRouteLeave(to, from, next) {
-  //   if (confirm("确定离开吗？") == true) {
-  //     next(); //跳转到另一个路由
-  //   } else {
-  //     next(false); //不跳转
-  //   }
-  // },
   computed: {
     ...mapState(["disabled"]),
     ...commonMapState(["user", "store", "suppiler"]),
@@ -115,7 +108,7 @@ export default {
         method: "get",
         url: "/suppiler"
       }).then(({ data }) => {
-        console.log(data, "747");
+        // console.log(data,"747")
         for (let i = 0; i < data.length; i++) {
           if (data[i].supp_number == this.useid) {
             this.suppid = data[i]._id;
@@ -123,7 +116,7 @@ export default {
               method: "get",
               url: "/suppiler/" + this.suppid
             }).then(({ data }) => {
-              console.log(data, "通过id查到的数据22");
+              // console.log(data, "通过id查到的数据");
               if (
                 data.supp_add == "" ||
                 data.supp_bus_pic == "" ||

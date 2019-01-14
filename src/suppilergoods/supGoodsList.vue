@@ -45,7 +45,7 @@ export default {
     showById(id) {
       this.setSupGood(id);
       this.setUpdateVisible(true);
-      console.log(id);
+      // console.log(id);
     },
     Delete(id) {
       axios({

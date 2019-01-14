@@ -14,44 +14,43 @@ Vue.use(Router);
 export default new Router({
     mode: 'history',
     routes: [{
-            path: "/",
-            component: Login
+        path: "/",
+        component: Login
+    }, {
+        path: "/register",
+        component: Register
+    },
+    {
+        path: "/login",
+        component: Login
+    },
+    {
+        path: '/manage',
+        component: Manage,
+        children: [{
+            path: '/manage/storeapplication',
+            component: StoreApplication
+
         }, {
-            path: "/register",
-            component: Register
+            path: '/manage/supgoods',
+            component: Supgoods
         },
         {
-            path: "/login",
-            component: Login
+            path: '/manage/storegoods',
+            component: StoreGoods
+        }, {
+            path: '/manage/suppilergoods',
+            component: SuppilerGoods
         },
         {
-            path: '/manage',
-            component: Manage,
-            children: [{
-                    path: '/manage/storeapplication',
-                    component: StoreApplication
-
-                }, {
-                    path: '/manage/supgoods',
-                    component: Supgoods
-                },
-                {
-                    path: '/manage/storegoods',
-                    component: StoreGoods
-                }, {
-                    path: '/manage/suppilergoods',
-                    component: SuppilerGoods
-                },
-                {
-                    path: '/manage/suppiler',
-                    component: Suppiler
-                },
-                {
-                    path: '/manage/suppilertj',
-                    component: SuppilerTj
-                }
-            ]
-
+            path: '/manage/suppiler',
+            component: Suppiler
+        },
+        {
+            path: '/manage/suppilertj',
+            component: SuppilerTj
         }
+        ]
+    }
     ]
 })
