@@ -367,14 +367,7 @@ export default {
           status:"已审核"
         }
       }).then(()=>{
-      axios({
-        method:"delete",
-        url:"/platformUsers/"+row._id
-      }).then((data)=>{
-        if(data){
-      this.showExamine()
-        }
-      })
+     this.showExamine()
       })
       alert("此用户已通过！");
       this.show()
