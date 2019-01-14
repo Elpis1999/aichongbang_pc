@@ -29,7 +29,7 @@ export default {
     return {
       useid: "",
       suppid: "",
-      type: "各个店铺的销售统计",
+      type: "各个店铺的进货量统计",
       classAxisData: [],
       classSeriesData: [],
       shuju: []
@@ -79,7 +79,7 @@ export default {
               // console.log("chart");
               let myChart = echarts.init(document.getElementById("myChart"));
               myChart.setOption({
-                title: { text: "各商品销量统计" },
+                title: { text: "各商品进货量统计" },
                 tooltip: {},
                 xAxis: {
                   data: arr1
