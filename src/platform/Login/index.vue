@@ -94,7 +94,7 @@ export default {
               this.$message({
                 showClose: true,
                 message: "登陆成功",
-                 type: 'success'
+                type: "success"
               });
               console.log("session", res);
               this.$router.push("/manage");
@@ -102,7 +102,7 @@ export default {
               this.$message({
                 showClose: true,
                 message: "登陆失败",
-                type:"error"
+                type: "error"
               });
             }
           });
