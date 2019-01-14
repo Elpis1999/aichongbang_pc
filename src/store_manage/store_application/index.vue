@@ -214,6 +214,20 @@ export default {
   created() {
     this.$nextTick(function() {
       if (this.store._id) {
+        axios({
+          method: "get",
+          url: "/store",
+          params: {
+            userId: this.user._id
+          }
+        }).then(({ data }) => {
+          this.setStore(data[0]);
+          if (data.length > 0 && data[0].store_status === "已审核") {
+            this.$router.replace("/manage");
+          } else if (data.length > 0 && data[0].store_status === "未审核") {
+            this.examine = true;
+          }
+        });
       } else {
         this.$nextTick(function() {
           axios({
@@ -222,7 +236,6 @@ export default {
           }).then(({ data }) => {
             if (data) {
               this.setUser(data);
-              console.log(this.user._id);
               axios({
                 method: "get",
                 url: "/store",

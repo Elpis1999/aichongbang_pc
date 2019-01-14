@@ -16,6 +16,7 @@
       <el-option label="2016" value="2016"></el-option>
       <el-option label="2015" value="2015"></el-option>
     </el-select>
+    <el-button type="text" @click="click" style="margin-left:15px;">查看季度对比图</el-button>
     <div class="total" id="myChart" ref="myChart"></div>
   </div>
 </template>
@@ -40,7 +41,9 @@ export default {
       seriesData: [],
       select: "mgoodsSalesVolume",
       value: "商品销量",
-      year: 2018
+      year: 2018,
+      source: [],
+      series: []
     };
   },
   computed: {
@@ -90,6 +93,18 @@ export default {
         },
         series: this.seriesData
       };
+    },
+    quarterOptions() {
+      return {
+        legend: {},
+        tooltip: {},
+        dataset: {
+          source: this.source
+        },
+        xAxis: { type: "category" },
+        yAxis: {},
+        series: this.series
+      };
     }
   },
   mounted() {
@@ -113,6 +128,35 @@ export default {
   },
   methods: {
     ...mapMutations("commonModule", ["setUser", "setStore"]),
+    click() {
+      if (this.select === "mgoodsSalesVolume") {
+        axios({
+          url: "/goods/qgoodsSalesVolume",
+          method: "get",
+          params: {
+            storeId: this.store._id,
+            year: this.year
+          }
+        }).then(res => {
+          this.source = res.data.source;
+          this.series = res.data.series;
+          myChart.setOption(this.quarterOptions, true);
+        });
+      } else {
+        axios({
+          url: "/goods/qserviceSalesVolume",
+          method: "get",
+          params: {
+            storeId: this.store._id,
+            year: this.year
+          }
+        }).then(res => {
+          this.source = res.data.source;
+          this.series = res.data.series;
+          myChart.setOption(this.quarterOptions, true);
+        });
+      }
+    },
     whetherApplyStore() {
       axios({
         method: "get",
