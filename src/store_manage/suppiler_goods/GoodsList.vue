@@ -79,6 +79,8 @@ export default {
     },
     click(index, row) {
       let date = new Date().toLocaleDateString();
+      let newDate = date.split("/");
+      date = newDate[0] + "-" + newDate[1] + "-" + newDate[2];
       let obj = row;
       obj.getnumber = this.num[index];
       obj.time = date;

@@ -23,12 +23,12 @@
               <el-menu-item index="1-3">门店管理</el-menu-item>
               <el-menu-item index="1-4">统计</el-menu-item>
             </template>
-            <template v-if="storeDisabled">
+            <template v-if="user.permissions == 2 ">
               <el-menu-item index="/manage/storeapplication" :disabled="!storeStatus">门店申请</el-menu-item>
               <el-menu-item index="/manage/storegoods" :disabled="storeStatus">商品管理</el-menu-item>
               <el-menu-item index="/manage/suppilergoods" :disabled="storeStatus">供应商货品</el-menu-item>
-              <el-menu-item index="2-4" :disabled="storeStatus">服务管理</el-menu-item>
-              <el-menu-item index="2-5" :disabled="storeStatus">订单管理</el-menu-item>
+              <el-menu-item index="/manage/service" >服务管理</el-menu-item>
+              <el-menu-item index="/manage/order">订单管理</el-menu-item>
               <el-menu-item index="/manage/storestatistics" :disabled="storeStatus">统计</el-menu-item>
             </template>
             <template v-if="suppiler">
@@ -78,13 +78,6 @@ export default {
     },
     suppiler() {
       if (this.user.permissions == 3) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    storeDisabled() {
-      if (this.user.permissions == 2) {
         return true;
       } else {
         return false;
@@ -153,8 +146,8 @@ export default {
           userId: this.user._id
         }
       }).then(({ data }) => {
-        this.setStore(data[0]);
-        if (data.length > 0) {
+        if (data.length > 0 && data[0].store_status === "已审核") {
+          this.setStore(data[0]);
           this.storeStatus = false;
         }
       });

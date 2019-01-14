@@ -33,8 +33,12 @@ export default {
           userId: this.user._id
         }
       }).then(({ data }) => {
-        this.setStore(data[0]);
-        this.show(this.store._id);
+        if (data.length === 0 || data[0].store_status != "已审核") {
+          this.$router.replace("/manage");
+        } else {
+          this.setStore(data[0]);
+          this.show(this.store._id);
+        }
       });
     }
   },
@@ -42,18 +46,14 @@ export default {
     if (this.store._id) {
       this.show(this.store._id);
     } else {
-      console.log(123);
       this.$nextTick(function() {
         axios({
           method: "get",
           url: "/getSession"
         }).then(({ data }) => {
-          console.log(data);
           if (data) {
             this.setUser(data);
             this.whetherApplyStore();
-          } else {
-            this.$router.replace("/login");
           }
         });
       });
