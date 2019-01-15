@@ -22,7 +22,7 @@
                 <el-menu-item index="/manage/petmaster">宠主管理</el-menu-item>
                 <el-menu-item index="/manage/StoresManage">门店管理</el-menu-item>
                 <el-menu-item index="/manage/SupplierManage">供应商审批</el-menu-item>
-                <el-menu-item index="1-4">统计</el-menu-item>
+                <el-menu-item index="/manage/pt_count">统计</el-menu-item>
             </template>
             <template v-if="user.permissions == 2 ">
               <el-menu-item index="/manage/storeapplication" :disabled="!storeStatus">门店申请</el-menu-item>
@@ -186,6 +186,7 @@ export default {
 </script>
 
 <style scoped>
+
 .el-footer {
   background-color: #b3c0d1;
   color: #333;

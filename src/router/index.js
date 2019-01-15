@@ -8,6 +8,8 @@ import Supgoods from "../suppilergoods/index"
 import StoreGoods from "../store_manage/goods_manage/index.vue"
 import SupplierGoods from "../store_manage/suppiler_goods/index.vue"
 import Petmaster from "../platform/Petmaster/index.vue"
+import Pt_count from "../platform/Pt_count/index.vue"
+
 import Login from "../platform/Login/index.vue"
 import StoresManage from "../platform/StoresManage/index.vue"
 import SuppilerGoods from "../store_manage/suppiler_goods/index.vue"
@@ -84,6 +86,10 @@ export default new Router({
         {
           path: "/manage/storestatistics",
           component: StoreStatistics
+        },
+        {
+            path:"/manage/pt_count",
+            component:Pt_count
         }
         ],
     

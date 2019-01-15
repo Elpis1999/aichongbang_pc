@@ -61,6 +61,8 @@ export default {
             }).then(({
                 data
             }) => {
+                console.log("storeId",storeId);
+                console.log("dataaa",data);
                 commit("setGoods", data.rows);
                 commit("setPagination", data);
             });

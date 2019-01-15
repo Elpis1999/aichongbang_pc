@@ -205,7 +205,7 @@ export default {
               saleprice,
               getnumber,
               time,
-              storeId: "5c3364099118101a84b871e9"
+              storeId: this.store._id
             }
           }).then(() => {
             this.show(this.store._id);
