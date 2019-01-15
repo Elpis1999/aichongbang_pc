@@ -18,11 +18,11 @@
             :router="true"
           >
             <template v-if="platform">
-               <el-menu-item index="/manage/UsersManage">用户管理</el-menu-item>
-                <el-menu-item index="/manage/petmaster">宠主管理</el-menu-item>
-                <el-menu-item index="/manage/StoresManage">门店管理</el-menu-item>
-                <el-menu-item index="/manage/SupplierManage">供应商审批</el-menu-item>
-                <el-menu-item index="/manage/pt_count">统计</el-menu-item>
+              <el-menu-item index="/manage/UsersManage">用户管理</el-menu-item>
+              <el-menu-item index="/manage/petmaster">宠主管理</el-menu-item>
+              <el-menu-item index="/manage/StoresManage">门店管理</el-menu-item>
+              <el-menu-item index="/manage/SupplierManage">供应商审批</el-menu-item>
+              <el-menu-item index="/manage/pt_count">统计</el-menu-item>
             </template>
             <template v-if="storeDisabled">
               <el-menu-item index="/manage/storeapplication" :disabled="!storeStatus">门店申请</el-menu-item>
@@ -67,13 +67,6 @@ export default {
       suppid: ""
     };
   },
-  // beforeRouteLeave(to, from, next) {
-  //   if (confirm("确定离开吗？") == true) {
-  //     next(); //跳转到另一个路由
-  //   } else {
-  //     next(false); //不跳转
-  //   }
-  // },
   computed: {
     ...mapState(["disabled"]),
     ...commonMapState(["user", "store", "suppiler"]),
@@ -107,7 +100,6 @@ export default {
         method: "get",
         url: "/getSession"
       }).then(({ data }) => {
-        console.log(data, "data118");
         this.useid = data._id;
       });
     },
@@ -116,7 +108,6 @@ export default {
         method: "get",
         url: "/suppiler"
       }).then(({ data }) => {
-        // console.log(data,"747")
         for (let i = 0; i < data.length; i++) {
           if (data[i].supp_number == this.useid) {
             this.suppid = data[i]._id;
@@ -138,8 +129,7 @@ export default {
                 if (data.supp_status == "已审核") {
                   this.setDisabled(false);
                 } else {
-                  // console.log("不进")
-                   alert("正在审核中，请稍后");
+                  alert("正在审核中，请稍后");
                   this.setDisabled(true);
                 }
               }
@@ -167,21 +157,13 @@ export default {
       }).then(({ data }) => {
         if (data.length > 0 && data[0].store_status === "已审核") {
           this.setStore(data[0]);
-        this.setStore(data[0]);
+          this.setStore(data[0]);
         }
         if (data.length > 0) {
           this.storeStatus = false;
         }
       });
     }
-
-    //   ,watch: {
-    //   // 监听路由跳转。
-    //   $route(newRoute, oldRoute) {
-    //     console.log('watch', newRoute, oldRoute)
-    //     this.$router.replace("/login");
-    //   },
-    // },
   },
   created() {
     this.getSession(),
@@ -199,18 +181,10 @@ export default {
         }
       });
   }
-  //   ,watch: {
-  //   // 监听路由跳转。
-  //   $route(newRoute, oldRoute) {
-  //     console.log('watch', newRoute, oldRoute)
-  //     this.$router.replace("/login");
-  //   },
-  // },
 };
 </script>
 
 <style scoped>
-
 .el-footer {
   background-color: #b3c0d1;
   color: #333;

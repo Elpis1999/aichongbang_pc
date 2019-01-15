@@ -7,6 +7,9 @@
       <el-form-item label="推广标题：" prop="supp_gd_title">
         <el-input v-model="goods.supp_gd_title" :disabled="disabled"></el-input>
       </el-form-item>
+      <el-form-item label="品类：" prop="supp_gd_type">
+        <el-input v-model="goods.supp_gd_type"></el-input>
+      </el-form-item>
       <el-form-item label="材料：" prop="supp_gd_material">
         <el-input v-model="goods.supp_gd_material" :disabled="disabled"></el-input>
       </el-form-item>
