@@ -28,9 +28,9 @@
               <el-menu-item index="/manage/storeapplication" :disabled="!storeStatus">门店申请</el-menu-item>
               <el-menu-item index="/manage/storegoods" :disabled="storeStatus">商品管理</el-menu-item>
               <el-menu-item index="/manage/suppilergoods" :disabled="storeStatus">供应商货品</el-menu-item>
-              <el-menu-item index="2-4" :disabled="storeStatus">服务管理</el-menu-item>
-              <el-menu-item index="2-5" :disabled="storeStatus">订单管理</el-menu-item>
-              <el-menu-item index="2-6" :disabled="storeStatus">统计</el-menu-item>
+              <el-menu-item index="/manage/service" :disabled="storeStatus">服务管理</el-menu-item>
+              <el-menu-item index="/manage/order" :disabled="storeStatus">订单管理</el-menu-item>
+              <el-menu-item index="/manage/storestatistics" :disabled="storeStatus">统计</el-menu-item>
             </template>
             <template v-if="suppiler">
               <el-menu-item index="/manage/suppiler">补全信息</el-menu-item>

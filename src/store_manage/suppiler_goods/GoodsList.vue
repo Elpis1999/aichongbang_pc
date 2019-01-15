@@ -71,9 +71,8 @@ export default {
   methods: {
     ...mapMutations(["setDialogTableVisible", "setGoodsPage"]),
     ...mapActions(["stockPurchase"]),
-    ...mapStateGoods([""]),
+    ...mapStateGoods(["show"]),
     change(value) {
-      console.log(value);
       this.setGoodsPage(value);
       this.stockPurchase();
     },
@@ -101,6 +100,7 @@ export default {
   },
   watch: {
     goods: function(newQuestion, oldQuestion) {
+      console.log("goods",newQuestion);
       for (let i = 0; i < newQuestion.length; i++) {
         this.num.push(0);
       }

@@ -27,6 +27,7 @@ export default {
     ...mapMutations(["setDialogTableVisible", "setSupId"]),
     click(index, row) {
       this.setSupId(row._id);
+      console.log("123");
       this.stockPurchase();
       this.setDialogTableVisible(true);
     }
