@@ -355,9 +355,10 @@ export default {
       this.index = index
     },
        handleEditpass(index, row) {
+         let id = row._id
       axios({
-        method:"post",
-        url:"/platformUsers/pass/",
+        method:"put",
+        url:"/platformUsers/"+id,
         data:{
           userPhone:row.userPhone,
           pwd:row.pwd,
@@ -368,6 +369,7 @@ export default {
         }
       }).then(()=>{
      this.showExamine()
+     this.showExamine2()
       })
       alert("此用户已通过！");
       this.show()
