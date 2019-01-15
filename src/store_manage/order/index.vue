@@ -71,6 +71,7 @@ export default {
                 method:"get",
                 url:'/getSession'
             }).then(({data})=>{
+                console.log("7897788",data)
                 let id = data._id;
                 axios({
                     method:"get",
@@ -79,6 +80,8 @@ export default {
                     userId:id
                     }
                 }).then(({data})=>{
+                    console.log(data)
+                    console.log("qwqwqwqwqw",data[0]._id)
                     this.storeid = data[0]._id
                             axios({
                         method: "get",
@@ -91,6 +94,7 @@ export default {
                         value:value
                         }
                     }).then((res) => {
+                        console.log(res)
                         this.orderContent = res.data.rows;
                         // console.log(res.data);
                         this.pagenation = res.data

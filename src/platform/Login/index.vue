@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" >
     <el-row class="box">
       <el-col :span="24">
         <el-card shadow="always">
@@ -24,11 +24,11 @@
                 v-model="ruleForm2.pass"
                 autocomplete="on"
                 placeholder="请输入密码"
+                @keyup.enter.native="submitForm('ruleForm2')"
               ></el-input>
             </el-form-item>
-
             <el-form-item class="btnBox">
-              <el-button type="primary" @click="submitForm('ruleForm2')">登陆</el-button>
+              <el-button type="primary" @click="submitForm('ruleForm2')" >登陆</el-button>
               <el-button @click="resetForm('ruleForm2')">注册</el-button>
             </el-form-item>
           </el-form>
@@ -62,7 +62,6 @@ export default {
         callback();
       }
     };
-
     return {
       labelPosition: "right",
       ruleForm2: {
@@ -91,18 +90,31 @@ export default {
             }
           }).then(res => {
             if (res.data.status != 0) {
-              this.$message({
-                showClose: true,
-                message: "登陆成功",
-                type: "success"
-              });
+               this.$message({
+          message: '登录成功！',
+          type: 'success'
+        });
               console.log("session", res);
-              this.$router.push("/manage");
+              this.$router.push("../../manage");
             } else {
-              this.$message({
-                showClose: true,
-                message: "登陆失败",
-                type: "error"
+              axios({
+                method: "post",
+                url: "/users/isRegisted",
+                data: {
+                  userPhone,
+                  pwd
+                }
+              }).then(res => {
+                if (res.data.status != 0) {
+                  this.$message({
+          message: '请耐心等待审核',
+          type: 'warning'
+        });
+                }
+                else{
+                  this.$message.error('不存在此账号，请注册');
+                  this.$router.push("/register");
+                }
               });
             }
           });

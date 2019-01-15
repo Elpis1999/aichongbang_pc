@@ -204,6 +204,7 @@ export default {
                 userId: this.user._id
               }
             }).then(() => {
+              console.log(this.user)
               this.examine = true;
             });
           }

@@ -62,20 +62,21 @@ export default {
           url: "/goodsAndServe/goodsAndServe"
         }).then(res => {
           myChart.setOption(this.countOption, { notMerge: true });
-          this.goodsData = res.data[0];
+          let all =eval(res.data[0].join("+"))
+          this.goodsData.push(all)
           this.serveData = res.data[1];
-          console.log("返回数据:", res);
-          console.log("返回数据:", this.goodsData);
+          console.log("返回数据2:", this.goodsData);
         });
       } else if (this.type == "销售额占比统计") {
-        console.log("点占比：", this.goodsData);
-         this.proportion=[];
+        this.proportion=[];
+        console.log("服务：",this.serveData)
         let a,b;
         a =eval(this.goodsData.join('+'))
         b =eval(this.serveData.join('+'))
         this.proportion.push(a,b)
-        console.log("a",this.proportion);
+        console.log("占比：",this.proportion);
         myChart.setOption(this.propOption, { notMerge: true });
+
       } else if (this.type == "门店分布图") {
         axios({
           method: "get",
@@ -182,6 +183,7 @@ export default {
     },
     propOption() {
       return {
+        backgroundColor: "'rgba(128, 128, 128, 0.5)",
         title: {
           text: "2018销售额占比",
           subtext: "数据非常真实",

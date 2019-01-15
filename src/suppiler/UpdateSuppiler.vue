@@ -1,53 +1,53 @@
 <template>
-    <div>
-  <el-button class="add-btn" type="primary" icon="el-icon-edit" circle  @click="updata"></el-button>
-  <el-dialog
-  title="供应商详情"
-  :visible.sync="dialogVisible"
-  width="30%">
-   <el-form status-icon  ref="addForm" label-width="100px">
-  <el-form-item label="供应商名称" prop="supp_name">
-    <el-input v-model="addForm.supp_name"  autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="供应商地址" prop="supp_add">
-    <el-input v-model="addForm.supp_add" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="供应商电话" prop="supp_phone">
-    <el-input v-model="addForm.supp_phone" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="供应商网站" prop="supp_web">
-    <el-input v-model="addForm.supp_web" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="供应商备注" prop="supp_note">
-    <el-input v-model="addForm.supp_note" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="供应商上传图片" prop="supp_note">
- <el-upload
-          class="avatar-uploader"
-          action="/upload"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-  </el-upload>
-   </el-form-item>
-</el-form>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="add">确 定</el-button>
-  </span>
-</el-dialog>
-    </div>
+  <div>
+    <el-button :disabled="disabled" class="add-btn" type="primary" icon="el-icon-edit" circle @click="updata"></el-button>
+    <el-dialog title="供应商详情" :visible.sync="dialogVisible" width="30%">
+      <el-form status-icon ref="addForm" label-width="100px">
+        <el-form-item label="供应商名称" prop="supp_name">
+          <el-input v-model="addForm.supp_name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="供应商地址" prop="supp_add">
+          <el-input v-model="addForm.supp_add" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="供应商电话" prop="supp_phone">
+          <el-input v-model="addForm.supp_phone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="供应商网站" prop="supp_web">
+          <el-input v-model="addForm.supp_web" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="供应商备注" prop="supp_note">
+          <el-input v-model="addForm.supp_note" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="供应商上传图片" prop="supp_note" >
+          <el-upload
+            class="avatar-uploader"
+            action="/upload"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="add">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 <script >
 import axios from "axios";
+import { createNamespacedHelpers } from "vuex";
+const { mapMutations } = createNamespacedHelpers("supgoodsModule");
 export default {
   props: ["show", "suppiler"],
 
   data() {
     return {
+      disabled:false,
       dialogVisible: false,
       addForm: {
         supp_name: "",
@@ -55,14 +55,81 @@ export default {
         supp_phone: "",
         supp_web: "",
         supp_note: "",
-        supp_bus_pic: ""
+        supp_bus_pic: "",
+         suppid: "",
+      useid: ""
       },
       imageUrl: ""
     };
   },
+
   methods: {
+     ...mapMutations(["setDisabled"]),
+       getSession() {
+      axios({
+        method: "get",
+        url: "/getSession"
+      }).then(({ data }) => {
+        console.log(data, "data119");
+        this.useid = data._id;
+      });
+    },
+    panduan(){
+            axios({
+        method: "get",
+        url: "/suppiler"
+      }).then(({ data }) => {
+        // console.log(data,"747")
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].supp_number == this.useid) {
+            this.suppid = data[i]._id;
+            axios({
+              method: "get",
+              url: "/suppiler/" + this.suppid
+            }).then(({ data }) => {
+              if (
+                data.supp_add == "" ||
+                data.supp_bus_pic == "" ||
+                data.supp_name == "" ||
+                data.supp_note == "" ||
+                data.supp_phone == "" ||
+                data.supp_web == ""
+              ) {
+                 console.log(0)
+              } else {
+                 this.disabled=true;
+              }
+            });
+          }
+        }
+      });
+      },
+    add() {
+      console.log(this.suppiler,"suppilerid")
+      axios({
+        method: "put",
+        url: "/suppiler/" + this.suppiler[0]._id,
+        data: this.addForm
+      }).then(({ data }) => {
+        console.log(data, "data");
+        this.show();
+         alert("正在审核中，请稍后");
+        if (
+          this.addForm.supp_add == "" ||
+          this.addForm.supp_bus_pic == "" ||
+          this.addForm.supp_name == "" ||
+          this.addForm.supp_note == "" ||
+          this.addForm.supp_phone == "" ||
+          this.addForm.supp_web == ""
+        ) {
+           alert("请完善供应商详情");
+        }   
+        this.dialogVisible = false;     
+      });
+          },
     updata() {
       this.dialogVisible = true;
+      console.log(this, "qqq");
       axios({
         method: "get",
         url: "/suppiler/" + this.suppiler[0]._id
@@ -74,28 +141,10 @@ export default {
         this.addForm.supp_web = data.supp_web;
         this.addForm.supp_note = data.supp_note;
         this.addForm.supp_bus_pic = data.supp_bus_pic;
-        this.imageUrl="/upload/"+data.supp_bus_pic
+        this.imageUrl = "/upload/" + data.supp_bus_pic;
       });
+      this.disabled=true;
     },
-    add() {
-      axios({
-        method: "put",
-        url: "/suppiler/" + this.suppiler[0]._id,
-        data: this.addForm
-      }).then(({ data }) => {
-        console.log(data, "data");
-        this.show();
-        this.dialogVisible = false;
-        (this.addForm.supp_name = ""),
-          (this.addForm.supp_add = ""),
-          (this.addForm.supp_phone = ""),
-          (this.addForm.supp_web = ""),
-          (this.addForm.supp_note = ""),
-          (this.addForm.supp_bus_pic = ""),
-          (this.imageUrl = "");
-      });
-    },
-
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
       console.log(file.response, "878");
@@ -117,6 +166,10 @@ export default {
   },
   created() {
     console.log(this.suppiler, "774");
+    this.getSession();
+    this.panduan();
+    this.add();
+    
   }
 };
 </script>

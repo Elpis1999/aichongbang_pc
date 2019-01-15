@@ -60,9 +60,9 @@
           <el-form-item label="积分" prop="pm_integral">
             <el-input v-model="formLabelAlign.pm_integral"></el-input>
           </el-form-item>
-          <el-form-item label="宠物" prop="pm_ownpet">
+          <!-- <el-form-item label="宠物" prop="pm_ownpet">
             <el-input v-model="formLabelAlign.pm_ownpet"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="图片" prop="pm_pic">
             <el-upload
               action="/upload"
@@ -233,10 +233,10 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[5,10,15,20]"
+      :page-sizes="[10,15,20]"
       :page-size="5"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="20"
+      :total="total"
     ></el-pagination>
   </div>
 </template>
@@ -246,6 +246,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      total:0,
       currentPage: 1,
       dialogImageUrl: "",
       dialogVisible2: false,
@@ -300,12 +301,11 @@ export default {
     };
   },
   created: function() {
-    this.show();""
+    this.show();
   },
   methods: {
     uploadPic(response, file, fileList) {
       this.dialogImageUrl = file;
-     
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -313,15 +313,25 @@ export default {
         method: "get",
         url: "/petmaster",
         data: {
-          page: 1,
+          page: val,
           rows: 4
         }
       }).then(res => {
-        console.log(res);
+        this.show();
       });
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+       axios({
+        method: "get",
+        url: "/petmaster",
+        data: {
+          page: val,
+          rows: 4
+        }
+      }).then(res => {
+        this.show();
+      });
     },
     open2() {
       this.$confirm("此操作将永久删除该宠主, 是否继续?", "提示", {
@@ -357,7 +367,8 @@ export default {
         url: "/petmaster"
       }).then(res => {
         this.tableData = res.data;
-
+        this.total = res.data.length
+        console.log(this.total,"长度")
         console.log("小猫：",this.tableData[0].pm_ownpet.pet_name)
       });
     },

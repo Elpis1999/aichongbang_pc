@@ -157,7 +157,7 @@
        <template slot="header" slot-scope="scope">
           <el-input v-model="search" size="mini" placeholder="输入关键字搜索" style="500px"/>
         </template>
-        <el-table-column type="selection" width="55"></el-table-column>
+        
     <el-table-column
       label="姓名"
       width="180">
@@ -367,14 +367,7 @@ export default {
           status:"已审核"
         }
       }).then(()=>{
-      axios({
-        method:"delete",
-        url:"/platformUsers/"+row._id
-      }).then((data)=>{
-        if(data){
-      this.showExamine()
-        }
-      })
+     this.showExamine()
       })
       alert("此用户已通过！");
       this.show()
