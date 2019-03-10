@@ -87,8 +87,7 @@ export default new Router({
                     path: "/manage/pt_count",
                     component: Pt_count
                 }
-            ],
-
+            ]
         }
     ]
 })
